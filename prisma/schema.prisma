@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  proposals Proposal[]
+  products  Product[]
+  @@map("users")
+}
+
+model Proposal {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  type        String   // "service" or "product"
+  tenantId    String   // For multi-tenancy
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  versions Version[]
+  @@map("proposals")
+}
+
+model Version {
+  id          String   @id @default(cuid())
+  proposalId  String
+  proposal    Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  version     Int      @default(1)
+  content     Json     // Structured content
+  isPublished Boolean  @default(false)
+  publicUrl   String?  @unique
+  createdAt   DateTime @default(now())
+
+  events Event[]
+  @@map("versions")
+}
+
+model Event {
+  id         String   @id @default(cuid())
+  versionId  String
+  version    Version  @relation(fields: [versionId], references: [id], onDelete: Cascade)
+  type       String   // "view", "click", "time_spent"
+  data       Json     // Event data
+  createdAt  DateTime @default(now())
+  @@map("events")
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  price       Float?
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@map("products")
+}
