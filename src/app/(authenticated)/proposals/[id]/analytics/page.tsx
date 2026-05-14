@@ -7,7 +7,8 @@ import { getTranslation } from '@/lib/i18n'
 import Container from '@/components/ui/Container'
 import PageHeader from '@/components/ui/PageHeader'
 import Card from '@/components/ui/Card'
-import { Eye, MousePointer, TrendingUp, Clock } from 'lucide-react'
+import { Eye, MousePointer, TrendingUp, Clock, ArrowLeft } from 'lucide-react'
+import Link from 'next/link'
 import {
   BarChart,
   Bar,
@@ -124,6 +125,11 @@ export default function AnalyticsPage() {
   return (
     <div className="min-h-screen bg-background py-12">
       <Container>
+        <Link href="/analytics" className="inline-flex items-center gap-2 text-accent hover:text-accent-hover transition-colors mb-6 text-sm font-medium">
+          <ArrowLeft className="h-4 w-4" />
+          {t.analytics.backToAnalytics || 'Volver a Analítica'}
+        </Link>
+
         {proposalInfo && (
           <div className="mb-8">
             <div className="flex items-start justify-between mb-6">
