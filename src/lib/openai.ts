@@ -139,7 +139,7 @@ export async function generateProposalContent(brief: string): Promise<ProposalCo
 
   try {
     const message = await anthropic.messages.create({
-      model: 'claude-opus-4-1-20250805',
+      model: 'claude-sonnet-4-6',
       max_tokens: 1024,
       messages: [
         {
