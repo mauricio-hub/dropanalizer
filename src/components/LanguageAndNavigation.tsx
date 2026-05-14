@@ -1,6 +1,6 @@
 'use client'
 
-import { useLanguage } from '@/context/LanguageContext'
+import { useLanguage } from '@/hooks/useLanguage'
 import { getTranslation } from '@/lib/i18n'
 import { FileText, BarChart3, Settings, LogOut, Home, Globe } from 'lucide-react'
 import { SignOutButton, useUser } from '@clerk/nextjs'
@@ -54,8 +54,10 @@ export default function LanguageAndNavigation({
 }: {
   children: React.ReactNode
 }) {
-  const { language } = useLanguage()
+  const { language, mounted } = useLanguage()
   const t = getTranslation(language)
+
+  if (!mounted) return <>{children}</>
 
   const navItems: NavItem[] = [
     {

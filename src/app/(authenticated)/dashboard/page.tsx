@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { useLanguage } from '@/context/LanguageContext'
+import { useLanguage } from '@/hooks/useLanguage'
 import { getTranslation } from '@/lib/i18n'
 import Container from '@/components/ui/Container'
 import PageHeader from '@/components/ui/PageHeader'

@@ -1,6 +1,5 @@
 import { auth } from '@clerk/nextjs'
 import { redirect } from 'next/navigation'
-import { LanguageProvider } from '@/context/LanguageContext'
 import LanguageAndNavigation from '@/components/LanguageAndNavigation'
 
 export default function AuthenticatedLayout({
@@ -11,9 +10,5 @@ export default function AuthenticatedLayout({
   const { userId } = auth()
   if (!userId) redirect('/sign-in')
 
-  return (
-    <LanguageProvider>
-      <LanguageAndNavigation>{children}</LanguageAndNavigation>
-    </LanguageProvider>
-  )
+  return <LanguageAndNavigation>{children}</LanguageAndNavigation>
 }
