@@ -21,7 +21,11 @@
       "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" commit -m \"fix: separate server and client components in authenticated layout\")",
       "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" commit -m \"fix: consolidate user menu into LanguageAndNavigation component\")",
       "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" commit -m \"fix: simplify language management without context provider\")",
-      "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" commit -m \"design: improve language selector UI in navbar\")"
+      "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" commit -m \"design: improve language selector UI in navbar\")",
+      "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" commit -m \"feat: add real-time language change system with event listeners\")",
+      "Bash(npm install *)",
+      "PowerShell(Move-Item -Path \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\\\\src\\\\app\\\\\\(authenticated\\)\\\\analytica\\\\page.tsx\" -Destination \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\\\\src\\\\app\\\\\\(authenticated\\)\\\\analytics\\\\page.tsx\")",
+      "Bash(git add *)"
     ]
   }
 }

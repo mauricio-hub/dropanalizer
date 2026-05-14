@@ -135,14 +135,22 @@ export default function DashboardPage() {
                         {t.dashboard.edit}
                       </Link>
                       {publishedVersion && (
-                        <Link
-                          href={`/p/${p.id}`}
-                          target="_blank"
-                          className="flex items-center gap-1 flex-1 text-xs text-accent hover:text-accent-hover transition-colors text-center justify-center"
-                        >
-                          <ExternalLink className="h-3 w-3" />
-                          {t.dashboard.view}
-                        </Link>
+                        <>
+                          <Link
+                            href={`/proposals/${p.id}/analytics`}
+                            className="flex-1 text-xs text-text-secondary hover:text-text-primary transition-colors text-center"
+                          >
+                            Analytics
+                          </Link>
+                          <Link
+                            href={`/p/${p.id}`}
+                            target="_blank"
+                            className="flex items-center gap-1 flex-1 text-xs text-accent hover:text-accent-hover transition-colors text-center justify-center"
+                          >
+                            <ExternalLink className="h-3 w-3" />
+                            {t.dashboard.view}
+                          </Link>
+                        </>
                       )}
                     </div>
                   </div>
