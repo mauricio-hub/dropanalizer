@@ -28,6 +28,7 @@ model Proposal {
   title       String
   description String?
   type        String   // "service" or "product"
+  status      String   @default("draft") // "draft" or "published"
   tenantId    String   // For multi-tenancy
   userId      String
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -46,6 +47,7 @@ model Version {
   content     Json     // Structured content
   isPublished Boolean  @default(false)
   publicUrl   String?  @unique
+  generatedAt DateTime? // Timestamp when AI generated this version
   createdAt   DateTime @default(now())
 
   events Event[]
