@@ -27,11 +27,14 @@ export default function Sidebar({ items, footer }: SidebarProps) {
 
       <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-0.5">
         {items.map((item) => {
-          let active = pathname === item.href || pathname.startsWith(item.href + '/')
+          let active = false
 
-          // Special case: analytics nav item should highlight for any analytics route
-          if (item.href === '/analytics' && pathname.includes('/analytics')) {
-            active = true
+          if (item.href === '/analytics') {
+            // Analytics highlights for any route with /analytics
+            active = pathname.includes('/analytics')
+          } else {
+            // Other items: exact match or startsWith, but not if analytics route
+            active = (pathname === item.href || pathname.startsWith(item.href + '/')) && !pathname.includes('/analytics')
           }
 
           return (
