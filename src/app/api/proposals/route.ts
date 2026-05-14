@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json()
-    const { title, brief, generateWithAI = true } = body
+    const { title, brief, generateWithAI = true, selectedCatalogItemIds = [] } = body
 
     if (!title || !brief) {
       return NextResponse.json(
@@ -64,9 +64,55 @@ export async function POST(req: Request) {
     }
     let generatedAt = null
 
-    if (generateWithAI) {
+    // If catalog items are selected, use AI to structure but with fixed prices
+    if (selectedCatalogItemIds.length > 0) {
+      const catalogItems = await prisma.product.findMany({
+        where: {
+          id: { in: selectedCatalogItemIds },
+          userId: user.id,
+        },
+      })
+
+      const totalPrice = catalogItems.reduce((sum, item) => sum + (item.price || 0), 0)
+      const catalogPrices = catalogItems.map(item => ({ name: item.name, price: item.price || 0 }))
+
       try {
-        versionContent = await generateProposalContent(brief)
+        // Use AI to structure scope, deliverables, timeline but respect catalog prices
+        const aiContent = await generateProposalContent(brief, user.id, catalogPrices)
+
+        versionContent = {
+          ...aiContent,
+          // Override pricing with exact catalog prices
+          pricing: {
+            total: totalPrice,
+            currency: 'USD',
+            breakdown: catalogItems.map(item => `${item.name}: $${item.price || 0}`).join(', '),
+          },
+        }
+        generatedAt = new Date()
+      } catch (aiError) {
+        console.error('AI enrichment failed, using basic structure:', aiError)
+        versionContent = {
+          scope: brief,
+          deliverables: catalogItems.map(item => item.name),
+          timeline: [
+            {
+              phase: 'Implementación',
+              duration: '2-4 semanas',
+              description: 'Desarrollo e implementación de los servicios/productos seleccionados',
+            },
+          ],
+          pricing: {
+            total: totalPrice,
+            currency: 'USD',
+            breakdown: catalogItems.map(item => `${item.name}: $${item.price || 0}`).join(', '),
+          },
+        }
+      }
+    } else if (generateWithAI) {
+      // Use AI generation if no catalog items selected
+      try {
+        versionContent = await generateProposalContent(brief, user.id)
         generatedAt = new Date()
       } catch (aiError) {
         console.error('AI generation failed, creating empty version:', aiError)

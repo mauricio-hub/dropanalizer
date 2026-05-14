@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
+import { nanoid } from 'nanoid'
 
 export async function POST(
-  _req: Request,
+  req: Request,
   { params }: { params: { id: string; versionId: string } }
 ) {
   try {
@@ -18,41 +19,50 @@ export async function POST(
       return NextResponse.json({ error: 'Proposal not found' }, { status: 404 })
     }
 
-    const version = await prisma.version.findUnique({
-      where: { id: params.versionId },
+    const version = await prisma.version.findFirst({
+      where: { id: params.versionId, proposalId: proposal.id },
     })
 
-    if (!version || version.proposalId !== proposal.id) {
+    if (!version) {
       return NextResponse.json({ error: 'Version not found' }, { status: 404 })
     }
 
-    // Unpublish all other versions of this proposal
+    // Generate a unique public URL if not already set
+    let publicUrl = version.publicUrl
+    if (!publicUrl) {
+      publicUrl = nanoid(12)
+    }
+
+    // Unpublish other versions of this proposal
     await prisma.version.updateMany({
-      where: {
-        proposalId: proposal.id,
-        isPublished: true,
-      },
+      where: { proposalId: proposal.id, NOT: { id: params.versionId } },
       data: { isPublished: false },
     })
 
     // Publish this version
-    const publishedVersion = await prisma.version.update({
+    const updated = await prisma.version.update({
       where: { id: params.versionId },
       data: {
         isPublished: true,
-        publicUrl: `/p/${proposal.id}-${params.versionId}`,
+        publicUrl,
       },
     })
 
-    // Update proposal status
+    // Update proposal status to published
     await prisma.proposal.update({
       where: { id: proposal.id },
       data: { status: 'published' },
     })
 
-    return NextResponse.json(publishedVersion)
+    return NextResponse.json({
+      ...updated,
+      publicUrl,
+    })
   } catch (error) {
-    console.error('Error publishing version:', error)
-    return NextResponse.json({ error: 'Failed to publish version' }, { status: 500 })
+    console.error('Publish error:', error)
+    return NextResponse.json(
+      { error: 'Failed to publish version' },
+      { status: 500 }
+    )
   }
 }

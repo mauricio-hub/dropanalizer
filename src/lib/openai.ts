@@ -1,4 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk'
+import { prisma } from '@/lib/prisma'
 
 export const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -21,39 +22,56 @@ interface TimelinePhase {
   description: string
 }
 
-const PROPOSAL_GENERATION_PROMPT = (brief: string) => `
-Tu tarea es analizar el siguiente brief de propuesta y estructurarlo profesionalmente.
+const PROPOSAL_GENERATION_PROMPT = (brief: string, catalogContext?: string, catalogPrices?: { name: string; price: number }[]) => {
+  const servicesSelected = catalogPrices && catalogPrices.length > 0
+    ? `SERVICIOS/PRODUCTOS SELECCIONADOS (que se incluirán en la propuesta):\n${catalogPrices.map(p => `- ${p.name}: $${p.price}`).join('\n')}`
+    : ''
 
-BRIEF:
+  const priceInfo = catalogPrices
+    ? `Precio total exacto: $${catalogPrices.reduce((sum, p) => sum + p.price, 0)}\nDesglose:\n${catalogPrices.map(p => `- ${p.name}: $${p.price}`).join('\n')}`
+    : 'No hay precios fijos del catálogo'
+
+  return `
+Tu tarea es crear una propuesta profesional ESPECÍFICA y CONCRETA basada en los servicios/productos que el usuario va a ofrecer.
+
+BRIEF DEL CLIENTE:
 ${brief}
 
-Debes retornar un JSON válido con esta estructura exacta (sin markdown, sin explicaciones):
+${servicesSelected}
+
+INSTRUCCIONES CRÍTICAS:
+1. El scope DEBE ser específico al servicio/producto seleccionado. No ser vago.
+2. Los deliverables DEBEN ser concretos y específicos al servicio/producto, no genéricos.
+3. Las fases del timeline DEBEN reflejar el trabajo real para ese servicio específico.
+4. Los precios son EXACTOS y NO pueden ser alterados.
+
+Debes retornar un JSON válido con esta estructura (sin markdown, sin explicaciones):
 {
-  "scope": "Una descripción concisa del alcance del proyecto (2-3 párrafos)",
-  "deliverables": ["Deliverable 1", "Deliverable 2", "Deliverable 3"],
+  "scope": "Descripción ESPECÍFICA y CONCRETA del proyecto (2-3 párrafos). Menciona exactamente qué servicios/productos se entregarán y por qué son necesarios.",
+  "deliverables": ["Deliverable concreto 1", "Deliverable concreto 2", "Deliverable concreto 3", "Deliverable concreto 4"],
   "timeline": [
     {
-      "phase": "Nombre de la fase",
-      "duration": "Ej: 2 semanas",
-      "description": "Qué se hace en esta fase"
+      "phase": "Nombre específico de la fase",
+      "duration": "Duración realista",
+      "description": "Qué se hace exactamente en esta fase relacionado al servicio"
     }
   ],
   "pricing": {
-    "total": 5000,
+    "total": NUMERO_EXACTO,
     "currency": "USD",
-    "breakdown": "Descripción opcional de cómo se distribuye el precio"
+    "breakdown": "Desglose exacto: ${catalogPrices?.map(p => `${p.name}: $${p.price}`).join(', ') || 'N/A'}"
   }
 }
 
-Reglas importantes:
-- El JSON debe ser válido y parseable
-- Sé profesional pero accesible
-- Proporciona al menos 3 deliverables
-- Proporciona al menos 2 fases de timeline
-- El precio debe ser realista para la industria
-- Currency debe ser USD, EUR, ARS u otra válida
-- Retorna SOLO el JSON, sin explicaciones adicionales
+Reglas obligatorias:
+- El scope debe mencionar explícitamente los servicios seleccionados
+- Los deliverables deben ser específicos y medibles para el servicio elegido
+- Al menos 2 fases de timeline, cada una con descripción concreta del trabajo
+- Los precios son EXACTOS del catálogo - cópialos sin modificar
+- El breakdown debe listar cada servicio con su precio exacto
+- Retorna SOLO el JSON válido, sin explicaciones
 `
+}
 
 // Mock generator for testing when API models are not available
 function generateMockProposal(brief: string): ProposalContent {
@@ -128,8 +146,39 @@ function generateMockProposal(brief: string): ProposalContent {
   }
 }
 
-export async function generateProposalContent(brief: string): Promise<ProposalContent> {
+async function getCatalogContext(userId: string): Promise<string | undefined> {
+  try {
+    const items = await prisma.product.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+    })
+
+    if (items.length === 0) return undefined
+
+    const catalogText = items
+      .map((item) => {
+        const type = item.type === 'service' ? 'Servicio' : 'Producto'
+        const price = item.price ? ` - Precio: $${item.price}` : ''
+        const desc = item.description ? ` - ${item.description}` : ''
+        return `- ${item.name} (${type})${price}${desc}`
+      })
+      .join('\n')
+
+    return catalogText
+  } catch (error) {
+    console.error('Failed to fetch catalog context:', error)
+    return undefined
+  }
+}
+
+export async function generateProposalContent(brief: string, userId?: string, catalogPrices?: { name: string; price: number }[]): Promise<ProposalContent> {
   const useAI = process.env.ANTHROPIC_API_KEY && process.env.NODE_ENV === 'production'
+
+  // Fetch catalog context if userId provided
+  let catalogContext: string | undefined
+  if (userId) {
+    catalogContext = await getCatalogContext(userId)
+  }
 
   // Use mock in development or if no API key
   if (!useAI) {
@@ -144,7 +193,7 @@ export async function generateProposalContent(brief: string): Promise<ProposalCo
       messages: [
         {
           role: 'user',
-          content: PROPOSAL_GENERATION_PROMPT(brief),
+          content: PROPOSAL_GENERATION_PROMPT(brief, catalogContext, catalogPrices),
         },
       ],
     })

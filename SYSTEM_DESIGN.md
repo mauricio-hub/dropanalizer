@@ -109,6 +109,58 @@ User
 
 ---
 
+## UI Patterns
+
+### Data Tables
+All data lists (proposals, catalog items) use a consistent table pattern:
+
+```tsx
+<Card className="mt-8">
+  <div className="overflow-x-auto">
+    <table className="w-full">
+      <thead>
+        <tr className="border-b border-white/[0.06]">
+          <th className="text-left px-6 py-3 text-xs font-semibold text-text-secondary">Column 1</th>
+          <th className="text-left px-6 py-3 text-xs font-semibold text-text-secondary">Column 2</th>
+          <th className="text-right px-6 py-3 text-xs font-semibold text-text-secondary">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {items.length > 0 ? (
+          items.map((item) => (
+            <tr key={item.id} className="border-b border-white/[0.06] hover:bg-white/[0.03] transition-colors">
+              <td className="px-6 py-4 text-sm font-medium text-text-primary">{item.col1}</td>
+              <td className="px-6 py-4 text-sm text-text-muted">{item.col2}</td>
+              <td className="px-6 py-4 text-right">
+                {/* Action buttons */}
+              </td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan={3} className="px-6 py-12 text-center text-sm text-text-muted">
+              No items
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  </div>
+</Card>
+```
+
+**When to use:**
+- Lists of proposals (Dashboard)
+- Lists of catalog items (Catálogo)
+- Any multi-row data listing
+
+**When NOT to use:**
+- Single forms
+- Settings pages
+- Single-item detail views
+
+---
+
 ## API Surface (current scope)
 
 | Method | Path | Description |

@@ -25,7 +25,12 @@
       "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" commit -m \"feat: add real-time language change system with event listeners\")",
       "Bash(npm install *)",
       "PowerShell(Move-Item -Path \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\\\\src\\\\app\\\\\\(authenticated\\)\\\\analytica\\\\page.tsx\" -Destination \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\\\\src\\\\app\\\\\\(authenticated\\)\\\\analytics\\\\page.tsx\")",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(npx prisma *)",
+      "Bash(mkdir -p \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\\\\src\\\\app\\\\api\\\\proposals\\\\[id]\\\\versions\\\\[versionId]\\\\publish\")"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\mgdev\\Desktop\\projects\\proply\\src\\app\\api\\proposals\\[id]\\versions\\[versionId]\\publish"
     ]
   }
 }

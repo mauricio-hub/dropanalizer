@@ -2,7 +2,7 @@
 
 import { useLanguage } from '@/hooks/useLanguage'
 import { getTranslation } from '@/lib/i18n'
-import { FileText, BarChart3, Settings, LogOut, Home, Globe, Package } from 'lucide-react'
+import { BarChart3, Settings, LogOut, Home, Globe, Package } from 'lucide-react'
 import { SignOutButton, useUser } from '@clerk/nextjs'
 import Sidebar from '@/components/ui/Sidebar'
 import Topbar from '@/components/ui/Topbar'
@@ -83,11 +83,6 @@ export default function LanguageAndNavigation({
       icon: <Home className="h-4 w-4" />,
     },
     {
-      label: t.nav.proposals,
-      href: '/dashboard',
-      icon: <FileText className="h-4 w-4" />,
-    },
-    {
       label: t.nav.catalog,
       href: '/catalog',
       icon: <Package className="h-4 w-4" />,
@@ -110,7 +105,7 @@ export default function LanguageAndNavigation({
       <Sidebar
         items={navItems}
         footer={
-          <SignOutButton>
+          <SignOutButton redirectUrl="/">
             <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-text-secondary hover:bg-white/5 hover:text-text-primary transition-colors">
               <LogOut className="h-4 w-4" />
               {t.nav.signOut}

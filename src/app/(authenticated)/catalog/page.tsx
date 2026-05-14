@@ -7,7 +7,7 @@ import Container from '@/components/ui/Container'
 import PageHeader from '@/components/ui/PageHeader'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
-import { Trash2, Plus, Edit2 } from 'lucide-react'
+import { Trash2, Plus, Edit2, ChevronDown } from 'lucide-react'
 
 interface CatalogItem {
   id: string
@@ -25,6 +25,7 @@ export default function CatalogPage() {
   const [loading, setLoading] = useState(true)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [showForm, setShowForm] = useState(false)
+  const [showTypeDropdown, setShowTypeDropdown] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -70,6 +71,10 @@ export default function CatalogPage() {
         if (res.ok) {
           setEditingId(null)
           loadCatalog()
+          resetForm()
+        } else {
+          const error = await res.json()
+          console.error('Failed to update item:', error)
         }
       } else {
         const res = await fetch('/api/catalog', {
@@ -79,9 +84,12 @@ export default function CatalogPage() {
         })
         if (res.ok) {
           loadCatalog()
+          resetForm()
+        } else {
+          const error = await res.json()
+          console.error('Failed to create item:', error)
         }
       }
-      resetForm()
     } catch (err) {
       console.error('Failed to save item:', err)
     }
@@ -165,15 +173,48 @@ export default function CatalogPage() {
                   <label className="block text-sm font-medium text-text-secondary mb-2">
                     {t.catalog.type} *
                   </label>
-                  <select
-                    required
-                    value={formData.type}
-                    onChange={(e) => setFormData({ ...formData, type: e.target.value as 'service' | 'product' })}
-                    className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-text-primary focus:outline-none focus:border-accent"
-                  >
-                    <option value="service">{t.catalog.service}</option>
-                    <option value="product">{t.catalog.product}</option>
-                  </select>
+                  <div className="relative group">
+                    <button
+                      type="button"
+                      onClick={() => setShowTypeDropdown(!showTypeDropdown)}
+                      className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-text-primary focus:outline-none focus:border-accent flex items-center justify-between text-left hover:bg-white/[0.08] transition-colors"
+                    >
+                      <span>{formData.type === 'service' ? t.catalog.service : t.catalog.product}</span>
+                      <ChevronDown className="h-4 w-4" />
+                    </button>
+                    {showTypeDropdown && (
+                      <div className="absolute top-full left-0 mt-1 w-full bg-surface border border-white/[0.08] rounded-lg shadow-lg z-50">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setFormData({ ...formData, type: 'service' })
+                            setShowTypeDropdown(false)
+                          }}
+                          className={`w-full text-left px-3 py-2 text-sm rounded-t-lg transition-colors ${
+                            formData.type === 'service'
+                              ? 'bg-accent/20 text-accent'
+                              : 'text-text-secondary hover:text-text-primary hover:bg-white/5'
+                          }`}
+                        >
+                          {t.catalog.service}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setFormData({ ...formData, type: 'product' })
+                            setShowTypeDropdown(false)
+                          }}
+                          className={`w-full text-left px-3 py-2 text-sm rounded-b-lg transition-colors ${
+                            formData.type === 'product'
+                              ? 'bg-accent/20 text-accent'
+                              : 'text-text-secondary hover:text-text-primary hover:bg-white/5'
+                          }`}
+                        >
+                          {t.catalog.product}
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div>
@@ -224,60 +265,65 @@ export default function CatalogPage() {
         )}
 
         {/* Items List */}
-        {items.length > 0 ? (
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((item) => (
-              <Card key={item.id} hover>
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex-1">
-                      <h3 className="text-sm font-semibold text-text-primary">{item.name}</h3>
-                      <span className="inline-block mt-1 px-2 py-0.5 text-xs font-medium rounded-full bg-accent/10 text-accent">
-                        {item.type === 'service' ? t.catalog.service : t.catalog.product}
-                      </span>
-                    </div>
-                  </div>
-
-                  {item.description && (
-                    <p className="text-xs text-text-muted mb-3 line-clamp-2">{item.description}</p>
-                  )}
-
-                  {item.price && (
-                    <p className="text-sm font-semibold text-text-primary mb-4">
-                      ${item.price.toFixed(2)}
-                    </p>
-                  )}
-
-                  <div className="flex gap-2 pt-4 border-t border-white/[0.06]">
-                    <button
-                      onClick={() => startEdit(item)}
-                      className="flex-1 flex items-center justify-center gap-2 text-xs text-accent hover:text-accent-hover transition-colors py-2"
-                    >
-                      <Edit2 className="h-3 w-3" />
-                      {t.catalog.edit}
-                    </button>
-                    <button
-                      onClick={() => deleteItem(item.id)}
-                      className="flex-1 flex items-center justify-center gap-2 text-xs text-red-400 hover:text-red-300 transition-colors py-2"
-                    >
-                      <Trash2 className="h-3 w-3" />
-                      {t.catalog.delete}
-                    </button>
-                  </div>
-                </div>
-              </Card>
-            ))}
+        <Card className="mt-8">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-white/[0.06]">
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-text-secondary">{t.catalog.name}</th>
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-text-secondary">{t.catalog.type}</th>
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-text-secondary">{t.catalog.price}</th>
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-text-secondary">{t.catalog.description}</th>
+                  <th className="text-right px-6 py-3 text-xs font-semibold text-text-secondary">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.length > 0 ? (
+                  items.map((item) => (
+                    <tr key={item.id} className="border-b border-white/[0.06] hover:bg-white/[0.03] transition-colors">
+                      <td className="px-6 py-4 text-sm font-medium text-text-primary">{item.name}</td>
+                      <td className="px-6 py-4">
+                        <span className="inline-block px-2 py-1 text-xs font-medium rounded-full bg-accent/10 text-accent">
+                          {item.type === 'service' ? t.catalog.service : t.catalog.product}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-text-primary">
+                        {item.price ? `$${item.price.toFixed(2)}` : '—'}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-text-muted max-w-xs truncate">
+                        {item.description || '—'}
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex gap-2 justify-end">
+                          <button
+                            onClick={() => startEdit(item)}
+                            className="flex items-center gap-1 text-xs text-accent hover:text-accent-hover transition-colors py-1 px-2 hover:bg-white/5 rounded"
+                          >
+                            <Edit2 className="h-3 w-3" />
+                            {t.catalog.edit}
+                          </button>
+                          <button
+                            onClick={() => deleteItem(item.id)}
+                            className="flex items-center gap-1 text-xs text-red-400 hover:text-red-300 transition-colors py-1 px-2 hover:bg-white/5 rounded"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                            {t.catalog.delete}
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={5} className="px-6 py-12 text-center text-sm text-text-muted">
+                      {t.catalog.empty}
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
-        ) : (
-          <div className="mt-12 flex flex-col items-center justify-center rounded-2xl border border-dashed border-white/[0.10] py-20 text-center">
-            <p className="text-sm font-medium text-text-primary">{t.catalog.empty}</p>
-            <p className="mt-1 text-sm text-text-muted">{t.catalog.emptyDesc}</p>
-            <Button onClick={() => setShowForm(true)} className="mt-6">
-              <Plus className="h-4 w-4" />
-              {t.catalog.addItem}
-            </Button>
-          </div>
-        )}
+        </Card>
       </Container>
     </div>
   )
