@@ -1,9 +1,14 @@
+'use client'
+
 import { auth } from '@clerk/nextjs'
 import { redirect } from 'next/navigation'
 import Sidebar from '@/components/ui/Sidebar'
 import Topbar from '@/components/ui/Topbar'
+import UserMenuBar from '@/components/UserMenuBar'
 import { FileText, BarChart3, Settings, LogOut, Home } from 'lucide-react'
 import { SignOutButton } from '@clerk/nextjs'
+import { useLanguage } from '@/context/LanguageContext'
+import { getTranslation } from '@/lib/i18n'
 
 export default function AuthenticatedLayout({
   children,
@@ -13,24 +18,27 @@ export default function AuthenticatedLayout({
   const { userId } = auth()
   if (!userId) redirect('/sign-in')
 
+  const { language } = useLanguage()
+  const t = getTranslation(language)
+
   const navItems = [
     {
-      label: 'Dashboard',
+      label: t.nav.dashboard,
       href: '/dashboard',
       icon: <Home className="h-4 w-4" />,
     },
     {
-      label: 'Proposals',
+      label: t.nav.proposals,
       href: '/proposals',
       icon: <FileText className="h-4 w-4" />,
     },
     {
-      label: 'Analytics',
+      label: t.nav.analytics,
       href: '/analytics',
       icon: <BarChart3 className="h-4 w-4" />,
     },
     {
-      label: 'Settings',
+      label: t.nav.settings,
       href: '/settings',
       icon: <Settings className="h-4 w-4" />,
     },
@@ -45,7 +53,7 @@ export default function AuthenticatedLayout({
           <SignOutButton>
             <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-text-secondary hover:bg-white/5 hover:text-text-primary transition-colors">
               <LogOut className="h-4 w-4" />
-              Sign Out
+              {t.nav.signOut}
             </button>
           </SignOutButton>
         }
@@ -56,13 +64,9 @@ export default function AuthenticatedLayout({
         {/* Topbar */}
         <Topbar
           left={
-            <div className="text-sm font-medium text-text-primary">Proply</div>
+            <div className="text-sm font-medium text-text-primary">Pro<span className="text-accent">ply</span></div>
           }
-          right={
-            <div className="text-xs text-text-muted">
-              Welcome back
-            </div>
-          }
+          right={<UserMenuBar />}
         />
 
         {/* Page Content */}
