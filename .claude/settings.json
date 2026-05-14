@@ -19,7 +19,8 @@
       "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" add -A)",
       "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" add src/lib/i18n.ts src/context/ src/components/UserMenuBar.tsx src/app/layout.tsx src/app/\\\\\\(authenticated\\\\\\)/layout.tsx src/app/\\\\\\(authenticated\\\\\\)/dashboard/page.tsx)",
       "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" commit -m \"fix: separate server and client components in authenticated layout\")",
-      "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" commit -m \"fix: consolidate user menu into LanguageAndNavigation component\")"
+      "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" commit -m \"fix: consolidate user menu into LanguageAndNavigation component\")",
+      "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" commit -m \"fix: simplify language management without context provider\")"
     ]
   }
 }
