@@ -1,46 +1,67 @@
+'use client'
+
 import Link from 'next/link'
-import { auth, currentUser } from '@clerk/nextjs'
-import { redirect } from 'next/navigation'
-import { prisma } from '@/lib/prisma'
+import { useEffect, useState } from 'react'
+import { useLanguage } from '@/context/LanguageContext'
+import { getTranslation } from '@/lib/i18n'
 import Container from '@/components/ui/Container'
 import PageHeader from '@/components/ui/PageHeader'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import { FileText, Plus, ExternalLink } from 'lucide-react'
 
-export default async function DashboardPage() {
-  const { userId: clerkId } = auth()
-  if (!clerkId) redirect('/sign-in')
+interface ProposalWithVersions {
+  id: string
+  title: string
+  description?: string
+  status: string
+  createdAt: string
+  versions: Array<{ id: string }>
+}
 
-  const clerkUser = await currentUser()
-  if (!clerkUser) redirect('/sign-in')
+export default function DashboardPage() {
+  const { language } = useLanguage()
+  const t = getTranslation(language)
+  const [proposals, setProposals] = useState<ProposalWithVersions[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const email = clerkUser.emailAddresses[0]?.emailAddress ?? ''
-  const name = [clerkUser.firstName, clerkUser.lastName].filter(Boolean).join(' ') || null
+  useEffect(() => {
+    async function loadProposals() {
+      try {
+        const res = await fetch('/api/proposals')
+        if (res.ok) {
+          const data = await res.json()
+          setProposals(data)
+        }
+      } catch (err) {
+        console.error('Failed to load proposals:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
 
-  const user = await prisma.user.upsert({
-    where: { clerkId },
-    update: {},
-    create: { clerkId, email, name },
-  })
+    loadProposals()
+  }, [])
 
-  const proposals = await prisma.proposal.findMany({
-    where: { userId: user.id },
-    include: { versions: { where: { isPublished: true }, take: 1 } },
-    orderBy: { createdAt: 'desc' },
-  })
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background py-12 flex items-center justify-center">
+        <p className="text-text-muted">Loading...</p>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-background py-12">
       <Container>
         <PageHeader
-          title="My Proposals"
-          subtitle="Manage and send your commercial proposals."
+          title={t.dashboard.title}
+          subtitle={t.dashboard.subtitle}
           actions={
             <Link href="/proposals/new">
               <Button>
                 <Plus className="h-4 w-4" />
-                New Proposal
+                {t.dashboard.newProposal}
               </Button>
             </Link>
           }
@@ -51,12 +72,12 @@ export default async function DashboardPage() {
             <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent">
               <FileText className="h-6 w-6" />
             </div>
-            <p className="text-sm font-medium text-text-primary">No proposals yet</p>
-            <p className="mt-1 text-sm text-text-muted">Create your first proposal to get started.</p>
+            <p className="text-sm font-medium text-text-primary">{t.dashboard.noProposals}</p>
+            <p className="mt-1 text-sm text-text-muted">{t.dashboard.noProposalsDesc}</p>
             <Link href="/proposals/new" className="mt-6">
               <Button>
                 <Plus className="h-4 w-4" />
-                New Proposal
+                {t.dashboard.newProposal}
               </Button>
             </Link>
           </div>
@@ -76,7 +97,7 @@ export default async function DashboardPage() {
                     )}
                     <div className="mt-4 flex items-center justify-between">
                       <p className="text-xs text-text-muted">
-                        {new Date(p.createdAt).toLocaleDateString('en-US', {
+                        {new Date(p.createdAt).toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US', {
                           month: 'short',
                           day: 'numeric',
                           year: 'numeric',
@@ -91,7 +112,7 @@ export default async function DashboardPage() {
                           <span className={`h-1.5 w-1.5 rounded-full ${
                             p.status === 'published' ? 'bg-accent' : 'bg-white/30'
                           }`}></span>
-                          {p.status === 'published' ? 'Published' : 'Draft'}
+                          {p.status === 'published' ? t.dashboard.published : t.dashboard.draft}
                         </span>
                       </div>
                     </div>
@@ -100,7 +121,7 @@ export default async function DashboardPage() {
                         href={`/proposals/${p.id}/edit`}
                         className="flex-1 text-xs text-text-secondary hover:text-text-primary transition-colors text-center"
                       >
-                        Edit
+                        {t.dashboard.edit}
                       </Link>
                       {publishedVersion && (
                         <Link
@@ -109,7 +130,7 @@ export default async function DashboardPage() {
                           className="flex items-center gap-1 flex-1 text-xs text-accent hover:text-accent-hover transition-colors text-center justify-center"
                         >
                           <ExternalLink className="h-3 w-3" />
-                          View
+                          {t.dashboard.view}
                         </Link>
                       )}
                     </div>
