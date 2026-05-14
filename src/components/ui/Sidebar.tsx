@@ -27,7 +27,13 @@ export default function Sidebar({ items, footer }: SidebarProps) {
 
       <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-0.5">
         {items.map((item) => {
-          const active = pathname === item.href || pathname.startsWith(item.href + '/')
+          let active = pathname === item.href || pathname.startsWith(item.href + '/')
+
+          // Special case: analytics nav item should highlight for any analytics route
+          if (item.href === '/analytics' && pathname.includes('/analytics')) {
+            active = true
+          }
+
           return (
             <Link
               key={item.href}
