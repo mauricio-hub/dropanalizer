@@ -69,6 +69,7 @@ model Product {
   name        String
   description String?
   price       Float?
+  type        String   @default("service") // "service" or "product"
   userId      String
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())
