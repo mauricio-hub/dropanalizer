@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" add 'src/app/proposals/[id]/edit/page.tsx' 'src/app/api/proposals/[id]/versions/')",
+      "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" log --oneline -5)",
+      "PowerShell(npm -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" run dev 2>&1)",
+      "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" rm --cached '.claude/settings.local.json' -f 2>&1)",
+      "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" add .gitignore)",
+      "PowerShell(npm -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" uninstall openai)",
+      "PowerShell(npm -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" install @anthropic-ai/sdk)",
+      "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" add 'src/lib/openai.ts' package.json package-lock.json)",
+      "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" add 'src/lib/openai.ts')",
+      "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" commit -m \"fix: update claude model name to claude-3-5-sonnet-latest\")",
+      "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" commit -m \"fix: use claude-3-sonnet-20240229 model\")",
+      "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" add 'src/app/proposals/new/page.tsx')",
+      "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" commit -m \"fix: improve form validation with trim checks\")",
+      "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" commit -m \"fix: use claude-sonnet-4-6 model\")",
+      "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" add 'src/app/\\(authenticated\\)/')",
+      "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" add -A)"
+    ]
+  }
+}
