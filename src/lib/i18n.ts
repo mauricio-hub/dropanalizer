@@ -105,6 +105,7 @@ export const translations = {
       timeSpent: 'Tiempo Gastado',
       loading: 'Cargando...',
       loadingAnalytics: 'Cargando analítica...',
+      backToAnalytics: 'Volver a Analítica',
     },
   },
   en: {
@@ -211,6 +212,7 @@ export const translations = {
       timeSpent: 'Time Spent',
       loading: 'Loading...',
       loadingAnalytics: 'Loading analytics...',
+      backToAnalytics: 'Back to Analytics',
     },
   },
 }
