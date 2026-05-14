@@ -96,7 +96,7 @@ export default function AnalyticsPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-background py-12 flex items-center justify-center">
-        <p className="text-text-muted">Loading analytics...</p>
+        <p className="text-text-muted">{t.analytics.loadingAnalytics}</p>
       </div>
     )
   }
@@ -104,7 +104,7 @@ export default function AnalyticsPage() {
   if (!analytics) {
     return (
       <div className="min-h-screen bg-background py-12 flex items-center justify-center">
-        <p className="text-text-muted">No analytics data available</p>
+        <p className="text-text-muted">{t.analytics.loadingAnalytics}</p>
       </div>
     )
   }
@@ -167,8 +167,8 @@ export default function AnalyticsPage() {
         )}
 
         <PageHeader
-          title="Analytics Dashboard"
-          subtitle="Track how clients interact with your proposal"
+          title={t.analytics.title}
+          subtitle={t.analytics.subtitle}
         />
 
         {/* Key Metrics */}
@@ -176,7 +176,7 @@ export default function AnalyticsPage() {
           <Card>
             <div className="p-6">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-sm font-medium text-text-muted">Total Views</p>
+                <p className="text-sm font-medium text-text-muted">{t.analytics.totalViews}</p>
                 <Eye className="h-4 w-4 text-accent" />
               </div>
               <p className="text-4xl font-bold text-text-primary">{analytics.totalViews}</p>
@@ -186,7 +186,7 @@ export default function AnalyticsPage() {
           <Card>
             <div className="p-6">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-sm font-medium text-text-muted">Total Clicks</p>
+                <p className="text-sm font-medium text-text-muted">{t.analytics.totalClicks}</p>
                 <MousePointer className="h-4 w-4 text-accent" />
               </div>
               <p className="text-4xl font-bold text-text-primary">{analytics.totalClicks}</p>
@@ -196,7 +196,7 @@ export default function AnalyticsPage() {
           <Card>
             <div className="p-6">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-sm font-medium text-text-muted">Engagement Rate</p>
+                <p className="text-sm font-medium text-text-muted">{t.analytics.avgEngagement}</p>
                 <TrendingUp className="h-4 w-4 text-accent" />
               </div>
               <p className="text-4xl font-bold text-text-primary">
@@ -212,7 +212,7 @@ export default function AnalyticsPage() {
         {/* Version Comparison - Bar Chart */}
         {Object.keys(analytics.eventsByVersion).length > 0 && (
           <div className="mt-8">
-            <h2 className="text-2xl font-bold text-text-primary mb-6">Performance by Version</h2>
+            <h2 className="text-2xl font-bold text-text-primary mb-6">{t.analytics.performanceByVersion}</h2>
             <Card>
               <div className="p-6">
                 <ResponsiveContainer width="100%" height={300}>
@@ -253,7 +253,7 @@ export default function AnalyticsPage() {
         {/* Clicks by Section - Bar Chart */}
         {Object.keys(analytics.eventsBySection).length > 0 && (
           <div className="mt-12">
-            <h2 className="text-2xl font-bold text-text-primary mb-6">Clicks by Section</h2>
+            <h2 className="text-2xl font-bold text-text-primary mb-6">{t.analytics.clicksBySection}</h2>
             <Card>
               <div className="p-6">
                 <ResponsiveContainer width="100%" height={300}>
@@ -294,7 +294,7 @@ export default function AnalyticsPage() {
         {/* Time Spent by Section - Bar Chart */}
         {Object.keys(analytics.timeBySection).length > 0 && (
           <div className="mt-12">
-            <h2 className="text-2xl font-bold text-text-primary mb-6">Average Time per Section</h2>
+            <h2 className="text-2xl font-bold text-text-primary mb-6">{t.analytics.averageTimePerSection}</h2>
             <Card>
               <div className="p-6">
                 <ResponsiveContainer width="100%" height={300}>
@@ -337,11 +337,11 @@ export default function AnalyticsPage() {
         {/* Engagement Distribution Pie Chart */}
         {(analytics.totalViews > 0 || analytics.totalClicks > 0) && (
           <div className="mt-12">
-            <h2 className="text-2xl font-bold text-text-primary mb-6">Engagement Distribution</h2>
+            <h2 className="text-2xl font-bold text-text-primary mb-6">{t.analytics.engagementDistribution}</h2>
             <div className="grid md:grid-cols-2 gap-6">
               <Card>
                 <div className="p-6 flex flex-col items-center">
-                  <h3 className="text-lg font-semibold text-text-primary mb-4">Views vs Clicks</h3>
+                  <h3 className="text-lg font-semibold text-text-primary mb-4">{t.analytics.viewsVsClicks}</h3>
                   <ResponsiveContainer width="100%" height={250}>
                     <PieChart>
                       <Pie
@@ -374,7 +374,7 @@ export default function AnalyticsPage() {
 
               <Card>
                 <div className="p-6 flex flex-col items-center">
-                  <h3 className="text-lg font-semibold text-text-primary mb-4">Event Types</h3>
+                  <h3 className="text-lg font-semibold text-text-primary mb-4">{t.analytics.eventTypes}</h3>
                   <ResponsiveContainer width="100%" height={250}>
                     <PieChart>
                       <Pie
@@ -413,7 +413,7 @@ export default function AnalyticsPage() {
         {/* Events Over Time - Line Chart */}
         {analytics.events.length > 0 && (
           <div className="mt-12">
-            <h2 className="text-2xl font-bold text-text-primary mb-6">Events Over Time</h2>
+            <h2 className="text-2xl font-bold text-text-primary mb-6">{t.analytics.eventsOverTime}</h2>
             <Card>
               <div className="p-6">
                 <ResponsiveContainer width="100%" height={300}>
@@ -473,14 +473,14 @@ export default function AnalyticsPage() {
         {/* Recent Events Timeline */}
         {analytics.events.length > 0 && (
           <div className="mt-12">
-            <h2 className="text-2xl font-bold text-text-primary mb-6">Recent Events</h2>
+            <h2 className="text-2xl font-bold text-text-primary mb-6">{t.analytics.recentEvents}</h2>
             <Card>
               <div className="p-6">
                 <div className="space-y-4 max-h-[600px] overflow-y-auto">
                   {analytics.events.map((event) => {
-                    const eventLabel = event.type === 'view' ? 'Page View' :
-                                      event.type === 'click' ? 'Section Click' :
-                                      event.type === 'time_spent' ? 'Time Spent' : event.type
+                    const eventLabel = event.type === 'view' ? t.analytics.pageView :
+                                      event.type === 'click' ? t.analytics.sectionClick :
+                                      event.type === 'time_spent' ? t.analytics.timeSpent : event.type
                     const eventColor = event.type === 'view' ? 'bg-blue-500/20 text-blue-400' :
                                       event.type === 'click' ? 'bg-accent/10 text-accent' :
                                       event.type === 'time_spent' ? 'bg-amber-500/20 text-amber-400' : ''

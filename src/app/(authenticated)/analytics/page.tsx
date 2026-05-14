@@ -62,7 +62,7 @@ export default function AnalyticsPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-background py-12 flex items-center justify-center">
-        <p className="text-text-muted">Loading analytics...</p>
+        <p className="text-text-muted">{t.analytics.loadingAnalytics}</p>
       </div>
     )
   }
@@ -82,8 +82,8 @@ export default function AnalyticsPage() {
     <div className="min-h-screen bg-background py-12">
       <Container>
         <PageHeader
-          title="Analytics"
-          subtitle="Overview of all your proposals and their performance"
+          title={t.analytics.title}
+          subtitle={t.analytics.subtitle}
         />
 
         {/* Global Metrics */}
@@ -91,29 +91,29 @@ export default function AnalyticsPage() {
           <Card>
             <div className="p-6">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-sm font-medium text-text-muted">Total Views</p>
+                <p className="text-sm font-medium text-text-muted">{t.analytics.totalViews}</p>
                 <Eye className="h-4 w-4 text-accent" />
               </div>
               <p className="text-4xl font-bold text-text-primary">{totalViews}</p>
-              <p className="text-xs text-text-muted mt-2">Across all proposals</p>
+              <p className="text-xs text-text-muted mt-2">{t.analytics.acrossAllProposals}</p>
             </div>
           </Card>
 
           <Card>
             <div className="p-6">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-sm font-medium text-text-muted">Total Clicks</p>
+                <p className="text-sm font-medium text-text-muted">{t.analytics.totalClicks}</p>
                 <MousePointer className="h-4 w-4 text-accent" />
               </div>
               <p className="text-4xl font-bold text-text-primary">{totalClicks}</p>
-              <p className="text-xs text-text-muted mt-2">All user interactions</p>
+              <p className="text-xs text-text-muted mt-2">{t.analytics.allInteractions}</p>
             </div>
           </Card>
 
           <Card>
             <div className="p-6">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-sm font-medium text-text-muted">Avg Engagement</p>
+                <p className="text-sm font-medium text-text-muted">{t.analytics.avgEngagement}</p>
                 <TrendingUp className="h-4 w-4 text-accent" />
               </div>
               <p className="text-4xl font-bold text-text-primary">
@@ -125,7 +125,7 @@ export default function AnalyticsPage() {
                   : 0}
                 %
               </p>
-              <p className="text-xs text-text-muted mt-2">Per proposal</p>
+              <p className="text-xs text-text-muted mt-2">{t.analytics.perProposal}</p>
             </div>
           </Card>
         </div>
@@ -133,7 +133,7 @@ export default function AnalyticsPage() {
         {/* Proposals Comparison Chart */}
         {proposals.length > 0 && (
           <div className="mt-12">
-            <h2 className="text-2xl font-bold text-text-primary mb-6">Proposals Performance</h2>
+            <h2 className="text-2xl font-bold text-text-primary mb-6">{t.analytics.proposalsPerformance}</h2>
             <Card>
               <div className="p-6">
                 <ResponsiveContainer width="100%" height={300}>
@@ -171,7 +171,7 @@ export default function AnalyticsPage() {
         {/* Top Proposals */}
         {topProposals.length > 0 && (
           <div className="mt-12">
-            <h2 className="text-2xl font-bold text-text-primary mb-6">Top Performing Proposals</h2>
+            <h2 className="text-2xl font-bold text-text-primary mb-6">{t.analytics.topPerforming}</h2>
             <Card>
               <div className="p-6 space-y-4">
                 {topProposals.map((proposal, idx) => (
@@ -191,15 +191,15 @@ export default function AnalyticsPage() {
                       <div className="flex items-center gap-6 text-right">
                         <div>
                           <p className="text-sm font-semibold text-text-primary">{proposal.totalViews}</p>
-                          <p className="text-xs text-text-muted">views</p>
+                          <p className="text-xs text-text-muted">{t.analytics.views}</p>
                         </div>
                         <div>
                           <p className="text-sm font-semibold text-text-primary">{proposal.totalClicks}</p>
-                          <p className="text-xs text-text-muted">clicks</p>
+                          <p className="text-xs text-text-muted">{t.analytics.clicks}</p>
                         </div>
                         <div>
                           <p className="text-sm font-semibold text-accent">{proposal.engagementRate}%</p>
-                          <p className="text-xs text-text-muted">engagement</p>
+                          <p className="text-xs text-text-muted">{t.analytics.engagement}</p>
                         </div>
                       </div>
                     </div>
@@ -213,32 +213,32 @@ export default function AnalyticsPage() {
         {/* All Proposals Table */}
         {proposals.length > 0 && (
           <div className="mt-12">
-            <h2 className="text-2xl font-bold text-text-primary mb-6">All Proposals</h2>
+            <h2 className="text-2xl font-bold text-text-primary mb-6">{t.analytics.allProposals}</h2>
             <Card>
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-white/[0.06]">
                       <th className="px-6 py-4 text-left text-xs font-semibold text-text-muted uppercase">
-                        Proposal
+                        {t.analytics.proposal}
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-text-muted uppercase">
-                        Status
+                        {t.analytics.status}
                       </th>
                       <th className="px-6 py-4 text-center text-xs font-semibold text-text-muted uppercase">
-                        Views
+                        {t.analytics.views}
                       </th>
                       <th className="px-6 py-4 text-center text-xs font-semibold text-text-muted uppercase">
-                        Clicks
+                        {t.analytics.clicks}
                       </th>
                       <th className="px-6 py-4 text-center text-xs font-semibold text-text-muted uppercase">
-                        Engagement
+                        {t.analytics.engagement}
                       </th>
                       <th className="px-6 py-4 text-center text-xs font-semibold text-text-muted uppercase">
-                        Created
+                        {t.analytics.created}
                       </th>
                       <th className="px-6 py-4 text-center text-xs font-semibold text-text-muted uppercase">
-                        Action
+                        {t.analytics.action}
                       </th>
                     </tr>
                   </thead>
@@ -266,7 +266,7 @@ export default function AnalyticsPage() {
                         </td>
                         <td className="px-6 py-4 text-sm text-center">
                           <Link href={`/proposals/${proposal.id}/analytics`} className="text-accent hover:text-accent-hover transition-colors">
-                            View
+                            {t.analytics.view}
                           </Link>
                         </td>
                       </tr>
@@ -280,8 +280,8 @@ export default function AnalyticsPage() {
 
         {proposals.length === 0 && (
           <div className="mt-12 flex flex-col items-center justify-center rounded-2xl border border-dashed border-white/[0.10] py-20 text-center">
-            <p className="text-sm font-medium text-text-primary">No proposals yet</p>
-            <p className="mt-1 text-sm text-text-muted">Create a proposal to start tracking analytics</p>
+            <p className="text-sm font-medium text-text-primary">{t.analytics.noproposalsYet}</p>
+            <p className="mt-1 text-sm text-text-muted">{t.analytics.noProposalsDesc}</p>
           </div>
         )}
       </Container>
