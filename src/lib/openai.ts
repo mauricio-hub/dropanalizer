@@ -1,7 +1,7 @@
-import OpenAI from 'openai'
+import Anthropic from '@anthropic-ai/sdk'
 
-export const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+export const anthropic = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY,
 })
 
 export interface ProposalContent {
@@ -57,7 +57,7 @@ Reglas importantes:
 
 export async function generateProposalContent(brief: string): Promise<ProposalContent> {
   try {
-    const message = await openai.messages.create({
+    const message = await anthropic.messages.create({
       model: 'claude-3-5-sonnet-20241022',
       max_tokens: 1024,
       messages: [
@@ -70,7 +70,7 @@ export async function generateProposalContent(brief: string): Promise<ProposalCo
 
     const content = message.content[0]
     if (content.type !== 'text') {
-      throw new Error('Unexpected response type from OpenAI')
+      throw new Error('Unexpected response type from Claude')
     }
 
     const jsonStr = content.text.trim()
