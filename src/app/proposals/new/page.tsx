@@ -109,7 +109,7 @@ export default function NewProposalPage() {
           </div>
 
           <div className="flex items-center gap-3 pt-4">
-            <Button type="submit" disabled={loading || !title || !brief}>
+            <Button type="submit" disabled={loading || title.trim().length === 0 || brief.trim().length === 0}>
               {loading ? (
                 <>
                   <Sparkles className="h-4 w-4 animate-spin" />
