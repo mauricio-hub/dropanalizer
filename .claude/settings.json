@@ -17,7 +17,8 @@
       "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" commit -m \"fix: use claude-sonnet-4-6 model\")",
       "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" add 'src/app/\\(authenticated\\)/')",
       "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" add -A)",
-      "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" add src/lib/i18n.ts src/context/ src/components/UserMenuBar.tsx src/app/layout.tsx src/app/\\\\\\(authenticated\\\\\\)/layout.tsx src/app/\\\\\\(authenticated\\\\\\)/dashboard/page.tsx)"
+      "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" add src/lib/i18n.ts src/context/ src/components/UserMenuBar.tsx src/app/layout.tsx src/app/\\\\\\(authenticated\\\\\\)/layout.tsx src/app/\\\\\\(authenticated\\\\\\)/dashboard/page.tsx)",
+      "PowerShell(git -C \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\" commit -m \"fix: separate server and client components in authenticated layout\")"
     ]
   }
 }
