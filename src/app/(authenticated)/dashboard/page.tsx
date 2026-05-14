@@ -24,6 +24,7 @@ export default function DashboardPage() {
   const t = getTranslation(language)
   const [proposals, setProposals] = useState<ProposalWithVersions[]>([])
   const [loading, setLoading] = useState(true)
+  const [, setRerender] = useState(0)
 
   useEffect(() => {
     async function loadProposals() {
@@ -41,6 +42,16 @@ export default function DashboardPage() {
     }
 
     loadProposals()
+  }, [])
+
+  // Re-render when language changes
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      setRerender(prev => prev + 1)
+    }
+
+    window.addEventListener('PROPLY_LANGUAGE_CHANGE', handleLanguageChange)
+    return () => window.removeEventListener('PROPLY_LANGUAGE_CHANGE', handleLanguageChange)
   }, [])
 
   if (loading) {
