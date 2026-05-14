@@ -50,7 +50,7 @@ export async function POST(
 
     if (generateWithAI && proposal.description) {
       try {
-        content = await generateProposalContent(proposal.description)
+        content = await generateProposalContent(proposal.description, user.id)
         generatedAt = new Date()
       } catch (error) {
         console.error('AI generation failed:', error)

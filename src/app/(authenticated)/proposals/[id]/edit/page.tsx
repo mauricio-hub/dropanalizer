@@ -114,7 +114,7 @@ export default function EditProposalPage() {
 
     try {
       const res = await fetch(
-        `/api/proposals/${proposalId}/versions/${proposal.versions[0].id}/publish`,
+        `/api/proposals/${proposalId}/versions/${proposal.versions[0].id}`,
         { method: 'POST' }
       )
 
@@ -124,7 +124,8 @@ export default function EditProposalPage() {
         return
       }
 
-      router.push(`/proposals/${proposalId}`)
+      const data = await res.json()
+      router.push(`/p/${data.publicUrl}`)
     } catch (err) {
       setError('An error occurred while publishing')
     } finally {

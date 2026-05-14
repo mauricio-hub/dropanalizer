@@ -14,7 +14,12 @@ export async function GET() {
       orderBy: { createdAt: 'desc' },
     })
 
-    return NextResponse.json(products)
+    const productsWithType = products.map(p => ({
+      ...p,
+      type: p.type || 'service'
+    }))
+
+    return NextResponse.json(productsWithType)
   } catch (error) {
     console.error('Catalog GET error:', error)
     return NextResponse.json(
@@ -60,9 +65,9 @@ export async function POST(req: Request) {
 
     return NextResponse.json(product, { status: 201 })
   } catch (error) {
-    console.error('Catalog POST error:', error)
+    console.error('Catalog POST error:', error instanceof Error ? error.message : error)
     return NextResponse.json(
-      { error: 'Failed to create catalog item' },
+      { error: 'Failed to create catalog item', details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     )
   }
