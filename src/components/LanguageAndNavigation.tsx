@@ -21,27 +21,44 @@ function UserMenuBarContent() {
   const initials = (user?.firstName || 'U')[0] + (user?.lastName || '')[0]
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-6">
       {/* Language Selector */}
-      <div className="flex items-center gap-2 rounded-lg border border-white/[0.08] px-2 py-1">
-        <Globe className="h-4 w-4 text-text-muted" />
-        <select
-          value={language}
-          onChange={(e) => setLanguage(e.target.value as 'es' | 'en')}
-          className="bg-transparent text-xs font-medium text-text-secondary cursor-pointer outline-none"
-        >
-          <option value="es">Español</option>
-          <option value="en">English</option>
-        </select>
+      <div className="relative group">
+        <button className="flex items-center gap-2 text-xs font-medium text-text-secondary hover:text-text-primary transition-colors">
+          <Globe className="h-4 w-4" />
+          <span className="hidden sm:inline">{language === 'es' ? 'Español' : 'English'}</span>
+        </button>
+        <div className="absolute right-0 mt-2 w-32 bg-surface border border-white/[0.08] rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+          <button
+            onClick={() => setLanguage('es')}
+            className={`w-full text-left px-4 py-2 text-xs font-medium rounded-t-lg transition-colors ${
+              language === 'es'
+                ? 'bg-accent/20 text-accent'
+                : 'text-text-secondary hover:text-text-primary hover:bg-white/5'
+            }`}
+          >
+            Español
+          </button>
+          <button
+            onClick={() => setLanguage('en')}
+            className={`w-full text-left px-4 py-2 text-xs font-medium rounded-b-lg transition-colors ${
+              language === 'en'
+                ? 'bg-accent/20 text-accent'
+                : 'text-text-secondary hover:text-text-primary hover:bg-white/5'
+            }`}
+          >
+            English
+          </button>
+        </div>
       </div>
 
       {/* User Info */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 pl-6 border-l border-white/[0.08]">
         <div className="text-right hidden sm:block">
           <p className="text-xs font-semibold text-text-primary">{displayName}</p>
           <p className="text-xs text-text-muted">{user?.emailAddresses[0]?.emailAddress}</p>
         </div>
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/20 text-accent font-semibold text-xs">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/20 text-accent font-semibold text-xs flex-shrink-0">
           {initials}
         </div>
       </div>
