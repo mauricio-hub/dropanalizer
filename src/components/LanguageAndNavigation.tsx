@@ -3,7 +3,8 @@
 import { useLanguage } from '@/hooks/useLanguage'
 import { getTranslation } from '@/lib/i18n'
 import { BarChart3, Settings, LogOut, Home, Globe, Package } from 'lucide-react'
-import { SignOutButton, useUser } from '@clerk/nextjs'
+import { useUser, useClerk } from '@clerk/nextjs'
+import { useRouter } from 'next/navigation'
 import Sidebar from '@/components/ui/Sidebar'
 import Topbar from '@/components/ui/Topbar'
 
@@ -73,6 +74,13 @@ export default function LanguageAndNavigation({
 }) {
   const { language, mounted } = useLanguage()
   const t = getTranslation(language)
+  const { signOut } = useClerk()
+  const router = useRouter()
+
+  const handleSignOut = async () => {
+    await signOut()
+    router.push('/')
+  }
 
   if (!mounted) return <>{children}</>
 
@@ -105,12 +113,13 @@ export default function LanguageAndNavigation({
       <Sidebar
         items={navItems}
         footer={
-          <SignOutButton>
-            <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-text-secondary hover:bg-white/5 hover:text-text-primary transition-colors">
-              <LogOut className="h-4 w-4" />
-              {t.nav.signOut}
-            </button>
-          </SignOutButton>
+          <button
+            onClick={handleSignOut}
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-text-secondary hover:bg-white/5 hover:text-text-primary transition-colors"
+          >
+            <LogOut className="h-4 w-4" />
+            {t.nav.signOut}
+          </button>
         }
       />
 
