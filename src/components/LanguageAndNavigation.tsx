@@ -105,7 +105,7 @@ export default function LanguageAndNavigation({
       <Sidebar
         items={navItems}
         footer={
-          <SignOutButton redirectUrl="/">
+          <SignOutButton>
             <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-text-secondary hover:bg-white/5 hover:text-text-primary transition-colors">
               <LogOut className="h-4 w-4" />
               {t.nav.signOut}

@@ -5,7 +5,10 @@ import ProposalLanding from '@/components/ProposalLanding'
 export default async function PublicProposalPage({ params }: { params: { id: string } }) {
   const proposal = await prisma.proposal.findUnique({
     where: { id: params.id },
-    include: { versions: { where: { isPublished: true }, orderBy: { createdAt: 'desc' }, take: 1 } },
+    include: {
+      versions: { where: { isPublished: true }, orderBy: { createdAt: 'desc' }, take: 1 },
+      images: { orderBy: { order: 'asc' } },
+    },
   })
 
   if (!proposal) notFound()
@@ -18,7 +21,9 @@ export default async function PublicProposalPage({ params }: { params: { id: str
       proposal={{
         id: proposal.id,
         title: proposal.title,
+        template: proposal.template,
         createdAt: proposal.createdAt.toISOString(),
+        images: proposal.images.map((img) => ({ url: img.url, order: img.order })),
       }}
       version={{
         id: version.id,

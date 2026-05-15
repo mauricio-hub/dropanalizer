@@ -19,6 +19,21 @@ export async function PUT(
       return NextResponse.json({ error: 'Proposal not found' }, { status: 404 })
     }
 
+    const version = await prisma.version.findFirst({
+      where: { id: params.versionId, proposalId: params.id },
+    })
+
+    if (!version) {
+      return NextResponse.json({ error: 'Version not found' }, { status: 404 })
+    }
+
+    if (version.isPublished) {
+      return NextResponse.json(
+        { error: 'Cannot edit published version' },
+        { status: 400 }
+      )
+    }
+
     const body = await req.json()
     const { content } = body
 
@@ -26,12 +41,12 @@ export async function PUT(
       return NextResponse.json({ error: 'Content is required' }, { status: 400 })
     }
 
-    const version = await prisma.version.update({
+    const updated = await prisma.version.update({
       where: { id: params.versionId },
       data: { content },
     })
 
-    return NextResponse.json(version)
+    return NextResponse.json(updated)
   } catch (error) {
     console.error('Error updating version:', error)
     return NextResponse.json({ error: 'Failed to update version' }, { status: 500 })

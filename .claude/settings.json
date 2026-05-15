@@ -27,7 +27,9 @@
       "PowerShell(Move-Item -Path \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\\\\src\\\\app\\\\\\(authenticated\\)\\\\analytica\\\\page.tsx\" -Destination \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\\\\src\\\\app\\\\\\(authenticated\\)\\\\analytics\\\\page.tsx\")",
       "Bash(git add *)",
       "Bash(npx prisma *)",
-      "Bash(mkdir -p \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\\\\src\\\\app\\\\api\\\\proposals\\\\[id]\\\\versions\\\\[versionId]\\\\publish\")"
+      "Bash(mkdir -p \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\\\\src\\\\app\\\\api\\\\proposals\\\\[id]\\\\versions\\\\[versionId]\\\\publish\")",
+      "Bash(npx tsc *)",
+      "PowerShell(cd \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\"; npx tsc --noEmit 2>&1 | Where-Object { $_ -match \"\\(edit|p/\\\\[id\\\\]\\)\" })"
     ],
     "additionalDirectories": [
       "c:\\Users\\mgdev\\Desktop\\projects\\proply\\src\\app\\api\\proposals\\[id]\\versions\\[versionId]\\publish"

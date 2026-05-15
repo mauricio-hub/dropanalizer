@@ -30,7 +30,7 @@ export default function CatalogPage() {
     name: '',
     description: '',
     price: '',
-    type: 'service' as const,
+    type: 'service' as 'service' | 'product',
   })
 
   useEffect(() => {

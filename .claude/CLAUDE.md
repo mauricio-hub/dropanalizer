@@ -11,6 +11,192 @@ The goal is to help users close deals faster by:
 
 ---
 
+## Primary Market: Dropshipping (Initial Focus)
+
+**Why Dropshipping:**
+Dropshippers struggle to generate consistent sales because they lack tools to create effective landing pages and understand buyer behavior. Proply solves this by providing:
+- Quick landing page creation without copywriting expertise
+- Real-time tracking of user behavior (where do they drop off?)
+- Data-driven iteration (A/B testing, version management)
+- AI-powered optimization suggestions
+
+This is NOT exclusive—we remain open to other markets (agencies, SaaS, services) but dropshipping is our initial validation target.
+
+**Key Pain Points We Address:**
+1. Low-quality landing pages (generic templates, no strategy)
+2. No understanding of user behavior (guessing vs. data)
+3. Slow, manual iteration (expensive advertising wasted)
+4. Passive tools (builders don't suggest improvements)
+5. High cost of experimentation (every test risks money)
+
+---
+
+## Core Philosophy: NOT a Traditional Page Builder
+
+**This is critical to Proply's differentiation:**
+
+Proply is NOT a page builder like Unbounce, Leadpages, or Instapage.
+
+In traditional page builders:
+- User has full control → creates poor-quality pages
+- User drags and drops sections manually
+- System is passive (doesn't learn or suggest)
+- Iteration is slow and requires expertise
+
+**In Proply:**
+- System takes intelligent decisions for the user
+- AI generates and optimizes pages automatically based on:
+  - Unstructured user input (brief/product description)
+  - Real behavioral data (tracking events)
+  - Industry best practices
+- User provides direction, system executes
+- Iteration is fast and data-driven
+- No need for copywriting or design skills
+
+**The UX difference:**
+- Page builder: "Build your page" → blank canvas
+- Proply: "Tell me about your offer" → smart landing page → automatic optimization
+
+---
+
+## Solution Overview
+
+Proply is a platform that allows users to generate, measure, and automatically optimize landing pages without technical, design, or marketing expertise.
+
+Instead of functioning as a traditional page builder, the system uses:
+- Intelligent templates
+- Automatic content generation
+- Behavioral analysis for continuous improvement
+
+The user doesn't need to design or guess what works. The system decides, measures, and improves.
+
+---
+
+## Core Approach: Three Principles
+
+1. **System generates the landing automatically**
+   - User provides basic information (offer, target audience, context)
+   - AI structures and optimizes content automatically
+   - Result: ready-to-launch page in minutes
+
+2. **System measures user behavior**
+   - Track time spent per section
+   - Monitor clicks and interactions
+   - Identify drop-off points
+   - All data tied to proposal versions
+
+3. **System optimizes without manual intervention**
+   - Detects conversion issues
+   - Suggests actionable improvements
+   - Generates optimized versions automatically
+   - User reviews and approves iterations
+
+---
+
+## Intelligent Templates
+
+Rather than offering a blank builder, Proply uses structured templates optimized for conversion.
+
+Each template:
+- Has predefined sections (hero, benefits, social proof, CTA, etc.)
+- Follows proven conversion logic
+- Adapts to different scenarios
+
+**Template Examples:**
+- New offer (rapid validation)
+- Established offer (conversion optimization)
+- Limited-time offer (urgency focus)
+- Premium offer (value focus)
+
+This ensures consistency and prevents poor user decisions.
+
+---
+
+## Automatic Content Generation
+
+User provides minimal information:
+- Offer details (product, service, or proposal)
+- Pricing
+- Target audience (optional)
+- Context/brief
+
+System automatically generates:
+- Optimized headlines
+- Benefits and value propositions
+- Complete landing page structure
+- Calls to action (CTAs)
+- Social proof sections
+
+---
+
+## Behavioral Tracking & Analytics
+
+Every landing page includes lightweight tracking:
+- Time spent per section
+- Click events on buttons
+- Scroll depth and engagement
+- Abandonment points
+
+Data is associated with each proposal version, enabling understanding of real user behavior.
+
+---
+
+## Continuous Optimization Loop
+
+System doesn't just show metrics—it acts on them.
+
+Based on user behavior, Proply:
+- Detects conversion problems
+- Suggests improvements
+- Generates optimized versions automatically
+
+**Examples:**
+- Low benefit engagement → improve copy
+- High traffic, few clicks → adjust CTA
+- Early abandonment → redesign hero section
+- Weak social proof → add testimonials
+
+This enables rapid iteration without relying on guesswork.
+
+---
+
+## Optional: A/B Testing Mode (Future)
+
+Platform can generate multiple landing page variants and distribute traffic to automatically identify the best performer.
+
+Benefits:
+- Faster product validation
+- Lower cost of experimentation
+- Data-driven decisions
+
+---
+
+## Value Proposition
+
+Transform manual, slow, uncertain processes into automated, data-driven systems.
+
+**Instead of:** Create → Test → Guess
+
+**Proply enables:** Generate → Measure → Optimize Automatically
+
+---
+
+## Key Outcomes
+
+- ⚡ Reduced time to market
+- 📈 Continuous conversion improvement
+- 🎯 No technical/marketing expertise required
+- 📊 Decisions based on real user behavior
+- 💰 Lower cost of experimentation
+
+---
+
+## Key Differentiator
+
+**Not a page builder. A system that makes decisions for the user and continuously improves results.**
+
+---
+
 ## SaaS Context
 
 - Multi-tenant architecture

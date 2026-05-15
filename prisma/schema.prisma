@@ -28,6 +28,7 @@ model Proposal {
   title       String
   description String?
   type        String   // "service" or "product"
+  template    String   @default("producto_nuevo") // "producto_nuevo" or "oferta_limitada"
   status      String   @default("draft") // "draft" or "published"
   tenantId    String   // For multi-tenancy
   userId      String
@@ -36,6 +37,7 @@ model Proposal {
   updatedAt   DateTime @updatedAt
 
   versions Version[]
+  images   Image[]
   @@map("proposals")
 }
 
@@ -62,6 +64,17 @@ model Event {
   data       Json     // Event data
   createdAt  DateTime @default(now())
   @@map("events")
+}
+
+model Image {
+  id         String   @id @default(cuid())
+  proposalId String
+  proposal   Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  url        String   // Cloudinary secure_url
+  publicId   String   // Cloudinary public_id (for deletion)
+  order      Int      @default(0)
+  createdAt  DateTime @default(now())
+  @@map("images")
 }
 
 model Product {
