@@ -1,11 +1,19 @@
+'use client'
+
 import Link from 'next/link'
 import { FileText, BarChart2, GitBranch, Zap } from 'lucide-react'
-import { auth } from '@clerk/nextjs'
-import { redirect } from 'next/navigation'
+import { LanguageSwitcher } from '@/components/LanguageSwitcher'
+import { useLanguage } from '@/components/LanguageContext'
 
 export default function Home() {
-  const { userId } = auth()
-  if (userId) redirect('/dashboard')
+  const { language } = useLanguage()
+  const t = language === 'es' ? esContent : enContent
+  const features = language === 'es' ? featuresEs : featuresEn
+  const steps = language === 'es' ? stepsEs : stepsEn
+
+  // If user is logged in, show landing anyway (don't redirect)
+  // Users can access dashboard from the sidebar when authenticated
+
   return (
     <div className="min-h-screen bg-background text-text-primary">
       {/* Topbar */}
@@ -14,21 +22,22 @@ export default function Home() {
           Pro<span className="text-accent">ply</span>
         </span>
         <nav className="hidden md:flex items-center gap-6 text-sm text-text-secondary">
-          <a href="#features" className="hover:text-text-primary transition-colors">Features</a>
-          <a href="#how" className="hover:text-text-primary transition-colors">How it works</a>
+          <a href="#features" className="hover:text-text-primary transition-colors">{t.features}</a>
+          <a href="#how" className="hover:text-text-primary transition-colors">{t.howWorks}</a>
         </nav>
         <div className="flex items-center gap-3">
+          <LanguageSwitcher />
           <Link
             href="/sign-in"
             className="text-sm text-text-secondary hover:text-text-primary transition-colors"
           >
-            Sign in
+            {t.signIn}
           </Link>
           <Link
             href="/sign-up"
             className="inline-flex items-center gap-2 rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-background hover:bg-accent-hover shadow-glow-green-sm hover:shadow-glow-green transition-all"
           >
-            Get started
+            {t.startBtn}
           </Link>
         </div>
       </header>
@@ -39,28 +48,26 @@ export default function Home() {
         <div className="relative mx-auto max-w-6xl px-6 py-24 md:py-36">
           <div className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/5 px-3 py-1 text-xs font-medium text-accent mb-6">
             <Zap className="h-3 w-3" />
-            AI-powered proposals
+            {t.heroBadge}
           </div>
           <h1 className="max-w-3xl text-4xl md:text-6xl font-semibold tracking-tight text-text-primary leading-[1.1]">
-            Close deals faster with{' '}
-            <span className="text-accent">smart proposals</span>
+            {t.heroTitle}
           </h1>
           <p className="mt-6 max-w-xl text-lg text-text-secondary leading-relaxed">
-            Create professional commercial proposals as dynamic landing pages.
-            Track client behavior and iterate with AI to win more deals.
+            {t.heroDescription}
           </p>
           <div className="mt-8 flex items-center gap-4">
             <Link
               href="/sign-up"
               className="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-2.5 text-base font-semibold text-background hover:bg-accent-hover shadow-glow-green-sm hover:shadow-glow-green transition-all"
             >
-              Start for free →
+              {t.ctaPrimary} →
             </Link>
             <Link
               href="/sign-in"
               className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-6 py-2.5 text-base font-medium text-text-primary hover:bg-white/10 hover:border-white/20 transition-all"
             >
-              Sign in
+              {t.signIn}
             </Link>
           </div>
         </div>
@@ -71,9 +78,9 @@ export default function Home() {
 
       {/* Features */}
       <section id="features" className="mx-auto max-w-6xl px-6 py-20">
-        <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-4">Features</p>
+        <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-4">{t.featuresLabel}</p>
         <h2 className="text-2xl md:text-3xl font-semibold text-text-primary mb-12">
-          Everything you need to close deals
+          {t.featuresTitle}
         </h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((f) => (
@@ -94,9 +101,9 @@ export default function Home() {
       {/* How it works */}
       <section id="how" className="border-t border-white/[0.06]">
         <div className="mx-auto max-w-6xl px-6 py-20">
-          <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-4">How it works</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-4">{t.howLabel}</p>
           <h2 className="text-2xl md:text-3xl font-semibold text-text-primary mb-12">
-            From brief to closed deal
+            {t.howTitle}
           </h2>
           <div className="grid gap-6 md:grid-cols-3">
             {steps.map((s, i) => (
@@ -121,16 +128,16 @@ export default function Home() {
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(34,197,94,0.06)_0%,transparent_70%)]" />
             <div className="relative">
               <h2 className="text-2xl md:text-4xl font-semibold text-text-primary mb-4">
-                Ready to send better proposals?
+                {t.ctaTitle}
               </h2>
               <p className="text-text-secondary mb-8 max-w-md mx-auto">
-                Join freelancers and agencies who close deals faster with Proply.
+                {t.ctaDescription}
               </p>
               <Link
                 href="/sign-up"
                 className="inline-flex items-center gap-2 rounded-xl bg-accent px-8 py-3 text-base font-semibold text-background hover:bg-accent-hover shadow-glow-green hover:shadow-glow-green transition-all"
               >
-                Get started for free →
+                {t.ctaPrimary} →
               </Link>
             </div>
           </div>
@@ -148,40 +155,112 @@ export default function Home() {
   )
 }
 
-const features = [
+const esContent = {
+  features: 'Características',
+  howWorks: 'Cómo funciona',
+  signIn: 'Ingresar',
+  startBtn: 'Comenzar',
+  heroBadge: 'Generado con IA en segundos',
+  heroTitle: 'Convierte más clientes con landing pages que venden',
+  heroDescription: 'Landing pages profesionales en minutos. Sin diseñador, sin complicaciones. Mira cómo reaccionan tus clientes y optimiza hasta vender más.',
+  featuresLabel: 'Características',
+  featuresTitle: 'Todo lo que necesitas para vender más',
+  howLabel: 'Cómo funciona',
+  howTitle: 'De fotos a primera venta',
+  ctaTitle: '¿Listo para vender más?',
+  ctaDescription: 'Únete a dropshippers que triplicaron sus conversiones con Proply.',
+  ctaPrimary: 'Comenzar gratis',
+}
+
+const enContent = {
+  features: 'Features',
+  howWorks: 'How it works',
+  signIn: 'Sign in',
+  startBtn: 'Get started',
+  heroBadge: 'AI-powered in seconds',
+  heroTitle: 'Convert more customers with landing pages that sell',
+  heroDescription: 'Professional landing pages in minutes. No designer, no complications. See how your customers react and optimize until you sell more.',
+  featuresLabel: 'Features',
+  featuresTitle: 'Everything you need to sell more',
+  howLabel: 'How it works',
+  howTitle: 'From photos to first sale',
+  ctaTitle: 'Ready to sell more?',
+  ctaDescription: 'Join dropshippers who tripled their conversions with Proply.',
+  ctaPrimary: 'Get started for free',
+}
+
+const featuresEs = [
   {
     icon: FileText,
-    title: 'Create Proposals',
-    description: 'Generate professional proposals in minutes with AI assistance.',
+    title: 'Landing Pages en Minutos',
+    description: 'Crea páginas de venta profesionales sin diseñador. IA genera todo automáticamente.',
   },
   {
     icon: BarChart2,
-    title: 'Track Behavior',
-    description: 'See how clients interact with your proposal in real time.',
+    title: 'Ve Quién Compra y Quién No',
+    description: 'Datos reales de cómo interactúan tus clientes. ¿Dónde se van? ¿Qué les interesa?',
   },
   {
     icon: GitBranch,
-    title: 'Version Control',
-    description: 'Create and compare optimized versions of every proposal.',
+    title: 'Prueba Versiones Diferentes',
+    description: 'IA crea variaciones automáticas. Compara cuál vende más y optimiza.',
   },
   {
     icon: Zap,
-    title: 'AI Optimization',
-    description: 'Get AI-powered suggestions to improve your close rate.',
+    title: 'Vende Más, No Adivines',
+    description: 'Mejora basada en datos reales, no intuición. IA te sugiere qué cambiar.',
   },
 ]
 
-const steps = [
+const featuresEn = [
   {
-    title: 'Write your brief',
-    description: 'Describe your service, scope, and pricing in plain text.',
+    icon: FileText,
+    title: 'Landing Pages in Minutes',
+    description: 'Create professional sales pages without a designer. AI generates everything automatically.',
   },
   {
-    title: 'AI structures it',
-    description: 'Proply turns your brief into a polished, structured proposal.',
+    icon: BarChart2,
+    title: 'See Who Buys and Who Doesn\'t',
+    description: 'Real data on how your customers interact. Where do they leave? What interests them?',
   },
   {
-    title: 'Send & track',
-    description: 'Share a link and watch your client engage with every section.',
+    icon: GitBranch,
+    title: 'Test Different Versions',
+    description: 'AI creates automatic variations. Compare what sells most and optimize.',
+  },
+  {
+    icon: Zap,
+    title: 'Sell More, Don\'t Guess',
+    description: 'Improvements based on real data, not intuition. AI suggests what to change.',
+  },
+]
+
+const stepsEs = [
+  {
+    title: 'Sube fotos y datos',
+    description: 'Carga imágenes de tu producto, precio y descripción. Sin complicaciones.',
+  },
+  {
+    title: 'IA crea tu página',
+    description: 'Proply genera automáticamente una landing page lista para vender.',
+  },
+  {
+    title: 'Comparte y vende',
+    description: 'Envía el link a tus clientes. Mira cómo compran y mejora cada día.',
+  },
+]
+
+const stepsEn = [
+  {
+    title: 'Upload photos and data',
+    description: 'Upload your product images, price and description. No complications.',
+  },
+  {
+    title: 'AI creates your page',
+    description: 'Proply automatically generates a landing page ready to sell.',
+  },
+  {
+    title: 'Share and sell',
+    description: 'Send the link to your customers. Watch how they buy and improve daily.',
   },
 ]
