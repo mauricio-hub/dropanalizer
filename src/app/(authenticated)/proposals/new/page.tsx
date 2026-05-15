@@ -87,8 +87,8 @@ export default function NewProposalPage() {
     }
 
     // Validate file type
-    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-      setImageError('Formato no soportado. Usa JPG, PNG o WebP.')
+    if (!['image/jpeg', 'image/png', 'image/webp', 'image/avif'].includes(file.type)) {
+      setImageError('Formato no soportado. Usa JPG, PNG, WebP o AVIF.')
       return null
     }
 
@@ -416,7 +416,7 @@ export default function NewProposalPage() {
                   <input
                     type="file"
                     multiple
-                    accept="image/jpeg,image/png,image/webp"
+                    accept="image/jpeg,image/png,image/webp,image/avif"
                     onChange={handleImageSelect}
                     disabled={uploadingImage || images.length >= 5}
                     className="hidden"
@@ -431,7 +431,7 @@ export default function NewProposalPage() {
                       Arrastra imágenes o haz clic
                     </p>
                     <p className="text-xs text-text-muted mt-1">
-                      JPG, PNG o WebP • Máx 5MB cada una
+                      JPG, PNG, WebP o AVIF • Máx 5MB cada una
                     </p>
                     {uploadingImage && (
                       <p className="text-xs text-accent mt-2 animate-pulse">
