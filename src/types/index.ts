@@ -37,6 +37,7 @@ export interface DropshippingContent {
   faq: FaqItem[]
   urgency?: string
   pricing: DropshippingPricing
+  lang?: 'es' | 'en'
 }
 
 export interface Image {

@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json()
-    const { productName, price, currency, template, description, generateWithAI = true, images = [], selectedCatalogItemIds = [] } = body
+    const { productName, price, currency, template, landingStyle = 'luxury', audienceLang = 'es', description, generateWithAI = true, images = [], selectedCatalogItemIds = [] } = body
 
     // Support both new dropshipping flow and legacy brief flow
     const isDropshippingFlow = productName && price !== undefined && currency && template
@@ -102,7 +102,7 @@ export async function POST(req: Request) {
       title: isDropshippingFlow ? productName : body.title,
       description: isDropshippingFlow ? description : body.brief,
       type: 'product',
-      template: isDropshippingFlow ? template : 'producto_nuevo',
+      template: isDropshippingFlow ? `${template}_${landingStyle}` : 'producto_nuevo',
       status: 'draft' as const,
       tenantId: user.id,
       userId: user.id,
@@ -123,7 +123,9 @@ export async function POST(req: Request) {
           price,
           currency,
           template,
-          description
+          description,
+          undefined,
+          audienceLang
         )
         generatedAt = new Date()
       } catch (aiError) {

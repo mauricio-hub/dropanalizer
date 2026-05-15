@@ -31,8 +31,10 @@ export default function NewProposalPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  // Step 1: Template
+  // Step 1: Template, Landing Style & Audience Language
   const [template, setTemplate] = useState<'producto_nuevo' | 'oferta_limitada' | null>(null)
+  const [landingStyle, setLandingStyle] = useState<'luxury' | 'minimalist' | 'vibrant'>('luxury')
+  const [audienceLang, setAudienceLang] = useState<'es' | 'en'>('es')
 
   // Step 2: Product info
   const [productName, setProductName] = useState('')
@@ -185,6 +187,8 @@ export default function NewProposalPage() {
           price: parseFloat(price),
           currency,
           template,
+          landingStyle,
+          audienceLang,
           description: description.trim() || undefined,
           images: imageData,
           generateWithAI: true,
@@ -291,6 +295,111 @@ export default function NewProposalPage() {
                     </div>
                   </button>
                 </div>
+
+                {template && (
+                  <div className="mt-8 space-y-4 border-t border-white/[0.08] pt-8">
+                    <h2 className="text-lg font-semibold text-text-primary">
+                      ¿Cuál es el estilo de tu landing?
+                    </h2>
+                    <p className="text-sm text-text-secondary">
+                      Elige el diseño que mejor se adapte a tu marca
+                    </p>
+
+                    <div className="grid gap-4 sm:grid-cols-3">
+                      {/* Luxury */}
+                      <button
+                        onClick={() => setLandingStyle('luxury')}
+                        type="button"
+                        className={`rounded-lg border-2 p-4 transition-all text-left ${
+                          landingStyle === 'luxury'
+                            ? 'border-accent bg-accent/10'
+                            : 'border-white/[0.08] hover:border-white/[0.15]'
+                        }`}
+                      >
+                        <div className="font-semibold text-text-primary mb-1">Lujo</div>
+                        <p className="text-xs text-text-muted">Elegante y profesional, colores azules y gradientes</p>
+                        {landingStyle === 'luxury' && (
+                          <Check className="h-4 w-4 text-accent mt-2" />
+                        )}
+                      </button>
+
+                      {/* Minimalist */}
+                      <button
+                        onClick={() => setLandingStyle('minimalist')}
+                        type="button"
+                        className={`rounded-lg border-2 p-4 transition-all text-left ${
+                          landingStyle === 'minimalist'
+                            ? 'border-accent bg-accent/10'
+                            : 'border-white/[0.08] hover:border-white/[0.15]'
+                        }`}
+                      >
+                        <div className="font-semibold text-text-primary mb-1">Minimalista</div>
+                        <p className="text-xs text-text-muted">Limpio y moderno, blanco y negro</p>
+                        {landingStyle === 'minimalist' && (
+                          <Check className="h-4 w-4 text-accent mt-2" />
+                        )}
+                      </button>
+
+                      {/* Vibrant */}
+                      <button
+                        onClick={() => setLandingStyle('vibrant')}
+                        type="button"
+                        className={`rounded-lg border-2 p-4 transition-all text-left ${
+                          landingStyle === 'vibrant'
+                            ? 'border-accent bg-accent/10'
+                            : 'border-white/[0.08] hover:border-white/[0.15]'
+                        }`}
+                      >
+                        <div className="font-semibold text-text-primary mb-1">Vibrante</div>
+                        <p className="text-xs text-text-muted">Colorido y dinámico, rosa y naranja</p>
+                        {landingStyle === 'vibrant' && (
+                          <Check className="h-4 w-4 text-accent mt-2" />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {template && (
+                  <div className="mt-6 space-y-4 border-t border-white/[0.08] pt-6">
+                    <h2 className="text-lg font-semibold text-text-primary">
+                      ¿En qué idioma está tu audiencia?
+                    </h2>
+                    <p className="text-sm text-text-secondary">
+                      La IA generará todo el contenido de la landing en ese idioma
+                    </p>
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <button
+                        onClick={() => setAudienceLang('es')}
+                        type="button"
+                        className={`rounded-lg border-2 p-4 transition-all text-left ${
+                          audienceLang === 'es'
+                            ? 'border-accent bg-accent/10'
+                            : 'border-white/[0.08] hover:border-white/[0.15]'
+                        }`}
+                      >
+                        <div className="text-2xl mb-1">🇪🇸</div>
+                        <div className="font-semibold text-text-primary mb-1">Español</div>
+                        <p className="text-xs text-text-muted">Para audiencias en LATAM y España</p>
+                        {audienceLang === 'es' && <Check className="h-4 w-4 text-accent mt-2" />}
+                      </button>
+                      <button
+                        onClick={() => setAudienceLang('en')}
+                        type="button"
+                        className={`rounded-lg border-2 p-4 transition-all text-left ${
+                          audienceLang === 'en'
+                            ? 'border-accent bg-accent/10'
+                            : 'border-white/[0.08] hover:border-white/[0.15]'
+                        }`}
+                      >
+                        <div className="text-2xl mb-1">🇺🇸</div>
+                        <div className="font-semibold text-text-primary mb-1">English</div>
+                        <p className="text-xs text-text-muted">For US, UK and global audiences</p>
+                        {audienceLang === 'en' && <Check className="h-4 w-4 text-accent mt-2" />}
+                      </button>
+                    </div>
+                  </div>
+                )}
 
                 <div className="flex justify-end gap-3 pt-6">
                   <Button

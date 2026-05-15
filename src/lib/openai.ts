@@ -173,7 +173,7 @@ async function getCatalogContext(userId: string): Promise<string | undefined> {
 }
 
 export async function generateProposalContent(brief: string, userId?: string, catalogPrices?: { name: string; price: number }[]): Promise<ProposalContent> {
-  const useAI = process.env.ANTHROPIC_API_KEY && process.env.NODE_ENV === 'production'
+  const useAI = !!process.env.ANTHROPIC_API_KEY
 
   // Fetch catalog context if userId provided
   let catalogContext: string | undefined
@@ -239,41 +239,57 @@ function validateProposalContent(content: any): asserts content is ProposalConte
   }
 }
 
-const DROPSHIPPING_GENERATION_PROMPT = (productName: string, template: 'producto_nuevo' | 'oferta_limitada', description?: string) => {
-  const templateContext = template === 'oferta_limitada'
-    ? 'Este es un producto con oferta limitada, descuento o urgencia. El énfasis debe ser en la escasez, el descuento y la urgencia.'
-    : 'Este es un producto nuevo que el usuario está validando. El énfasis debe ser en la novedad, el descubrimiento y resolución de un problema.'
+const DROPSHIPPING_GENERATION_PROMPT = (
+  productName: string,
+  template: 'producto_nuevo' | 'oferta_limitada',
+  audienceLang: 'es' | 'en',
+  description?: string
+) => {
+  const isLimitedOffer = template === 'oferta_limitada'
+  const isSpanish = audienceLang === 'es'
 
-  return `
-Tu tarea es crear un landing page convincente y orientado a conversión para un producto e-commerce.
+  const langInstruction = isSpanish
+    ? 'IDIOMA: Todo el contenido debe estar en ESPAÑOL LATINOAMERICANO. Lenguaje coloquial, cercano, no formal.'
+    : 'LANGUAGE: All content must be in ENGLISH. Use casual, direct, conversion-focused language.'
 
-PRODUCTO: ${productName}
-${description ? `DESCRIPCIÓN/CONTEXTO: ${description}` : ''}
-TIPO: ${templateContext}
+  const headlineGuide = isLimitedOffer
+    ? (isSpanish ? 'Titular de urgencia en español: máximo 8 palabras. Escasez o descuento claro.' : 'Urgency headline in English: max 8 words. Scarcity or discount.')
+    : (isSpanish ? 'Titular de deseo en español: máximo 8 palabras. Promesa clara del beneficio.' : 'Desire headline in English: max 8 words. Clear benefit promise.')
 
-Debes generar un JSON válido con esta estructura (sin markdown, solo JSON):
+  return `You are an expert e-commerce copywriter. Generate high-converting landing page content for a dropshipping product.
+
+PRODUCT: "${productName}"
+${description ? `SELLER DESCRIPTION: ${description}` : ''}
+CAMPAIGN TYPE: ${isLimitedOffer ? 'LIMITED OFFER (urgency, scarcity, discount)' : 'PRODUCT LAUNCH (novelty, solution, discovery)'}
+${langInstruction}
+
+Generate a valid JSON (no markdown) with this exact structure:
 {
-  "headline": "Headline único y compelling que capture atención en 1-2 segundos. Máximo 10 palabras. Beneficio claro.",
-  "benefits": ["Beneficio 1 específico y tangible", "Beneficio 2", "Beneficio 3", "Beneficio 4", "Beneficio 5"],
-  "socialProof": "Párrafo estilo testimonial (2-3 frases). Ej: 'Miles de clientes ya confían en nosotros. Generamos +$2M en ventas para nuestros usuarios en el último año. El 94% recomendaría este producto.'",
-  "faq": [
-    {"question": "¿Cuánto tiempo tarda en llegar?", "answer": "Respuesta específica y clara"},
-    {"question": "¿Tiene garantía?", "answer": "Respuesta específica y clara"},
-    {"question": "¿Es seguro comprar aquí?", "answer": "Respuesta específica y clara"}
+  "headline": "${headlineGuide}",
+  "benefits": [
+    "Benefit 1: ultra-specific to ${productName}, not generic",
+    "Benefit 2: solves a real buyer pain point",
+    "Benefit 3: differentiator vs competition",
+    "Benefit 4: focused on end result",
+    "Benefit 5: eliminates a common objection"
   ],
-  "urgency": "Solo si template es oferta_limitada. Texto que comunique escasez o urgencia. Ej: 'Solo quedan 12 unidades disponibles a este precio' o 'Esta oferta válida por 48 horas'."
+  "socialProof": "Social proof text with believable invented numbers. E.g. (in the chosen language): '3,400+ people already own it. 91% recommended it to a friend. 4.8/5 stars across 800+ reviews.'",
+  "faq": [
+    {"question": "Question about shipping/delivery time specific to this product", "answer": "Concrete reassuring answer"},
+    {"question": "Question about quality or how it works", "answer": "Answer that removes doubt"},
+    {"question": "Question about guarantee or returns", "answer": "Answer with clear policy"},
+    {"question": "Question about how to use it or compatibility", "answer": "Answer that gives confidence"}
+  ]${isLimitedOffer ? `,
+  "urgency": "Credible scarcity/urgency phrase in the chosen language. E.g.: 'Only 15 units left at this price.'"` : ''}
 }
 
-REGLAS OBLIGATORIAS:
-- Headline debe ser impactante, no genérico
-- Benefits deben ser específicos al producto, no características genéricas
-- Social proof debe sonar real y mostrar números/evidencia
-- FAQ debe responder objeciones reales de compra
-- Para "producto_nuevo": enfatiza novedad, descubrimiento, oportunidad
-- Para "oferta_limitada": enfatiza escasez, descuento, tiempo limitado
-- Urgency debe ser convincente pero creíble (sin mentiras)
-- Retorna SOLO el JSON válido, sin explicaciones extra
-`
+CRITICAL RULES:
+- EVERY field must be written in ${isSpanish ? 'SPANISH' : 'ENGLISH'} — no mixing languages
+- The headline MUST reference the product "${productName}"
+- Benefits must be specific to "${productName}", not about generic shipping
+- Social proof must sound real with concrete numbers
+- FAQs must be REAL objections a buyer would have about "${productName}"
+- Return ONLY the JSON, no extra text`
 }
 
 function generateMockDropshipping(productName: string, template: 'producto_nuevo' | 'oferta_limitada'): DropshippingContent {
@@ -357,9 +373,10 @@ export async function generateDropshippingContent(
   currency: string,
   template: 'producto_nuevo' | 'oferta_limitada',
   description?: string,
-  originalPrice?: number
+  originalPrice?: number,
+  audienceLang: 'es' | 'en' = 'es'
 ): Promise<DropshippingContent> {
-  const useAI = process.env.ANTHROPIC_API_KEY && process.env.NODE_ENV === 'production'
+  const useAI = !!process.env.ANTHROPIC_API_KEY
 
   if (!useAI) {
     console.log('Using mock dropshipping generator (set ANTHROPIC_API_KEY for real AI)')
@@ -367,6 +384,7 @@ export async function generateDropshippingContent(
     return {
       ...mock,
       pricing: { price, currency, originalPrice },
+      lang: audienceLang,
     }
   }
 
@@ -377,7 +395,7 @@ export async function generateDropshippingContent(
       messages: [
         {
           role: 'user',
-          content: DROPSHIPPING_GENERATION_PROMPT(productName, template, description),
+          content: DROPSHIPPING_GENERATION_PROMPT(productName, template, audienceLang, description),
         },
       ],
     })
@@ -400,6 +418,7 @@ export async function generateDropshippingContent(
       faq: parsed.faq,
       urgency: parsed.urgency,
       pricing: { price, currency, originalPrice },
+      lang: audienceLang,
     }
   } catch (error) {
     console.error('Error generating dropshipping content with AI, falling back to mock:', error)
