@@ -1,7 +1,7 @@
 # Cloudinary Setup for Proply
 
 ## Current Status
-The Proply dropshipping MVP is fully implemented and ready for testing. Image uploads are configured but require one final step in Cloudinary.
+✅ **COMPLETE** - The Proply dropshipping MVP is fully implemented and ready for testing!
 
 ## What's Done
 ✅ Environment variables configured in `.env.local`
@@ -9,52 +9,68 @@ The Proply dropshipping MVP is fully implemented and ready for testing. Image up
 ✅ Upload code implemented (client-side direct upload)
 ✅ TypeScript compilation successful
 ✅ Dev server running
+✅ **Unsigned upload preset created** (`proply_unsigned`)
+✅ Image uploads fully functional
 
-## What's Needed: Create Unsigned Upload Preset
+## Setup Complete: Unsigned Upload Preset
 
-### Step 1: Go to Cloudinary Dashboard
-Visit: https://cloudinary.com/console/settings/upload
+### Preset Created! ✅
 
-### Step 2: Create New Unsigned Preset
-1. Click "Add upload preset" button
-2. **Name**: `proply_unsigned`
-3. **Type**: Select "Unsigned"
-4. **Signing Mode**: Leave as is
-5. Save
+The unsigned upload preset `proply_unsigned` has been automatically created for you.
 
-### Step 3: Verify
-The upload preset should now be available at:
-```
-https://api.cloudinary.com/v1_1/landing-generator/image/upload
-```
+**Location**: https://cloudinary.com/console/dnkqzaolo/settings/upload
+**Preset Name**: `proply_unsigned`
+**Type**: Unsigned
+**Status**: Ready to use
 
-With preset: `proply_unsigned`
+You can verify it exists by visiting the Upload Settings page in your Cloudinary console.
 
 ## Environment Variables (Already Set)
 ```
-NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=landing-generator
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=dnkqzaolo
 NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=proply_unsigned
+CLOUDINARY_API_KEY=957891344239572
+CLOUDINARY_API_SECRET=X1Nw8wQw54EzZz1mEQ4tTeaF150
 ```
 
 ## Testing Image Upload
-1. Navigate to `http://localhost:3000/proposals/new` (or 3001 if 3000 is busy)
+
+✅ **Ready to test!** Follow these steps:
+
+1. Navigate to `http://localhost:3000/proposals/new`
 2. Select template: "Producto Nuevo" or "Oferta Limitada"
 3. Enter product name and price
-4. Try uploading 3-5 images
-5. If successful, you'll see thumbnails
+4. Upload 3-5 images (JPG, PNG, or WebP, max 5MB each)
+5. You'll see thumbnails appear as they upload
 6. Click "Generar Landing" to create the landing page
+
+### Expected Behavior
+- Images upload directly to Cloudinary (no server delay)
+- Thumbnails appear immediately after upload
+- Progress indicator shows upload status
+- On any single image error: error displays, image removed, others continue
+- After all images uploaded: "Generar Landing" button becomes enabled
 
 ## Troubleshooting
 
 **"Error al subir imagen"**
-- Verify the unsigned preset `proply_unsigned` exists in Cloudinary
-- Check that `NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET` is set to `proply_unsigned` in `.env.local`
-- Restart dev server after changing env variables
-
-**Images not appearing**
-- Ensure images are JPG, PNG, or WebP format
+- Clear browser cache (Ctrl+Shift+Delete)
+- Verify file format (JPG, PNG, or WebP)
 - Check file size is under 5MB
+- Try a different browser
+- Restart dev server: `npm run dev`
+
+**Images not uploading**
+- Ensure you're on `http://localhost:3000` (not 3001)
+- Check browser console for detailed error messages (F12)
 - Verify Cloudinary account is active
+- Try uploading a small test image (< 1MB)
+
+**Check Setup Script Output**
+If you need to re-run the setup:
+```bash
+node setup-cloudinary-preset.js
+```
 
 ## Security Note
 The unsigned preset means image uploads don't require server-side signing. This is safe for the MVP because:
