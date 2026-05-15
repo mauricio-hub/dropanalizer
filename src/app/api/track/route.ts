@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma'
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const { versionId, type, section } = body
+    const { versionId, type, section, duration } = body
 
     if (!versionId || !type) {
       return NextResponse.json(
@@ -33,6 +33,7 @@ export async function POST(req: Request) {
         type,
         data: {
           section: section || null,
+          duration: duration || null,
           userAgent: req.headers.get('user-agent'),
           timestamp: new Date().toISOString(),
         },

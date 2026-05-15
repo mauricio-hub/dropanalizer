@@ -1,5 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { prisma } from '@/lib/prisma'
+import type { DropshippingContent, FaqItem } from '@/types'
 
 export const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -235,5 +236,177 @@ function validateProposalContent(content: any): asserts content is ProposalConte
 
   if (!content.pricing.currency || typeof content.pricing.currency !== 'string') {
     throw new Error('Invalid pricing: currency must be a string')
+  }
+}
+
+const DROPSHIPPING_GENERATION_PROMPT = (productName: string, template: 'producto_nuevo' | 'oferta_limitada', description?: string) => {
+  const templateContext = template === 'oferta_limitada'
+    ? 'Este es un producto con oferta limitada, descuento o urgencia. El énfasis debe ser en la escasez, el descuento y la urgencia.'
+    : 'Este es un producto nuevo que el usuario está validando. El énfasis debe ser en la novedad, el descubrimiento y resolución de un problema.'
+
+  return `
+Tu tarea es crear un landing page convincente y orientado a conversión para un producto e-commerce.
+
+PRODUCTO: ${productName}
+${description ? `DESCRIPCIÓN/CONTEXTO: ${description}` : ''}
+TIPO: ${templateContext}
+
+Debes generar un JSON válido con esta estructura (sin markdown, solo JSON):
+{
+  "headline": "Headline único y compelling que capture atención en 1-2 segundos. Máximo 10 palabras. Beneficio claro.",
+  "benefits": ["Beneficio 1 específico y tangible", "Beneficio 2", "Beneficio 3", "Beneficio 4", "Beneficio 5"],
+  "socialProof": "Párrafo estilo testimonial (2-3 frases). Ej: 'Miles de clientes ya confían en nosotros. Generamos +$2M en ventas para nuestros usuarios en el último año. El 94% recomendaría este producto.'",
+  "faq": [
+    {"question": "¿Cuánto tiempo tarda en llegar?", "answer": "Respuesta específica y clara"},
+    {"question": "¿Tiene garantía?", "answer": "Respuesta específica y clara"},
+    {"question": "¿Es seguro comprar aquí?", "answer": "Respuesta específica y clara"}
+  ],
+  "urgency": "Solo si template es oferta_limitada. Texto que comunique escasez o urgencia. Ej: 'Solo quedan 12 unidades disponibles a este precio' o 'Esta oferta válida por 48 horas'."
+}
+
+REGLAS OBLIGATORIAS:
+- Headline debe ser impactante, no genérico
+- Benefits deben ser específicos al producto, no características genéricas
+- Social proof debe sonar real y mostrar números/evidencia
+- FAQ debe responder objeciones reales de compra
+- Para "producto_nuevo": enfatiza novedad, descubrimiento, oportunidad
+- Para "oferta_limitada": enfatiza escasez, descuento, tiempo limitado
+- Urgency debe ser convincente pero creíble (sin mentiras)
+- Retorna SOLO el JSON válido, sin explicaciones extra
+`
+}
+
+function generateMockDropshipping(productName: string, template: 'producto_nuevo' | 'oferta_limitada'): DropshippingContent {
+  const mockHeadlines = {
+    producto_nuevo: '🚀 La solución que esperabas',
+    oferta_limitada: '⚡ Último chance: 50% off hoy',
+  }
+
+  const mockBenefits = [
+    'Entrega rápida y segura en 48-72 horas',
+    'Garantía de devolución en 30 días',
+    'Atención al cliente 24/7',
+    'Pago seguro con múltiples métodos',
+    'Envío gratis a partir de $50',
+  ]
+
+  const mockFaq: FaqItem[] = [
+    {
+      question: '¿Cuánto tarda el envío?',
+      answer: 'El envío tarda entre 48 a 72 horas hábiles. En algunos casos puede ser más rápido.',
+    },
+    {
+      question: '¿Hay devolución?',
+      answer: 'Sí, puedes devolver el producto en 30 días si no estás satisfecho.',
+    },
+    {
+      question: '¿Es seguro comprar?',
+      answer: 'Completamente seguro. Usamos encriptación SSL y procesamos pagos con proveedores certificados.',
+    },
+  ]
+
+  const urgency = template === 'oferta_limitada'
+    ? 'Solo quedan 8 unidades a este precio. Esta oferta vence en 24 horas.'
+    : undefined
+
+  return {
+    contentType: 'dropshipping',
+    headline: mockHeadlines[template],
+    benefits: mockBenefits,
+    socialProof: 'Miles de clientes satisfechos. +95% recomendaría este producto. Más de 10,000 compras realizadas.',
+    faq: mockFaq,
+    urgency,
+    pricing: {
+      price: 99.99,
+      currency: 'USD',
+    },
+  }
+}
+
+function validateDropshippingContent(content: any): asserts content is DropshippingContent {
+  if (!content.headline || typeof content.headline !== 'string') {
+    throw new Error('Invalid headline: must be a non-empty string')
+  }
+
+  if (!Array.isArray(content.benefits) || content.benefits.length < 3) {
+    throw new Error('Invalid benefits: must be an array with at least 3 items')
+  }
+
+  if (!content.socialProof || typeof content.socialProof !== 'string') {
+    throw new Error('Invalid socialProof: must be a non-empty string')
+  }
+
+  if (!Array.isArray(content.faq) || content.faq.length < 2) {
+    throw new Error('Invalid FAQ: must be an array with at least 2 items')
+  }
+
+  for (const item of content.faq) {
+    if (!item.question || !item.answer) {
+      throw new Error('Invalid FAQ item: must have question and answer')
+    }
+  }
+
+  if (!content.pricing || typeof content.pricing.price !== 'number' || content.pricing.price < 0) {
+    throw new Error('Invalid pricing: price must be a non-negative number')
+  }
+}
+
+export async function generateDropshippingContent(
+  productName: string,
+  price: number,
+  currency: string,
+  template: 'producto_nuevo' | 'oferta_limitada',
+  description?: string,
+  originalPrice?: number
+): Promise<DropshippingContent> {
+  const useAI = process.env.ANTHROPIC_API_KEY && process.env.NODE_ENV === 'production'
+
+  if (!useAI) {
+    console.log('Using mock dropshipping generator (set ANTHROPIC_API_KEY for real AI)')
+    const mock = generateMockDropshipping(productName, template)
+    return {
+      ...mock,
+      pricing: { price, currency, originalPrice },
+    }
+  }
+
+  try {
+    const message = await anthropic.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 2000,
+      messages: [
+        {
+          role: 'user',
+          content: DROPSHIPPING_GENERATION_PROMPT(productName, template, description),
+        },
+      ],
+    })
+
+    const content = message.content[0]
+    if (content.type !== 'text') {
+      throw new Error('Unexpected response type from Claude')
+    }
+
+    const jsonStr = content.text.trim()
+    const parsed = JSON.parse(jsonStr) as Omit<DropshippingContent, 'contentType' | 'pricing'>
+
+    validateDropshippingContent({ ...parsed, contentType: 'dropshipping', pricing: { price, currency } })
+
+    return {
+      contentType: 'dropshipping',
+      headline: parsed.headline,
+      benefits: parsed.benefits,
+      socialProof: parsed.socialProof,
+      faq: parsed.faq,
+      urgency: parsed.urgency,
+      pricing: { price, currency, originalPrice },
+    }
+  } catch (error) {
+    console.error('Error generating dropshipping content with AI, falling back to mock:', error)
+    const mock = generateMockDropshipping(productName, template)
+    return {
+      ...mock,
+      pricing: { price, currency, originalPrice },
+    }
   }
 }

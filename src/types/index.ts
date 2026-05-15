@@ -11,10 +11,41 @@ export interface ProposalPricing {
 }
 
 export interface ProposalContent {
+  contentType?: 'proposal'
   scope: string
   deliverables: string[]
   timeline: TimelinePhase[]
   pricing: ProposalPricing
+}
+
+export interface DropshippingPricing {
+  price: number
+  currency: string
+  originalPrice?: number
+}
+
+export interface FaqItem {
+  question: string
+  answer: string
+}
+
+export interface DropshippingContent {
+  contentType: 'dropshipping'
+  headline: string
+  benefits: string[]
+  socialProof: string
+  faq: FaqItem[]
+  urgency?: string
+  pricing: DropshippingPricing
+}
+
+export interface Image {
+  id: string
+  proposalId: string
+  url: string
+  publicId: string
+  order: number
+  createdAt: Date
 }
 
 export interface Proposal {
@@ -22,18 +53,20 @@ export interface Proposal {
   title: string
   description?: string
   type: 'service' | 'product'
+  template: 'producto_nuevo' | 'oferta_limitada'
   status: 'draft' | 'published'
   tenantId: string
   userId: string
   createdAt: Date
   updatedAt: Date
+  images?: Image[]
 }
 
 export interface Version {
   id: string
   proposalId: string
   version: number
-  content: ProposalContent
+  content: ProposalContent | DropshippingContent
   isPublished: boolean
   publicUrl?: string
   generatedAt?: Date

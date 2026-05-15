@@ -110,16 +110,29 @@ export default function AnalyticsPage() {
     )
   }
 
-  const sectionNames = {
+  const sectionNames: Record<string, string> = {
+    // Shared
     hero: 'Hero Section',
-    scope: 'Project Scope',
-    deliverables: 'Deliverables',
-    timeline: 'Timeline',
     pricing: 'Pricing',
     cta: 'Call to Action Button',
     'cta-section': 'CTA Section',
     'accept-proposal': 'Accept Proposal',
     'request-changes': 'Request Changes',
+    // B2B Proposal
+    scope: 'Project Scope',
+    deliverables: 'Deliverables',
+    timeline: 'Timeline',
+    // Dropshipping Landing
+    benefits: 'Benefits',
+    gallery: 'Gallery',
+    'social-proof': 'Social Proof',
+    urgency: 'Urgency / Scarcity',
+    faq: 'FAQ Section',
+    // Extra tracking points
+    'hero-cta': 'Hero CTA',
+    'pricing-cta': 'Pricing CTA',
+    'final-cta': 'Final CTA',
+    'final-cta-button': 'Final CTA Button',
   }
 
   return (
