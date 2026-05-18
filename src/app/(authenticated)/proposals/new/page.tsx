@@ -88,10 +88,10 @@ export default function NewProposalPage() {
   }, [step])
 
   const generationSteps = [
-    'Analizando tu producto...',
-    'Creando beneficios...',
-    'Optimizando para conversión...',
-    'Casi listo...',
+    t.createProposal.generationStep1,
+    t.createProposal.generationStep2,
+    t.createProposal.generationStep3,
+    t.createProposal.generationStep4,
   ]
 
   const currentGenerationText = generationSteps[Math.floor((generationProgress / 100) * generationSteps.length) % generationSteps.length]
@@ -770,7 +770,7 @@ export default function NewProposalPage() {
                       onClick={handleCreateProposal}
                       className="text-sm"
                     >
-                      Intentar de nuevo
+                      {t.createProposal.tryAgain}
                     </Button>
                   )}
                 </div>
@@ -786,7 +786,7 @@ export default function NewProposalPage() {
                       {currentGenerationText}
                     </h3>
                     <p className="text-sm text-text-muted">
-                      Esto toma unos segundos...
+                      {t.createProposal.takingSeconds}
                     </p>
                   </div>
 
