@@ -13,6 +13,7 @@ interface VibrantTemplateProps {
     template?: string
     createdAt: string
     images?: { url: string; order: number }[]
+    buyUrl?: string
   }
   version: {
     id: string
@@ -75,6 +76,13 @@ export default function VibrantTemplate({ proposal, version }: VibrantTemplatePr
     trackClick(version.id, section)
   }
 
+  const handleBuy = (section: string) => {
+    trackClick(version.id, section)
+    if (proposal.buyUrl) {
+      window.open(proposal.buyUrl, '_blank', 'noopener,noreferrer')
+    }
+  }
+
   return (
     <div className="min-h-screen bg-white text-gray-900">
       {/* Navigation */}
@@ -83,7 +91,7 @@ export default function VibrantTemplate({ proposal, version }: VibrantTemplatePr
           <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-orange-500">
             {proposal.title}
           </h1>
-          <button onClick={() => handleSectionClick('nav-cta')} className="bg-gradient-to-r from-pink-600 to-orange-500 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all font-semibold">
+          <button onClick={() => handleBuy('nav-cta')} className="bg-gradient-to-r from-pink-600 to-orange-500 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all font-semibold">
             {t.navBuy}
           </button>
         </div>
@@ -105,7 +113,7 @@ export default function VibrantTemplate({ proposal, version }: VibrantTemplatePr
               {t.heroSubtitle}
             </p>
             <button
-              onClick={() => handleSectionClick('hero-cta')}
+              onClick={() => handleBuy('hero-cta')}
               className="bg-gradient-to-r from-pink-600 to-orange-500 text-white px-8 py-4 rounded-full hover:shadow-xl transition-all font-semibold flex items-center gap-2 text-lg"
             >
               <ShoppingCart className="h-5 w-5" />
@@ -210,7 +218,7 @@ export default function VibrantTemplate({ proposal, version }: VibrantTemplatePr
               </p>
             )}
             <button
-              onClick={() => handleSectionClick('pricing-cta')}
+              onClick={() => handleBuy('pricing-cta')}
               className="bg-white text-pink-600 hover:bg-gray-100 font-bold py-4 px-12 rounded-full text-lg transition-all w-full md:w-auto flex items-center justify-center gap-2 mx-auto"
             >
               <ShoppingCart className="h-5 w-5" />

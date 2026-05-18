@@ -36,11 +36,13 @@
       "Bash(node setup-cloudinary-preset.js)",
       "Bash(curl -s \"https://api.cloudinary.com/v1_1/landing-generator/resource_types\" -u \"957891344239572:X1Nw8wQw54EzZz1mEQ4tTeaF150\")",
       "Bash(npm run *)",
-      "Bash(curl -s -I http://localhost:3000)"
+      "Bash(curl -s -I http://localhost:3000)",
+      "Bash(mkdir -p \"c:/Users/mgdev/Desktop/projects/proply/src/app/api/cta-destinations/[id]\")"
     ],
     "additionalDirectories": [
       "c:\\Users\\mgdev\\Desktop\\projects\\proply\\src\\app\\api\\proposals\\[id]\\versions\\[versionId]\\publish",
-      "c:\\Users\\mgdev\\.claude\\projects\\c--Users-mgdev-Desktop-projects-proply\\memory"
+      "c:\\Users\\mgdev\\.claude\\projects\\c--Users-mgdev-Desktop-projects-proply\\memory",
+      "c:\\Users\\mgdev\\Desktop\\projects\\proply\\src\\app\\api\\cta-destinations"
     ]
   }
 }

@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation'
 import Container from '@/components/ui/Container'
 import PageHeader from '@/components/ui/PageHeader'
 import Button from '@/components/ui/Button'
-import { Sparkles, Check, Rocket, Flame, Upload, X, AlertCircle } from 'lucide-react'
+import { Sparkles, Check, Rocket, Flame, Upload, X, AlertCircle, MessageCircle, Link, ExternalLink } from 'lucide-react'
+import type { CtaDestination } from '@/components/CtaDestinations'
 import { useLanguage } from '@/hooks/useLanguage'
 import { getTranslation } from '@/lib/i18n'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -46,8 +47,22 @@ export default function NewProposalPage() {
   const [uploadingImage, setUploadingImage] = useState(false)
   const [imageError, setImageError] = useState('')
 
+  // CTA destination
+  const [ctaDestinations, setCtaDestinations] = useState<CtaDestination[]>([])
+  const [selectedCtaId, setSelectedCtaId] = useState<string>('')
+
   // Step 3: Generation
   const [generationProgress, setGenerationProgress] = useState(0)
+
+  useEffect(() => {
+    fetch('/api/cta-destinations')
+      .then(r => r.json())
+      .then(data => {
+        setCtaDestinations(data)
+        if (data.length > 0) setSelectedCtaId(data[0].id)
+      })
+      .catch(() => {})
+  }, [])
 
   const cloudinaryCloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || ''
   const cloudinaryUploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || ''
@@ -149,6 +164,16 @@ export default function NewProposalPage() {
     setImages((prev) => prev.filter((img) => img.publicId !== publicId))
   }
 
+  function buildBuyUrl(): string {
+    const dest = ctaDestinations.find(d => d.id === selectedCtaId)
+    if (!dest) return ''
+    if (dest.type === 'whatsapp') {
+      const msg = encodeURIComponent(`Hola, quiero comprar ${productName}`)
+      return `${dest.value}?text=${msg}`
+    }
+    return dest.value
+  }
+
   function canProceedStep2(): boolean {
     return (
       productName.trim().length > 0 &&
@@ -156,7 +181,8 @@ export default function NewProposalPage() {
       !isNaN(parseFloat(price)) &&
       parseFloat(price) >= 0 &&
       images.length > 0 &&
-      !uploadingImage
+      !uploadingImage &&
+      selectedCtaId.length > 0
     )
   }
 
@@ -191,6 +217,7 @@ export default function NewProposalPage() {
           audienceLang,
           description: description.trim() || undefined,
           images: imageData,
+          buyUrl: buildBuyUrl(),
           generateWithAI: true,
         }),
       })
@@ -583,6 +610,98 @@ export default function NewProposalPage() {
                 <p className="text-xs text-text-muted">
                   {images.length}/5 imágenes subidas
                 </p>
+              </div>
+
+              {/* CTA Destination */}
+              <div className="space-y-3 border-t border-white/[0.08] pt-6">
+                <label className="text-sm font-semibold text-text-secondary">
+                  ¿A dónde mandamos a tus clientes cuando quieran comprar?
+                </label>
+
+                {ctaDestinations.length === 0 ? (
+                  <div className="rounded-xl border border-orange-500/20 bg-orange-500/5 p-4 flex gap-3 items-start">
+                    <AlertCircle className="h-4 w-4 text-orange-400 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-sm text-orange-300 font-medium">Sin destinos configurados</p>
+                      <p className="text-xs text-orange-400/70 mt-1">
+                        Ve al dashboard y agrega tu WhatsApp o link de pago antes de crear una landing.
+                      </p>
+                      <a
+                        href="/dashboard"
+                        target="_blank"
+                        className="inline-flex items-center gap-1 text-xs text-orange-300 hover:text-orange-200 mt-2 transition-colors"
+                      >
+                        <ExternalLink className="h-3 w-3" />
+                        Ir al dashboard
+                      </a>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {/* WhatsApp group */}
+                    {ctaDestinations.filter(d => d.type === 'whatsapp').length > 0 && (
+                      <div>
+                        <p className="text-xs font-semibold text-green-400 flex items-center gap-1 mb-2">
+                          <MessageCircle className="h-3 w-3" /> WhatsApp
+                        </p>
+                        <div className="space-y-1">
+                          {ctaDestinations.filter(d => d.type === 'whatsapp').map(d => {
+                            const label = d.name || (d.value.match(/wa\.me\/\+?(\d+)/)?.[1] ? `+${d.value.match(/wa\.me\/\+?(\d+)/)?.[1]}` : d.value)
+                            const sub = d.name ? (d.value.match(/wa\.me\/\+?(\d+)/)?.[1] ? `+${d.value.match(/wa\.me\/\+?(\d+)/)?.[1]}` : '') : ''
+                            return (
+                              <button
+                                key={d.id}
+                                type="button"
+                                onClick={() => setSelectedCtaId(d.id)}
+                                className={`w-full text-left rounded-lg border px-4 py-3 transition-all ${
+                                  selectedCtaId === d.id
+                                    ? 'border-accent bg-accent/10'
+                                    : 'border-white/[0.08] hover:border-white/[0.15]'
+                                }`}
+                              >
+                                <span className="text-sm font-medium text-text-primary">{label}</span>
+                                {sub && <span className="text-xs text-text-muted ml-2">{sub}</span>}
+                                {selectedCtaId === d.id && <Check className="h-4 w-4 text-accent float-right mt-0.5" />}
+                              </button>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Link group */}
+                    {ctaDestinations.filter(d => d.type === 'link').length > 0 && (
+                      <div className={ctaDestinations.filter(d => d.type === 'whatsapp').length > 0 ? 'mt-4' : ''}>
+                        <p className="text-xs font-semibold text-blue-400 flex items-center gap-1 mb-2">
+                          <Link className="h-3 w-3" /> Links de pago
+                        </p>
+                        <div className="space-y-1">
+                          {ctaDestinations.filter(d => d.type === 'link').map(d => {
+                            let sub = ''
+                            try { sub = new URL(d.value).hostname } catch {}
+                            const label = d.name || sub || d.value
+                            return (
+                              <button
+                                key={d.id}
+                                type="button"
+                                onClick={() => setSelectedCtaId(d.id)}
+                                className={`w-full text-left rounded-lg border px-4 py-3 transition-all ${
+                                  selectedCtaId === d.id
+                                    ? 'border-accent bg-accent/10'
+                                    : 'border-white/[0.08] hover:border-white/[0.15]'
+                                }`}
+                              >
+                                <span className="text-sm font-medium text-text-primary">{label}</span>
+                                {d.name && sub && <span className="text-xs text-text-muted ml-2">{sub}</span>}
+                                {selectedCtaId === d.id && <Check className="h-4 w-4 text-accent float-right mt-0.5" />}
+                              </button>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Description */}

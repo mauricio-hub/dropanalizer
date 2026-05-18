@@ -13,6 +13,7 @@ interface MinimalistTemplateProps {
     template?: string
     createdAt: string
     images?: { url: string; order: number }[]
+    buyUrl?: string
   }
   version: {
     id: string
@@ -78,6 +79,13 @@ export default function MinimalistTemplate({ proposal, version }: MinimalistTemp
     trackClick(version.id, section)
   }
 
+  const handleBuy = (section: string) => {
+    trackClick(version.id, section)
+    if (proposal.buyUrl) {
+      window.open(proposal.buyUrl, '_blank', 'noopener,noreferrer')
+    }
+  }
+
   return (
     <div className="min-h-screen bg-white text-gray-900 font-sans">
       {/* Hero */}
@@ -97,7 +105,7 @@ export default function MinimalistTemplate({ proposal, version }: MinimalistTemp
                 {t.heroCraft}
               </p>
               <button
-                onClick={() => handleSectionClick('hero-cta')}
+                onClick={() => handleBuy('hero-cta')}
                 className="bg-gray-900 text-white px-8 py-4 hover:bg-gray-800 transition-colors font-medium flex items-center gap-2"
               >
                 {t.shopNow}
@@ -173,7 +181,7 @@ export default function MinimalistTemplate({ proposal, version }: MinimalistTemp
             )}
           </div>
           <button
-            onClick={() => handleSectionClick('pricing-cta')}
+            onClick={() => handleBuy('pricing-cta')}
             className="bg-gray-900 text-white px-8 py-6 text-lg hover:bg-gray-800 transition-colors w-full font-medium"
           >
             {t.addToCart}

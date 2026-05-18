@@ -8,7 +8,8 @@ import Container from '@/components/ui/Container'
 import PageHeader from '@/components/ui/PageHeader'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
-import { FileText, Plus, ExternalLink } from 'lucide-react'
+import CtaDestinations from '@/components/CtaDestinations'
+import { Plus, ExternalLink, MessageCircle, Link as LinkIcon, AlertCircle } from 'lucide-react'
 
 interface ProposalWithVersions {
   id: string
@@ -16,7 +17,39 @@ interface ProposalWithVersions {
   description?: string
   status: string
   createdAt: string
+  buyUrl?: string
   versions: Array<{ id: string }>
+}
+
+function CtaBadge({ buyUrl }: { buyUrl?: string }) {
+  if (!buyUrl) {
+    return (
+      <span className="inline-flex items-center gap-1 text-xs text-orange-400">
+        <AlertCircle className="h-3 w-3" />
+        Sin destino
+      </span>
+    )
+  }
+
+  const isWA = buyUrl.includes('wa.me')
+  let label = ''
+
+  if (isWA) {
+    const match = buyUrl.match(/wa\.me\/\+?(\d+)/)
+    label = match ? `+${match[1]}` : 'WhatsApp'
+  } else {
+    try { label = new URL(buyUrl).hostname } catch { label = buyUrl }
+  }
+
+  return (
+    <span className="inline-flex items-center gap-1 text-xs text-text-muted">
+      {isWA
+        ? <MessageCircle className="h-3 w-3 text-green-400 flex-shrink-0" />
+        : <LinkIcon className="h-3 w-3 text-blue-400 flex-shrink-0" />
+      }
+      <span className="truncate max-w-[120px]">{label}</span>
+    </span>
+  )
 }
 
 export default function DashboardPage() {
@@ -40,16 +73,11 @@ export default function DashboardPage() {
         setLoading(false)
       }
     }
-
     loadProposals()
   }, [])
 
-  // Re-render when language changes
   useEffect(() => {
-    const handleLanguageChange = () => {
-      setRerender(prev => prev + 1)
-    }
-
+    const handleLanguageChange = () => setRerender(prev => prev + 1)
     window.addEventListener('PROPLY_LANGUAGE_CHANGE', handleLanguageChange)
     return () => window.removeEventListener('PROPLY_LANGUAGE_CHANGE', handleLanguageChange)
   }, [])
@@ -57,7 +85,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-background py-12 flex items-center justify-center">
-        <p className="text-text-muted">Loading...</p>
+        <p className="text-text-muted">Cargando...</p>
       </div>
     )
   }
@@ -78,14 +106,21 @@ export default function DashboardPage() {
           }
         />
 
-        <Card className="mt-8">
+        {/* CTA Destinations */}
+        <div className="mt-8">
+          <CtaDestinations />
+        </div>
+
+        {/* Proposals Table */}
+        <Card className="mt-6">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/[0.06]">
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-text-secondary">{t.dashboard.title || 'Título'}</th>
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-text-secondary">{t.dashboard.status}</th>
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-text-secondary">{t.dashboard.created}</th>
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-text-secondary">Producto</th>
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-text-secondary">Estado</th>
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-text-secondary">Destino CTA</th>
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-text-secondary">Creado</th>
                   <th className="text-right px-6 py-3 text-xs font-semibold text-text-secondary">Acciones</th>
                 </tr>
               </thead>
@@ -104,15 +139,16 @@ export default function DashboardPage() {
                           }`}>
                             <span className={`h-1.5 w-1.5 rounded-full ${
                               p.status === 'published' ? 'bg-accent' : 'bg-white/30'
-                            }`}></span>
+                            }`} />
                             {p.status === 'published' ? t.dashboard.published : t.dashboard.draft}
                           </span>
                         </td>
+                        <td className="px-6 py-4">
+                          <CtaBadge buyUrl={p.buyUrl} />
+                        </td>
                         <td className="px-6 py-4 text-sm text-text-muted">
                           {new Date(p.createdAt).toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric',
+                            month: 'short', day: 'numeric', year: 'numeric',
                           })}
                         </td>
                         <td className="px-6 py-4 text-right">
@@ -148,7 +184,7 @@ export default function DashboardPage() {
                   })
                 ) : (
                   <tr>
-                    <td colSpan={4} className="px-6 py-12 text-center text-sm text-text-muted">
+                    <td colSpan={5} className="px-6 py-12 text-center text-sm text-text-muted">
                       {t.dashboard.noProposals}
                     </td>
                   </tr>

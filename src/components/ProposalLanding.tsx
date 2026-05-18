@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Check, ShoppingCart } from 'lucide-react'
 import { trackView, trackClick, trackTimeSpent } from '@/lib/tracking'
 import type { DropshippingContent, ProposalContent } from '@/types'
@@ -15,6 +15,7 @@ interface ProposalLandingProps {
     template?: string
     createdAt: string
     images?: { url: string; order: number }[]
+    buyUrl?: string
   }
   version: {
     id: string

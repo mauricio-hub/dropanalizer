@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json()
-    const { productName, price, currency, template, landingStyle = 'luxury', audienceLang = 'es', description, generateWithAI = true, images = [], selectedCatalogItemIds = [] } = body
+    const { productName, price, currency, template, landingStyle = 'luxury', audienceLang = 'es', description, generateWithAI = true, images = [], selectedCatalogItemIds = [], buyUrl } = body
 
     // Support both new dropshipping flow and legacy brief flow
     const isDropshippingFlow = productName && price !== undefined && currency && template
@@ -106,6 +106,7 @@ export async function POST(req: Request) {
       status: 'draft' as const,
       tenantId: user.id,
       userId: user.id,
+      buyUrl: buyUrl || null,
     }
 
     const proposal = await prisma.proposal.create({

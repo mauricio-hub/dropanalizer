@@ -127,9 +127,6 @@ export default function LanguageAndNavigation({
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Topbar */}
         <Topbar
-          left={
-            <div className="text-sm font-medium text-text-primary">Pro<span className="text-accent">ply</span></div>
-          }
           right={<UserMenuBarContent />}
         />
 
