@@ -248,8 +248,8 @@ export default function EditProposalPage() {
         setError(data.error || 'Error al publicar')
         return
       }
-      const data = await res.json()
-      router.push(`/p/${data.publicUrl}`)
+      setNeverPublished(false)
+      setIsDraftFromPublished(false)
     } catch {
       setError('Error al publicar')
     } finally {
