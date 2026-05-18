@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Button from '@/components/ui/Button'
-import { Trash2, Plus, ChevronDown, Check, Cloud, CloudOff, Loader2, Monitor, Pencil } from 'lucide-react'
+import { Trash2, Plus, ChevronDown, Check, Cloud, CloudOff, Loader2, Monitor, Pencil, GitBranch } from 'lucide-react'
 import type { ProposalContent, DropshippingContent } from '@/types'
 
 interface Version {
@@ -132,6 +132,7 @@ export default function EditProposalPage() {
   const [error, setError] = useState('')
   const [viewMode, setViewMode] = useState<ViewMode>('split')
   const [iframeReady, setIframeReady] = useState(false)
+  const [isDraftFromPublished, setIsDraftFromPublished] = useState(false)
 
   const isDropshipping = content && (content as any).contentType === 'dropshipping'
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -164,9 +165,25 @@ export default function EditProposalPage() {
         if (!res.ok) { setError('Propuesta no encontrada'); return }
         const data = await res.json()
         setProposal(data)
-        if (data.versions?.[0]?.content) {
-          setContent(data.versions[0].content)
-          versionIdRef.current = data.versions[0].id
+
+        const latestVersion = data.versions?.[0]
+        if (!latestVersion) return
+
+        if (latestVersion.isPublished) {
+          // Create a new draft version based on the published one
+          const draftRes = await fetch(`/api/proposals/${proposalId}/versions`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ basedOnVersionId: latestVersion.id }),
+          })
+          if (!draftRes.ok) { setError('Error al crear borrador'); return }
+          const draft = await draftRes.json()
+          setContent(draft.content)
+          versionIdRef.current = draft.id
+          setIsDraftFromPublished(true)
+        } else {
+          setContent(latestVersion.content)
+          versionIdRef.current = latestVersion.id
         }
       } catch {
         setError('Error al cargar la propuesta')
@@ -290,6 +307,16 @@ export default function EditProposalPage() {
       {error && (
         <div className="flex-shrink-0 px-4 py-2 bg-red-500/10 border-b border-red-500/20">
           <p className="text-xs text-red-400">{error}</p>
+        </div>
+      )}
+
+      {isDraftFromPublished && (
+        <div className="flex-shrink-0 flex items-center gap-2 px-4 py-2.5 bg-accent/5 border-b border-accent/20">
+          <GitBranch className="h-3.5 w-3.5 text-accent flex-shrink-0" />
+          <p className="text-xs text-accent">
+            <span className="font-semibold">Nueva versión en borrador.</span>
+            {' '}Tu landing actual sigue activa — solo se reemplaza cuando publiques.
+          </p>
         </div>
       )}
 

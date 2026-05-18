@@ -226,8 +226,13 @@ export default function NewProposalPage() {
 
       if (!res.ok) {
         const data = await res.json()
-        setError(data.error || 'Error al crear landing')
+        if (data.error === 'free_limit_reached') {
+          setError('Alcanzaste el límite de 3 landings del plan gratuito. Elimina una desde el dashboard para crear una nueva.')
+        } else {
+          setError(data.error || 'Error al crear landing')
+        }
         setLoading(false)
+        setStep(2)
         return
       }
 

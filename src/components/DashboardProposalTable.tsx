@@ -1,7 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { AlertCircle, ExternalLink, MessageCircle, Link as LinkIcon } from 'lucide-react'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { AlertCircle, ExternalLink, MessageCircle, Link as LinkIcon, Trash2, Loader2 } from 'lucide-react'
 
 interface Proposal {
   id: string
@@ -42,7 +44,55 @@ function CtaBadge({ buyUrl }: { buyUrl?: string }) {
   )
 }
 
-export default function DashboardProposalTable({ proposals }: { proposals: Proposal[] }) {
+function DeleteButton({ id, title }: { id: string; title: string }) {
+  const router = useRouter()
+  const [confirming, setConfirming] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+
+  async function handleDelete() {
+    setDeleting(true)
+    try {
+      await fetch(`/api/proposals/${id}`, { method: 'DELETE' })
+      router.refresh()
+    } finally {
+      setDeleting(false)
+      setConfirming(false)
+    }
+  }
+
+  if (confirming) {
+    return (
+      <span className="flex items-center gap-1">
+        <span className="text-xs text-text-muted">¿Eliminar?</span>
+        <button
+          onClick={handleDelete}
+          disabled={deleting}
+          className="text-xs text-red-400 hover:text-red-300 py-1 px-2 hover:bg-red-400/10 rounded transition-colors disabled:opacity-50"
+        >
+          {deleting ? <Loader2 className="h-3 w-3 animate-spin" /> : 'Sí'}
+        </button>
+        <button
+          onClick={() => setConfirming(false)}
+          className="text-xs text-text-muted hover:text-text-primary py-1 px-1 transition-colors"
+        >
+          No
+        </button>
+      </span>
+    )
+  }
+
+  return (
+    <button
+      onClick={() => setConfirming(true)}
+      title={`Eliminar "${title}"`}
+      className="p-1.5 text-text-muted hover:text-red-400 hover:bg-red-400/10 rounded transition-colors"
+    >
+      <Trash2 className="h-3.5 w-3.5" />
+    </button>
+  )
+}
+
+export default function DashboardProposalTable({ proposals: initialProposals }: { proposals: Proposal[] }) {
   return (
     <div className="overflow-x-auto">
       <table className="w-full">
@@ -56,8 +106,8 @@ export default function DashboardProposalTable({ proposals }: { proposals: Propo
           </tr>
         </thead>
         <tbody>
-          {proposals.length > 0 ? (
-            proposals.map((p) => {
+          {initialProposals.length > 0 ? (
+            initialProposals.map((p) => {
               const publishedVersion = p.versions[0]
               return (
                 <tr key={p.id} className="border-b border-white/[0.06] hover:bg-white/[0.03] transition-colors">
@@ -83,7 +133,7 @@ export default function DashboardProposalTable({ proposals }: { proposals: Propo
                     })}
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <div className="flex gap-2 justify-end">
+                    <div className="flex gap-1 justify-end items-center">
                       <Link
                         href={`/proposals/${p.id}/edit`}
                         className="text-xs text-accent hover:text-accent-hover transition-colors py-1 px-2 hover:bg-white/5 rounded"
@@ -123,6 +173,9 @@ export default function DashboardProposalTable({ proposals }: { proposals: Propo
                           Ver
                         </span>
                       )}
+                      <div className="ml-1 pl-1 border-l border-white/[0.06]">
+                        <DeleteButton id={p.id} title={p.title} />
+                      </div>
                     </div>
                   </td>
                 </tr>
