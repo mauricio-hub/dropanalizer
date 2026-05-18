@@ -134,6 +134,7 @@ export default function EditProposalPage() {
   const [iframeReady, setIframeReady] = useState(false)
   const [isDraftFromPublished, setIsDraftFromPublished] = useState(false)
   const [neverPublished, setNeverPublished] = useState(false)
+  const [isPublished, setIsPublished] = useState(false)
 
   const isDropshipping = content && (content as any).contentType === 'dropshipping'
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -185,9 +186,13 @@ export default function EditProposalPage() {
         } else {
           setContent(latestVersion.content)
           versionIdRef.current = latestVersion.id
-          // Never been published — show publish nudge
+          // Check if ever published
           const hasPublished = data.versions.some((v: Version) => v.isPublished)
-          if (!hasPublished) setNeverPublished(true)
+          if (!hasPublished) {
+            setNeverPublished(true)
+          } else {
+            setIsPublished(true)
+          }
         }
       } catch {
         setError('Error al cargar la propuesta')
@@ -250,6 +255,7 @@ export default function EditProposalPage() {
       }
       setNeverPublished(false)
       setIsDraftFromPublished(false)
+      setIsPublished(true)
     } catch {
       setError('Error al publicar')
     } finally {
@@ -314,22 +320,37 @@ export default function EditProposalPage() {
         </div>
       )}
 
-      {neverPublished && (
-        <div className="flex-shrink-0 flex items-center justify-between gap-3 px-4 py-2.5 bg-orange-500/10 border-b border-orange-500/20">
+      {(neverPublished || isPublished) && (
+        <div className={`flex-shrink-0 flex items-center justify-between gap-3 px-4 py-2.5 border-b transition-colors ${
+          neverPublished
+            ? 'bg-orange-500/10 border-orange-500/20'
+            : 'bg-green-500/10 border-green-500/20'
+        }`}>
           <div className="flex items-center gap-2 min-w-0">
-            <Rocket className="h-3.5 w-3.5 text-orange-400 flex-shrink-0" />
-            <p className="text-xs text-orange-300 truncate">
-              <span className="font-semibold">Tu landing está en borrador.</span>
-              {' '}Publícala para empezar a recibir visitas y medir resultados.
+            <Rocket className={`h-3.5 w-3.5 flex-shrink-0 ${neverPublished ? 'text-orange-400' : 'text-green-400'}`} />
+            <p className={`text-xs truncate ${neverPublished ? 'text-orange-300' : 'text-green-300'}`}>
+              {neverPublished ? (
+                <>
+                  <span className="font-semibold">Tu landing está en borrador.</span>
+                  {' '}Publícala para empezar a recibir visitas.
+                </>
+              ) : (
+                <>
+                  <span className="font-semibold">¡Ya está publicada!</span>
+                  {' '}Copia el link desde el dashboard y comparte en tus anuncios.
+                </>
+              )}
             </p>
           </div>
-          <button
-            onClick={handlePublish}
-            disabled={publishing || saveState === 'saving'}
-            className="flex-shrink-0 text-xs font-semibold text-orange-300 hover:text-orange-200 underline underline-offset-2 transition-colors disabled:opacity-50"
-          >
-            Publicar ahora
-          </button>
+          {neverPublished && (
+            <button
+              onClick={handlePublish}
+              disabled={publishing || saveState === 'saving'}
+              className="flex-shrink-0 text-xs font-semibold text-orange-300 hover:text-orange-200 underline underline-offset-2 transition-colors disabled:opacity-50"
+            >
+              Publicar ahora
+            </button>
+          )}
         </div>
       )}
 
