@@ -315,7 +315,7 @@ export default function EditProposalPage() {
   return (
     <div className="h-screen flex flex-col bg-background overflow-hidden">
       {/* ── Top bar ── */}
-      <div className="flex-shrink-0 flex items-center justify-between px-4 py-3 border-b border-white/[0.06] bg-background/95 backdrop-blur z-10">
+      <div className="flex-shrink-0 flex items-center justify-between px-4 py-3 border-b border-white/[0.06] bg-background/95 backdrop-blur">
         <div className="flex items-center gap-4 min-w-0">
           <button
             onClick={() => router.push('/dashboard')}
