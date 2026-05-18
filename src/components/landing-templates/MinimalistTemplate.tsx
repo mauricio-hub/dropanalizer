@@ -116,7 +116,7 @@ export default function MinimalistTemplate({ proposal, version }: MinimalistTemp
 
           {firstImage && (
             <div className="hidden md:block relative h-96">
-              <img src={firstImage.url} alt={proposal.title} className="w-full h-full object-cover" />
+              <img src={firstImage.url} alt={proposal.title} className="w-full h-full object-cover" fetchPriority="high" decoding="async" />
             </div>
           )}
         </div>
@@ -146,7 +146,7 @@ export default function MinimalistTemplate({ proposal, version }: MinimalistTemp
             <h2 className="text-5xl font-light text-center mb-20">{t.gallery}</h2>
             <div className="grid md:grid-cols-3 gap-8">
               {images.map((img, idx) => (
-                <img key={idx} src={img.url} alt={`Product ${idx + 1}`} className="w-full h-96 object-cover hover:opacity-80 transition-opacity" />
+                <img key={idx} src={img.url} alt={`Product ${idx + 1}`} className="w-full h-96 object-cover hover:opacity-80 transition-opacity" loading="lazy" decoding="async" />
               ))}
             </div>
           </div>
