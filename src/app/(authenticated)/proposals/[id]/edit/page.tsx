@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Button from '@/components/ui/Button'
-import { Trash2, Plus, ChevronDown, Check, Cloud, CloudOff, Loader2, Monitor, Pencil, GitBranch, Rocket } from 'lucide-react'
+import { Trash2, Plus, ChevronDown, Check, Cloud, CloudOff, Loader2, Monitor, Pencil, GitBranch, Rocket, Copy, ExternalLink, X } from 'lucide-react'
 import type { ProposalContent, DropshippingContent } from '@/types'
 
 interface Version {
@@ -135,6 +135,9 @@ export default function EditProposalPage() {
   const [isDraftFromPublished, setIsDraftFromPublished] = useState(false)
   const [neverPublished, setNeverPublished] = useState(false)
   const [isPublished, setIsPublished] = useState(false)
+  const [showPublishToast, setShowPublishToast] = useState(false)
+  const [linkCopied, setLinkCopied] = useState(false)
+  const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const isDropshipping = content && (content as any).contentType === 'dropshipping'
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -256,6 +259,9 @@ export default function EditProposalPage() {
       setNeverPublished(false)
       setIsDraftFromPublished(false)
       setIsPublished(true)
+      setShowPublishToast(true)
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current)
+      toastTimerRef.current = setTimeout(() => setShowPublishToast(false), 8000)
     } catch {
       setError('Error al publicar')
     } finally {
@@ -410,6 +416,62 @@ export default function EditProposalPage() {
           </div>
         )}
       </div>
+
+      {/* ── Publish toast ── */}
+      {showPublishToast && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-in slide-in-from-bottom-4 duration-300">
+          <div className="flex items-center gap-4 bg-[#0f1a0f] border border-accent/30 rounded-2xl px-5 py-4 shadow-2xl shadow-black/40 min-w-[340px] max-w-[480px]">
+            {/* Left: icon + text */}
+            <div className="flex items-center gap-3 min-w-0 flex-1">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent/20 flex-shrink-0">
+                <Rocket className="h-4 w-4 text-accent" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-white">¡Landing publicada!</p>
+                <p className="text-xs text-white/50 truncate mt-0.5">
+                  {typeof window !== 'undefined' ? `${window.location.origin}/p/${proposalId}` : ''}
+                </p>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <button
+                onClick={async () => {
+                  const url = `${window.location.origin}/p/${proposalId}`
+                  await navigator.clipboard.writeText(url)
+                  setLinkCopied(true)
+                  setTimeout(() => setLinkCopied(false), 2000)
+                }}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                  linkCopied
+                    ? 'bg-accent text-background'
+                    : 'bg-accent/20 text-accent hover:bg-accent/30'
+                }`}
+              >
+                {linkCopied
+                  ? <><Check className="h-3 w-3" /> Copiado</>
+                  : <><Copy className="h-3 w-3" /> Copiar</>
+                }
+              </button>
+              <a
+                href={`/p/${proposalId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center h-7 w-7 rounded-lg bg-white/5 text-white/40 hover:text-white hover:bg-white/10 transition-colors"
+              >
+                <ExternalLink className="h-3.5 w-3.5" />
+              </a>
+              <button
+                onClick={() => setShowPublishToast(false)}
+                className="flex items-center justify-center h-7 w-7 rounded-lg text-white/30 hover:text-white/60 transition-colors"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
