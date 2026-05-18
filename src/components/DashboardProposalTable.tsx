@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { AlertCircle, ExternalLink, MessageCircle, Link as LinkIcon, Trash2, Loader2 } from 'lucide-react'
+import { AlertCircle, ExternalLink, MessageCircle, Link as LinkIcon, Trash2, Loader2, Copy, Check } from 'lucide-react'
 
 interface Proposal {
   id: string
@@ -41,6 +41,31 @@ function CtaBadge({ buyUrl }: { buyUrl?: string }) {
       }
       <span className="truncate max-w-[120px]">{label}</span>
     </span>
+  )
+}
+
+function CopyLinkButton({ id }: { id: string }) {
+  const [copied, setCopied] = useState(false)
+
+  async function handleCopy() {
+    const url = `${window.location.origin}/p/${id}`
+    await navigator.clipboard.writeText(url)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  return (
+    <button
+      onClick={handleCopy}
+      title="Copiar link de la landing"
+      className={`p-1.5 rounded transition-colors ${
+        copied
+          ? 'text-green-400 bg-green-400/10'
+          : 'text-text-muted hover:text-accent hover:bg-accent/10'
+      }`}
+    >
+      {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+    </button>
   )
 }
 
@@ -173,7 +198,10 @@ export default function DashboardProposalTable({ proposals: initialProposals }: 
                           Ver
                         </span>
                       )}
-                      <div className="ml-1 pl-1 border-l border-white/[0.06]">
+                      <div className="ml-1 pl-1 border-l border-white/[0.06] flex items-center gap-0.5">
+                        {p.status === 'published' && (
+                          <CopyLinkButton id={p.id} />
+                        )}
                         <DeleteButton id={p.id} title={p.title} />
                       </div>
                     </div>
