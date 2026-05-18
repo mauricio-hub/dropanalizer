@@ -29,7 +29,7 @@ function UserMenuBarContent() {
           <Globe className="h-4 w-4" />
           <span className="hidden sm:inline">{language === 'es' ? 'Español' : 'English'}</span>
         </button>
-        <div className="absolute right-0 mt-2 w-32 bg-surface border border-white/[0.08] rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+        <div className="absolute right-0 mt-2 w-32 bg-surface border border-white/[0.08] rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-[200]">
           <button
             onClick={() => setLanguage('es')}
             className={`w-full text-left px-4 py-2 text-xs font-medium rounded-t-lg transition-colors ${
