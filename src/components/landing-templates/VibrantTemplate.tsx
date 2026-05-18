@@ -122,7 +122,7 @@ export default function VibrantTemplate({ proposal, version }: VibrantTemplatePr
           </div>
           {firstImage && (
             <div className="hidden md:flex justify-center items-center">
-              <img src={firstImage.url} alt={proposal.title} className="w-full h-auto drop-shadow-2xl" />
+              <img src={firstImage.url} alt={proposal.title} className="w-full h-auto drop-shadow-2xl" fetchPriority="high" decoding="async" />
             </div>
           )}
         </div>
@@ -156,7 +156,7 @@ export default function VibrantTemplate({ proposal, version }: VibrantTemplatePr
             <div className="grid md:grid-cols-3 gap-6">
               {images.map((img, idx) => (
                 <div key={idx} className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all">
-                  <img src={img.url} alt={`Product ${idx + 1}`} className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-300" />
+                  <img src={img.url} alt={`Product ${idx + 1}`} className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-300" loading="lazy" decoding="async" />
                 </div>
               ))}
             </div>

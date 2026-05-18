@@ -146,6 +146,8 @@ export default function DropshippingLanding({ proposal, version }: DropshippingL
                   src={firstImage.url}
                   alt={proposal.title}
                   className="w-full h-auto rounded-2xl shadow-2xl"
+                  fetchPriority="high"
+                  decoding="async"
                 />
               </div>
             )}
@@ -194,6 +196,8 @@ export default function DropshippingLanding({ proposal, version }: DropshippingL
                     src={img.url}
                     alt={`Imagen ${idx + 1}`}
                     className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
               ))}

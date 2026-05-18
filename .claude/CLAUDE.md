@@ -334,3 +334,52 @@ When generating code:
 - Keep components modular and simple
 - Ensure proposals render correctly as landing pages
 - Prioritize performance and usability
+
+---
+
+## Development Workflow: Spec-Driven Development
+
+Before writing any code for a non-trivial task, follow this process:
+
+### Step 1 — Write the Spec
+
+Before touching any file, produce a short spec covering:
+
+- **What:** what the feature or fix does in one sentence
+- **Why:** why it's needed (user problem or bug)
+- **Files touched:** which files will be created or modified
+- **Acceptance criteria:** bullet list of conditions that mean "done"
+- **Out of scope:** what this change deliberately does NOT do
+
+Present the spec to the user. Wait for confirmation before proceeding.
+
+### Step 2 — Code
+
+Implement only what the spec describes. No extra features, no cleanup beyond the task.
+
+### Step 3 — Tests
+
+If the change affects logic (API routes, utility functions, data transforms), write or update tests. If the project has no test runner configured, note it explicitly instead of skipping silently.
+
+### Step 4 — Commit
+
+Stage only the files related to the task. Write a commit message that explains the *why*, not the *what*. Format:
+
+```
+<type>: <short description>
+
+<optional body if non-obvious>
+
+Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+```
+
+Types: `feat`, `fix`, `perf`, `refactor`, `docs`, `test`
+
+### When to skip the spec
+
+Skip Step 1 for:
+- Single-file typo or copy fixes
+- Trivial style/color adjustments
+- Tasks the user explicitly marks as "just do it"
+
+For everything else, spec first.

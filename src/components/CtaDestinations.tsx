@@ -357,7 +357,18 @@ export default function CtaDestinations() {
         </div>
 
         {loading ? (
-          <p className="text-sm text-text-muted">Cargando...</p>
+          <div className="space-y-6 animate-pulse">
+            <div className="space-y-2">
+              <div className="h-4 w-24 bg-white/[0.06] rounded" />
+              <div className="h-10 bg-white/[0.04] rounded-lg" />
+              <div className="h-10 bg-white/[0.04] rounded-lg" />
+            </div>
+            <div className="border-t border-white/[0.06]" />
+            <div className="space-y-2">
+              <div className="h-4 w-28 bg-white/[0.06] rounded" />
+              <div className="h-10 bg-white/[0.04] rounded-lg" />
+            </div>
+          </div>
         ) : (
           <div className="space-y-6">
             <DestinationGroup
