@@ -70,6 +70,10 @@ export const translations = {
       step3Generating: 'Generando tu landing page...',
       takingSeconds: 'Esto toma unos segundos...',
       tryAgain: 'Intentar de nuevo',
+      generationStep1: 'Analizando tu producto...',
+      generationStep2: 'Creando beneficios...',
+      generationStep3: 'Optimizando para conversión...',
+      generationStep4: 'Casi listo...',
     },
     // Edit Proposal / Landing
     editProposal: {
@@ -260,6 +264,10 @@ export const translations = {
       step3Generating: 'Generating your landing page...',
       takingSeconds: 'This takes a few seconds...',
       tryAgain: 'Try again',
+      generationStep1: 'Analyzing your product...',
+      generationStep2: 'Creating benefits...',
+      generationStep3: 'Optimizing for conversion...',
+      generationStep4: 'Almost ready...',
     },
     // Edit Proposal / Landing
     editProposal: {
