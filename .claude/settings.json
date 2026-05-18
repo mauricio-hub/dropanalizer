@@ -49,7 +49,15 @@
       "PowerShell(git add \"src/lib/i18n.ts\" \"src/components/DashboardProposalTable.tsx\" \"src/components/DashboardEmptyState.tsx\" \"src/app/\\(authenticated\\)/dashboard/page.tsx\")",
       "PowerShell(git commit -m \"feat: full i18n support for dashboard with translation-aware table and empty state\")",
       "PowerShell(git add \"src/lib/i18n.ts\" \"src/components/CtaDestinations.tsx\" \"src/components/DashboardHeader.tsx\" \"src/app/\\(authenticated\\)/dashboard/page.tsx\")",
-      "PowerShell(git commit -m \"feat: full i18n for dashboard header and CTA destinations component\")"
+      "PowerShell(git commit -m \"feat: full i18n for dashboard header and CTA destinations component\")",
+      "PowerShell(git add \"src/lib/i18n.ts\" \"src/app/\\(authenticated\\)/proposals/new/page.tsx\")",
+      "PowerShell(git commit -m \"fix: translate generation steps and loading texts in new landing wizard\")",
+      "PowerShell(git commit -m \"feat: publish success toast with copy link and open in new tab actions\")",
+      "PowerShell(git commit -m \"fix: replace double banner with single draft banner + compact link bar when published\")",
+      "PowerShell(git commit -m \"fix: simplify published bar to status dot + copy + ver icons only\")",
+      "PowerShell(git add \"src/components/LanguageAndNavigation.tsx\")",
+      "PowerShell(git commit -m \"fix: language dropdown z-index above editor topbar backdrop-blur stacking context\")",
+      "PowerShell(git commit -m \"fix: remove z-10 from editor topbar so language dropdown renders above it\")"
     ],
     "additionalDirectories": [
       "c:\\Users\\mgdev\\Desktop\\projects\\proply\\src\\app\\api\\proposals\\[id]\\versions\\[versionId]\\publish",

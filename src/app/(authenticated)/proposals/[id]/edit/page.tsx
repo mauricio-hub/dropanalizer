@@ -5,6 +5,8 @@ import { useRouter, useParams } from 'next/navigation'
 import Button from '@/components/ui/Button'
 import { Trash2, Plus, ChevronDown, Check, Cloud, CloudOff, Loader2, Monitor, Pencil, GitBranch, Rocket, Copy, ExternalLink, X } from 'lucide-react'
 import type { ProposalContent, DropshippingContent } from '@/types'
+import { useLanguage } from '@/hooks/useLanguage'
+import { getTranslation } from '@/lib/i18n'
 
 interface Version {
   id: string
@@ -67,25 +69,25 @@ function Section({
 
 // ── Save indicator ────────────────────────────────────────────────────────────
 
-function SaveIndicator({ state }: { state: SaveState }) {
+function SaveIndicator({ state, t }: { state: SaveState; t: ReturnType<typeof getTranslation> }) {
   if (state === 'saving') return (
     <span className="flex items-center gap-1.5 text-xs text-text-muted">
-      <Loader2 className="h-3 w-3 animate-spin" />Guardando...
+      <Loader2 className="h-3 w-3 animate-spin" />{t.editProposal.saving}
     </span>
   )
   if (state === 'saved') return (
     <span className="flex items-center gap-1.5 text-xs text-accent">
-      <Cloud className="h-3 w-3" />Guardado
+      <Cloud className="h-3 w-3" />{t.editProposal.saved}
     </span>
   )
   if (state === 'error') return (
     <span className="flex items-center gap-1.5 text-xs text-red-400">
-      <CloudOff className="h-3 w-3" />Error al guardar
+      <CloudOff className="h-3 w-3" />{t.editProposal.saveError}
     </span>
   )
   return (
     <span className="flex items-center gap-1.5 text-xs text-orange-400">
-      <span className="h-1.5 w-1.5 rounded-full bg-orange-400" />Cambios sin guardar
+      <span className="h-1.5 w-1.5 rounded-full bg-orange-400" />{t.editProposal.unsaved}
     </span>
   )
 }
@@ -121,6 +123,8 @@ function ViewToggle({ mode, onChange }: { mode: ViewMode; onChange: (m: ViewMode
 
 function CopyLinkInline({ proposalId }: { proposalId: string }) {
   const [copied, setCopied] = useState(false)
+  const { language } = useLanguage()
+  const t = getTranslation(language)
   return (
     <button
       onClick={async () => {
@@ -128,7 +132,7 @@ function CopyLinkInline({ proposalId }: { proposalId: string }) {
         setCopied(true)
         setTimeout(() => setCopied(false), 2000)
       }}
-      title="Copiar link"
+      title={t.editProposal.copyLink}
       className={`flex items-center justify-center h-6 w-6 rounded transition-colors ${
         copied ? 'text-accent' : 'text-text-muted hover:text-accent'
       }`}
@@ -144,6 +148,8 @@ export default function EditProposalPage() {
   const router = useRouter()
   const params = useParams()
   const proposalId = params.id as string
+  const { language } = useLanguage()
+  const t = getTranslation(language)
 
   const [proposal, setProposal] = useState<Proposal | null>(null)
   const [content, setContent] = useState<ProposalContent | DropshippingContent | null>(null)
@@ -188,7 +194,7 @@ export default function EditProposalPage() {
     async function loadProposal() {
       try {
         const res = await fetch(`/api/proposals/${proposalId}`)
-        if (!res.ok) { setError('Propuesta no encontrada'); return }
+        if (!res.ok) { setError(t.editProposal.notFound); return }
         const data = await res.json()
         setProposal(data)
 
@@ -202,7 +208,7 @@ export default function EditProposalPage() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ basedOnVersionId: latestVersion.id }),
           })
-          if (!draftRes.ok) { setError('Error al crear borrador'); return }
+          if (!draftRes.ok) { setError(t.editProposal.errorDraft); return }
           const draft = await draftRes.json()
           setContent(draft.content)
           versionIdRef.current = draft.id
@@ -219,7 +225,7 @@ export default function EditProposalPage() {
           }
         }
       } catch {
-        setError('Error al cargar la propuesta')
+        setError(t.editProposal.errorLoad)
       } finally {
         setLoading(false)
       }
@@ -274,7 +280,7 @@ export default function EditProposalPage() {
       )
       if (!res.ok) {
         const data = await res.json()
-        setError(data.error || 'Error al publicar')
+        setError(data.error || t.editProposal.errorPublish)
         return
       }
       setNeverPublished(false)
@@ -284,7 +290,7 @@ export default function EditProposalPage() {
       if (toastTimerRef.current) clearTimeout(toastTimerRef.current)
       toastTimerRef.current = setTimeout(() => setShowPublishToast(false), 8000)
     } catch {
-      setError('Error al publicar')
+      setError(t.editProposal.errorPublish)
     } finally {
       setPublishing(false)
     }
@@ -295,7 +301,7 @@ export default function EditProposalPage() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="h-6 w-6 animate-spin text-accent" />
-          <p className="text-sm text-text-muted">Cargando...</p>
+          <p className="text-sm text-text-muted">{t.editProposal.loading}</p>
         </div>
       </div>
     )
@@ -304,8 +310,8 @@ export default function EditProposalPage() {
   if (!proposal || !content) {
     return (
       <div className="min-h-screen bg-background py-12 px-6">
-        <p className="text-red-400">{error || 'Propuesta no encontrada'}</p>
-        <Button onClick={() => router.push('/dashboard')} className="mt-4">Volver</Button>
+        <p className="text-red-400">{error || t.editProposal.notFound}</p>
+        <Button onClick={() => router.push('/dashboard')} className="mt-4">{t.editProposal.backToDashboard}</Button>
       </div>
     )
   }
@@ -321,14 +327,14 @@ export default function EditProposalPage() {
             onClick={() => router.push('/dashboard')}
             className="text-xs text-text-muted hover:text-text-primary transition-colors flex-shrink-0"
           >
-            ← Dashboard
+            {t.editProposal.backToDashboard}
           </button>
           <div className="hidden sm:block h-4 w-px bg-white/[0.08]" />
           <h1 className="text-sm font-semibold text-text-primary truncate">{proposal.title}</h1>
         </div>
 
         <div className="flex items-center gap-3 flex-shrink-0">
-          <SaveIndicator state={saveState} />
+          <SaveIndicator state={saveState} t={t} />
           <ViewToggle mode={viewMode} onChange={setViewMode} />
           <Button
             onClick={handlePublish}
@@ -336,7 +342,7 @@ export default function EditProposalPage() {
             variant="primary"
             className="text-xs py-1.5 px-4"
           >
-            {publishing ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Publicando...</> : 'Publicar'}
+            {publishing ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> {t.editProposal.publishing}</> : t.editProposal.publish}
           </Button>
         </div>
       </div>
@@ -352,8 +358,8 @@ export default function EditProposalPage() {
           <div className="flex items-center gap-2 min-w-0">
             <Rocket className="h-3.5 w-3.5 text-orange-400 flex-shrink-0" />
             <p className="text-xs text-orange-300 truncate">
-              <span className="font-semibold">Tu landing está en borrador.</span>
-              {' '}Publícala para empezar a recibir visitas.
+              <span className="font-semibold">{t.editProposal.draftBanner}</span>
+              {' '}{t.editProposal.draftBannerSub}
             </p>
           </div>
           <button
@@ -361,7 +367,7 @@ export default function EditProposalPage() {
             disabled={publishing || saveState === 'saving'}
             className="flex-shrink-0 text-xs font-semibold text-orange-300 hover:text-orange-200 underline underline-offset-2 transition-colors disabled:opacity-50"
           >
-            Publicar ahora
+            {t.editProposal.publishNow}
           </button>
         </div>
       )}
@@ -369,7 +375,7 @@ export default function EditProposalPage() {
       {isPublished && (
         <div className="flex-shrink-0 flex items-center gap-2 px-4 py-2 border-b border-white/[0.06] bg-white/[0.02]">
           <span className="h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
-          <span className="text-xs text-accent font-medium">Publicado</span>
+          <span className="text-xs text-accent font-medium">{t.editProposal.published}</span>
           <div className="flex items-center gap-1 ml-1">
             <CopyLinkInline proposalId={proposalId} />
             <a
@@ -377,10 +383,10 @@ export default function EditProposalPage() {
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1 text-xs text-text-muted hover:text-accent transition-colors px-1.5 py-1 rounded hover:bg-white/5"
-              title="Ver landing"
+              title={t.editProposal.view}
             >
               <ExternalLink className="h-3 w-3" />
-              Ver
+              {t.editProposal.view}
             </a>
           </div>
         </div>
@@ -390,8 +396,8 @@ export default function EditProposalPage() {
         <div className="flex-shrink-0 flex items-center gap-2 px-4 py-2.5 bg-accent/5 border-b border-accent/20">
           <GitBranch className="h-3.5 w-3.5 text-accent flex-shrink-0" />
           <p className="text-xs text-accent">
-            <span className="font-semibold">Nueva versión en borrador.</span>
-            {' '}Tu landing actual sigue activa — solo se reemplaza cuando publiques.
+            <span className="font-semibold">{t.editProposal.draftBanner}</span>
+            {' '}{t.editProposal.draftFromPublishedSub}
           </p>
         </div>
       )}
@@ -424,10 +430,10 @@ export default function EditProposalPage() {
         {isSplit && (
           <div className="flex-1 flex flex-col overflow-hidden bg-gray-100">
             <div className="flex-shrink-0 flex items-center justify-between px-4 py-2 bg-white border-b border-gray-200">
-              <span className="text-xs font-medium text-gray-500">Vista previa</span>
+              <span className="text-xs font-medium text-gray-500">{t.editProposal.previewPanel}</span>
               {!iframeReady && (
                 <span className="flex items-center gap-1.5 text-xs text-gray-400">
-                  <Loader2 className="h-3 w-3 animate-spin" />Cargando preview...
+                  <Loader2 className="h-3 w-3 animate-spin" />{t.editProposal.loadingPreview}
                 </span>
               )}
             </div>
@@ -453,7 +459,7 @@ export default function EditProposalPage() {
                 <Rocket className="h-4 w-4 text-accent" />
               </div>
               <div className="min-w-0">
-                <p className="text-sm font-semibold text-white">¡Landing publicada!</p>
+                <p className="text-sm font-semibold text-white">{t.editProposal.publishedToast}</p>
                 <p className="text-xs text-white/50 truncate mt-0.5">
                   {typeof window !== 'undefined' ? `${window.location.origin}/p/${proposalId}` : ''}
                 </p>
@@ -476,8 +482,8 @@ export default function EditProposalPage() {
                 }`}
               >
                 {linkCopied
-                  ? <><Check className="h-3 w-3" /> Copiado</>
-                  : <><Copy className="h-3 w-3" /> Copiar</>
+                  ? <><Check className="h-3 w-3" /> {t.editProposal.copied}</>
+                  : <><Copy className="h-3 w-3" /> {t.editProposal.copyLink}</>
                 }
               </button>
               <a

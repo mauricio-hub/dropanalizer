@@ -99,13 +99,13 @@ export default function NewProposalPage() {
   async function uploadImageToCloudinary(file: File): Promise<CloudinaryResponse | null> {
     // Validate file size (5MB max)
     if (file.size > 5 * 1024 * 1024) {
-      setImageError('Imagen muy grande. Máximo 5MB.')
+      setImageError(t.createProposal.errorImageSize)
       return null
     }
 
     // Validate file type
     if (!['image/jpeg', 'image/png', 'image/webp', 'image/avif'].includes(file.type)) {
-      setImageError('Formato no soportado. Usa JPG, PNG, WebP o AVIF.')
+      setImageError(t.createProposal.errorImageFormat)
       return null
     }
 
@@ -129,7 +129,7 @@ export default function NewProposalPage() {
       const data = (await res.json()) as CloudinaryResponse
       return data
     } catch (err) {
-      setImageError('Error al subir imagen. Intenta de nuevo.')
+      setImageError(t.createProposal.errorImageUpload)
       console.error('Upload error:', err)
       return null
     } finally {
@@ -143,7 +143,7 @@ export default function NewProposalPage() {
 
     // Check total count
     if (images.length + files.length > 5) {
-      setImageError('Máximo 5 imágenes.')
+      setImageError(t.createProposal.errorMaxImages)
       return
     }
 
@@ -227,9 +227,9 @@ export default function NewProposalPage() {
       if (!res.ok) {
         const data = await res.json()
         if (data.error === 'free_limit_reached') {
-          setError('Alcanzaste el límite de 3 landings del plan gratuito. Elimina una desde el dashboard para crear una nueva.')
+          setError(t.createProposal.errorFreeLimitReached)
         } else {
-          setError(data.error || 'Error al crear landing')
+          setError(data.error || t.createProposal.errorCreate)
         }
         setLoading(false)
         setStep(2)
@@ -243,7 +243,7 @@ export default function NewProposalPage() {
 
       router.push(`/proposals/${proposal.id}/edit`)
     } catch (err) {
-      setError('Error al crear landing. Intenta de nuevo.')
+      setError(t.createProposal.errorCreate)
       setLoading(false)
     }
   }
@@ -252,8 +252,8 @@ export default function NewProposalPage() {
     <div className="min-h-screen bg-background py-12">
       <Container className="max-w-2xl">
         <PageHeader
-          title="Crear Nueva Landing"
-          subtitle="Genera una página de producto profesional en minutos"
+          title={t.createProposal.title}
+          subtitle={t.createProposal.subtitle}
         />
 
         <AnimatePresence mode="wait">
@@ -268,7 +268,7 @@ export default function NewProposalPage() {
             >
               <div className="space-y-4">
                 <h2 className="text-lg font-semibold text-text-primary">
-                  ¿Qué tipo de producto es?
+                  {t.createProposal.step1Title}
                 </h2>
 
                 {/* Template Cards */}
@@ -286,15 +286,15 @@ export default function NewProposalPage() {
                     <div className="space-y-3">
                       <Rocket className={`h-8 w-8 ${template === 'producto_nuevo' ? 'text-accent' : 'text-text-muted'}`} />
                       <div className="text-left">
-                        <h3 className="font-semibold text-text-primary">Producto Nuevo</h3>
+                        <h3 className="font-semibold text-text-primary">{t.createProposal.productNew}</h3>
                         <p className="text-sm text-text-muted mt-1">
-                          Valida un nuevo producto rápidamente
+                          {t.createProposal.productNewDesc}
                         </p>
                       </div>
                       {template === 'producto_nuevo' && (
                         <div className="flex items-center gap-2 pt-2">
                           <Check className="h-4 w-4 text-accent" />
-                          <span className="text-sm text-accent">Seleccionado</span>
+                          <span className="text-sm text-accent">{t.createProposal.selected}</span>
                         </div>
                       )}
                     </div>
@@ -313,15 +313,15 @@ export default function NewProposalPage() {
                     <div className="space-y-3">
                       <Flame className={`h-8 w-8 ${template === 'oferta_limitada' ? 'text-accent' : 'text-text-muted'}`} />
                       <div className="text-left">
-                        <h3 className="font-semibold text-text-primary">Oferta Limitada</h3>
+                        <h3 className="font-semibold text-text-primary">{t.createProposal.limitedOffer}</h3>
                         <p className="text-sm text-text-muted mt-1">
-                          Crea urgencia con descuentos y escasez
+                          {t.createProposal.limitedOfferDesc}
                         </p>
                       </div>
                       {template === 'oferta_limitada' && (
                         <div className="flex items-center gap-2 pt-2">
                           <Check className="h-4 w-4 text-accent" />
-                          <span className="text-sm text-accent">Seleccionado</span>
+                          <span className="text-sm text-accent">{t.createProposal.selected}</span>
                         </div>
                       )}
                     </div>
@@ -331,10 +331,10 @@ export default function NewProposalPage() {
                 {template && (
                   <div className="mt-8 space-y-4 border-t border-white/[0.08] pt-8">
                     <h2 className="text-lg font-semibold text-text-primary">
-                      ¿Cuál es el estilo de tu landing?
+                      {t.createProposal.styleTitle}
                     </h2>
                     <p className="text-sm text-text-secondary">
-                      Elige el diseño que mejor se adapte a tu marca
+                      {t.createProposal.styleSubtitle}
                     </p>
 
                     <div className="grid gap-4 sm:grid-cols-3">
@@ -348,8 +348,8 @@ export default function NewProposalPage() {
                             : 'border-white/[0.08] hover:border-white/[0.15]'
                         }`}
                       >
-                        <div className="font-semibold text-text-primary mb-1">Lujo</div>
-                        <p className="text-xs text-text-muted">Elegante y profesional, colores azules y gradientes</p>
+                        <div className="font-semibold text-text-primary mb-1">{t.createProposal.styleLuxury}</div>
+                        <p className="text-xs text-text-muted">{t.createProposal.styleLuxuryDesc}</p>
                         {landingStyle === 'luxury' && (
                           <Check className="h-4 w-4 text-accent mt-2" />
                         )}
@@ -365,8 +365,8 @@ export default function NewProposalPage() {
                             : 'border-white/[0.08] hover:border-white/[0.15]'
                         }`}
                       >
-                        <div className="font-semibold text-text-primary mb-1">Minimalista</div>
-                        <p className="text-xs text-text-muted">Limpio y moderno, blanco y negro</p>
+                        <div className="font-semibold text-text-primary mb-1">{t.createProposal.styleMinimalist}</div>
+                        <p className="text-xs text-text-muted">{t.createProposal.styleMinimalistDesc}</p>
                         {landingStyle === 'minimalist' && (
                           <Check className="h-4 w-4 text-accent mt-2" />
                         )}
@@ -382,8 +382,8 @@ export default function NewProposalPage() {
                             : 'border-white/[0.08] hover:border-white/[0.15]'
                         }`}
                       >
-                        <div className="font-semibold text-text-primary mb-1">Vibrante</div>
-                        <p className="text-xs text-text-muted">Colorido y dinámico, rosa y naranja</p>
+                        <div className="font-semibold text-text-primary mb-1">{t.createProposal.styleVibrant}</div>
+                        <p className="text-xs text-text-muted">{t.createProposal.styleVibrantDesc}</p>
                         {landingStyle === 'vibrant' && (
                           <Check className="h-4 w-4 text-accent mt-2" />
                         )}
@@ -395,10 +395,10 @@ export default function NewProposalPage() {
                 {template && (
                   <div className="mt-6 space-y-4 border-t border-white/[0.08] pt-6">
                     <h2 className="text-lg font-semibold text-text-primary">
-                      ¿En qué idioma está tu audiencia?
+                      {t.createProposal.audienceTitle}
                     </h2>
                     <p className="text-sm text-text-secondary">
-                      La IA generará todo el contenido de la landing en ese idioma
+                      {t.createProposal.audienceSubtitle}
                     </p>
                     <div className="grid gap-4 sm:grid-cols-2">
                       <button
@@ -412,7 +412,7 @@ export default function NewProposalPage() {
                       >
                         <div className="text-2xl mb-1">🇪🇸</div>
                         <div className="font-semibold text-text-primary mb-1">Español</div>
-                        <p className="text-xs text-text-muted">Para audiencias en LATAM y España</p>
+                        <p className="text-xs text-text-muted">{t.createProposal.audienceEsDesc}</p>
                         {audienceLang === 'es' && <Check className="h-4 w-4 text-accent mt-2" />}
                       </button>
                       <button
@@ -439,14 +439,14 @@ export default function NewProposalPage() {
                     variant="ghost"
                     onClick={() => router.push('/dashboard')}
                   >
-                    Cancelar
+                    {t.createProposal.cancel}
                   </Button>
                   <Button
                     type="button"
                     onClick={() => setStep(2)}
                     disabled={!template}
                   >
-                    Continuar
+                    {t.createProposal.continue}
                   </Button>
                 </div>
               </div>
@@ -486,13 +486,13 @@ export default function NewProposalPage() {
               {/* Product Name */}
               <div className="space-y-2">
                 <label className="text-sm font-semibold text-text-secondary">
-                  Nombre del Producto
+                  {t.createProposal.productName}
                 </label>
                 <input
                   type="text"
                   value={productName}
                   onChange={(e) => setProductName(e.target.value)}
-                  placeholder="Ej: Reloj inteligente con GPS"
+                  placeholder={t.createProposal.productNamePlaceholder}
                   className="w-full rounded-xl border border-white/[0.08] bg-surface px-4 py-3 text-sm text-text-primary placeholder:text-text-muted focus:border-accent/50 focus:outline-none focus:ring-1 focus:ring-accent/30"
                 />
               </div>
@@ -500,7 +500,7 @@ export default function NewProposalPage() {
               {/* Price & Currency */}
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <label className="text-sm font-semibold text-text-secondary">Precio</label>
+                  <label className="text-sm font-semibold text-text-secondary">{t.createProposal.price}</label>
                   <input
                     type="number"
                     value={price}
@@ -513,7 +513,7 @@ export default function NewProposalPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-semibold text-text-secondary">Moneda</label>
+                  <label className="text-sm font-semibold text-text-secondary">{t.createProposal.currency}</label>
                   <select
                     value={currency}
                     onChange={(e) => setCurrency(e.target.value)}
@@ -532,13 +532,13 @@ export default function NewProposalPage() {
               {template === 'oferta_limitada' && (
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-text-secondary">
-                    Precio Original (opcional)
+                    {t.createProposal.originalPrice}
                   </label>
                   <input
                     type="number"
                     value={originalPrice}
                     onChange={(e) => setOriginalPrice(e.target.value)}
-                    placeholder="Precio sin descuento"
+                    placeholder={t.createProposal.originalPricePlaceholder}
                     min="0"
                     step="0.01"
                     className="w-full rounded-xl border border-white/[0.08] bg-surface px-4 py-3 text-sm text-text-primary placeholder:text-text-muted focus:border-accent/50 focus:outline-none focus:ring-1 focus:ring-accent/30"
@@ -549,7 +549,7 @@ export default function NewProposalPage() {
               {/* Image Upload */}
               <div className="space-y-3">
                 <label className="text-sm font-semibold text-text-secondary">
-                  Imágenes del Producto (3-5 imágenes)
+                  {t.createProposal.uploadImages}
                 </label>
 
                 {/* Upload Zone */}
@@ -569,14 +569,14 @@ export default function NewProposalPage() {
                   >
                     <Upload className="h-8 w-8 text-text-muted mx-auto mb-2" />
                     <p className="text-sm font-medium text-text-primary">
-                      Arrastra imágenes o haz clic
+                      {t.createProposal.dragOrClick}
                     </p>
                     <p className="text-xs text-text-muted mt-1">
-                      JPG, PNG, WebP o AVIF • Máx 5MB cada una
+                      {t.createProposal.imageFormatFull}
                     </p>
                     {uploadingImage && (
                       <p className="text-xs text-accent mt-2 animate-pulse">
-                        Subiendo...
+                        {t.createProposal.imageUploading}
                       </p>
                     )}
                   </label>
@@ -597,7 +597,7 @@ export default function NewProposalPage() {
                         />
                         {idx === 0 && (
                           <div className="absolute top-1 left-1 bg-accent text-background text-xs font-semibold px-2 py-1 rounded">
-                            Principal
+                            {t.createProposal.imagesPrimary}
                           </div>
                         )}
                         <button
@@ -613,23 +613,23 @@ export default function NewProposalPage() {
                 )}
 
                 <p className="text-xs text-text-muted">
-                  {images.length}/5 imágenes subidas
+                  {images.length}/5 {t.createProposal.imagesUploaded}
                 </p>
               </div>
 
               {/* CTA Destination */}
               <div className="space-y-3 border-t border-white/[0.08] pt-6">
                 <label className="text-sm font-semibold text-text-secondary">
-                  ¿A dónde mandamos a tus clientes cuando quieran comprar?
+                  {t.createProposal.ctaTitle}
                 </label>
 
                 {ctaDestinations.length === 0 ? (
                   <div className="rounded-xl border border-orange-500/20 bg-orange-500/5 p-4 flex gap-3 items-start">
                     <AlertCircle className="h-4 w-4 text-orange-400 flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="text-sm text-orange-300 font-medium">Sin destinos configurados</p>
+                      <p className="text-sm text-orange-300 font-medium">{t.createProposal.ctaNone}</p>
                       <p className="text-xs text-orange-400/70 mt-1">
-                        Ve al dashboard y agrega tu WhatsApp o link de pago antes de crear una landing.
+                        {t.createProposal.ctaNoneDesc}
                       </p>
                       <a
                         href="/dashboard"
@@ -637,7 +637,7 @@ export default function NewProposalPage() {
                         className="inline-flex items-center gap-1 text-xs text-orange-300 hover:text-orange-200 mt-2 transition-colors"
                       >
                         <ExternalLink className="h-3 w-3" />
-                        Ir al dashboard
+                        {t.createProposal.ctaNoneLink}
                       </a>
                     </div>
                   </div>
@@ -678,7 +678,7 @@ export default function NewProposalPage() {
                     {ctaDestinations.filter(d => d.type === 'link').length > 0 && (
                       <div className={ctaDestinations.filter(d => d.type === 'whatsapp').length > 0 ? 'mt-4' : ''}>
                         <p className="text-xs font-semibold text-blue-400 flex items-center gap-1 mb-2">
-                          <Link className="h-3 w-3" /> Links de pago
+                          <Link className="h-3 w-3" /> {t.createProposal.ctaLinksGroup}
                         </p>
                         <div className="space-y-1">
                           {ctaDestinations.filter(d => d.type === 'link').map(d => {
@@ -713,13 +713,13 @@ export default function NewProposalPage() {
               <div className="space-y-2">
                 <details className="group">
                   <summary className="cursor-pointer text-sm font-semibold text-text-secondary hover:text-accent transition-colors">
-                    ✓ Agregar contexto adicional (opcional)
+                    ✓ {t.createProposal.contextOptional}
                   </summary>
                   <div className="pt-3">
                     <textarea
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
-                      placeholder="Detalles del producto, características, etc."
+                      placeholder={t.createProposal.contextPlaceholder}
                       rows={4}
                       className="w-full rounded-xl border border-white/[0.08] bg-surface px-4 py-3 text-sm text-text-primary placeholder:text-text-muted focus:border-accent/50 focus:outline-none focus:ring-1 focus:ring-accent/30 resize-none"
                     />
@@ -735,7 +735,7 @@ export default function NewProposalPage() {
                   onClick={() => setStep(1)}
                   disabled={loading || uploadingImage}
                 >
-                  Atrás
+                  {t.createProposal.back}
                 </Button>
                 <Button
                   type="button"
@@ -743,7 +743,7 @@ export default function NewProposalPage() {
                   disabled={!canProceedStep2()}
                   className={!canProceedStep2() ? 'opacity-50 cursor-not-allowed' : ''}
                 >
-                  Generar Landing
+                  {t.createProposal.generateLanding}
                 </Button>
               </div>
             </motion.div>
