@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AlertCircle, ExternalLink, MessageCircle, Link as LinkIcon, Trash2, Loader2, Copy, Check } from 'lucide-react'
+import { useLanguage } from '@/hooks/useLanguage'
+import { getTranslation } from '@/lib/i18n'
 
 interface Proposal {
   id: string
@@ -69,8 +71,9 @@ function CopyLinkButton({ id }: { id: string }) {
   )
 }
 
-function DeleteButton({ id, title }: { id: string; title: string }) {
+function DeleteButton({ id, title, language }: { id: string; title: string; language: string }) {
   const router = useRouter()
+  const t = getTranslation(language as 'es' | 'en')
   const [confirming, setConfirming] = useState(false)
   const [deleting, setDeleting] = useState(false)
 
@@ -88,7 +91,7 @@ function DeleteButton({ id, title }: { id: string; title: string }) {
   if (confirming) {
     return (
       <span className="flex items-center gap-1">
-        <span className="text-xs text-text-muted">¿Eliminar?</span>
+        <span className="text-xs text-text-muted">{language === 'es' ? '¿Eliminar?' : 'Delete?'}</span>
         <button
           onClick={handleDelete}
           disabled={deleting}
@@ -100,7 +103,7 @@ function DeleteButton({ id, title }: { id: string; title: string }) {
           onClick={() => setConfirming(false)}
           className="text-xs text-text-muted hover:text-text-primary py-1 px-1 transition-colors"
         >
-          No
+          {language === 'es' ? 'No' : 'No'}
         </button>
       </span>
     )
@@ -109,7 +112,7 @@ function DeleteButton({ id, title }: { id: string; title: string }) {
   return (
     <button
       onClick={() => setConfirming(true)}
-      title={`Eliminar "${title}"`}
+      title={language === 'es' ? `Eliminar "${title}"` : `Delete "${title}"`}
       className="p-1.5 text-text-muted hover:text-red-400 hover:bg-red-400/10 rounded transition-colors"
     >
       <Trash2 className="h-3.5 w-3.5" />
@@ -118,16 +121,19 @@ function DeleteButton({ id, title }: { id: string; title: string }) {
 }
 
 export default function DashboardProposalTable({ proposals: initialProposals }: { proposals: Proposal[] }) {
+  const { language } = useLanguage()
+  const t = getTranslation(language)
+
   return (
     <div className="overflow-x-auto">
       <table className="w-full">
         <thead>
           <tr className="border-b border-white/[0.06]">
-            <th className="text-left px-6 py-3 text-xs font-semibold text-text-secondary">Producto</th>
-            <th className="text-left px-6 py-3 text-xs font-semibold text-text-secondary">Estado</th>
-            <th className="text-left px-6 py-3 text-xs font-semibold text-text-secondary">Destino CTA</th>
-            <th className="text-left px-6 py-3 text-xs font-semibold text-text-secondary">Creado</th>
-            <th className="text-right px-6 py-3 text-xs font-semibold text-text-secondary">Acciones</th>
+            <th className="text-left px-6 py-3 text-xs font-semibold text-text-secondary">{t.dashboard.product}</th>
+            <th className="text-left px-6 py-3 text-xs font-semibold text-text-secondary">{t.dashboard.status}</th>
+            <th className="text-left px-6 py-3 text-xs font-semibold text-text-secondary">{t.dashboard.ctaDestination}</th>
+            <th className="text-left px-6 py-3 text-xs font-semibold text-text-secondary">{t.dashboard.created}</th>
+            <th className="text-right px-6 py-3 text-xs font-semibold text-text-secondary">{t.dashboard.actions}</th>
           </tr>
         </thead>
         <tbody>
@@ -146,7 +152,7 @@ export default function DashboardProposalTable({ proposals: initialProposals }: 
                       <span className={`h-1.5 w-1.5 rounded-full ${
                         p.status === 'published' ? 'bg-accent' : 'bg-white/30'
                       }`} />
-                      {p.status === 'published' ? 'Publicado' : 'Borrador'}
+                      {p.status === 'published' ? t.dashboard.published : t.dashboard.draft}
                     </span>
                   </td>
                   <td className="px-6 py-4">
@@ -163,21 +169,21 @@ export default function DashboardProposalTable({ proposals: initialProposals }: 
                         href={`/proposals/${p.id}/edit`}
                         className="text-xs text-accent hover:text-accent-hover transition-colors py-1 px-2 hover:bg-white/5 rounded"
                       >
-                        Editar
+                        {t.dashboard.edit}
                       </Link>
                       {p.status === 'published' ? (
                         <Link
                           href={`/proposals/${p.id}/analytics`}
                           className="text-xs text-text-secondary hover:text-text-primary transition-colors py-1 px-2 hover:bg-white/5 rounded"
                         >
-                          Analytics
+                          {t.dashboard.analytics}
                         </Link>
                       ) : (
                         <span
-                          title="Publica la landing para ver analytics"
+                          title={language === 'es' ? 'Publica la landing para ver analytics' : 'Publish the landing to see analytics'}
                           className="text-xs text-text-muted py-1 px-2 opacity-40 cursor-not-allowed"
                         >
-                          Analytics
+                          {t.dashboard.analytics}
                         </span>
                       )}
                       {p.status === 'published' ? (
@@ -187,22 +193,22 @@ export default function DashboardProposalTable({ proposals: initialProposals }: 
                           className="flex items-center gap-1 text-xs text-accent hover:text-accent-hover transition-colors py-1 px-2 hover:bg-white/5 rounded"
                         >
                           <ExternalLink className="h-3 w-3" />
-                          Ver
+                          {t.dashboard.view}
                         </Link>
                       ) : (
                         <span
-                          title="Publica la landing para poder verla"
+                          title={language === 'es' ? 'Publica la landing para poder verla' : 'Publish the landing to view it'}
                           className="flex items-center gap-1 text-xs text-text-muted py-1 px-2 opacity-40 cursor-not-allowed"
                         >
                           <ExternalLink className="h-3 w-3" />
-                          Ver
+                          {t.dashboard.view}
                         </span>
                       )}
                       <div className="ml-1 pl-1 border-l border-white/[0.06] flex items-center gap-0.5">
                         {p.status === 'published' && (
                           <CopyLinkButton id={p.id} />
                         )}
-                        <DeleteButton id={p.id} title={p.title} />
+                        <DeleteButton id={p.id} title={p.title} language={language} />
                       </div>
                     </div>
                   </td>
@@ -212,7 +218,7 @@ export default function DashboardProposalTable({ proposals: initialProposals }: 
           ) : (
             <tr>
               <td colSpan={5} className="px-6 py-12 text-center text-sm text-text-muted">
-                No tienes propuestas aún. ¡Crea tu primera landing!
+                {language === 'es' ? 'No tienes propuestas aún. ¡Crea tu primera landing!' : 'No proposals yet. Create your first landing!'}
               </td>
             </tr>
           )}
