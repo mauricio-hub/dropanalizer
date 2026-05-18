@@ -415,11 +415,13 @@ export default function EditProposalPage() {
                   content={content as DropshippingContent}
                   setContent={handleContentChange}
                   proposal={proposal}
+                  t={t}
                 />
               ) : (
                 <ProposalEditorForm
                   content={content as ProposalContent}
                   setContent={handleContentChange}
+                  t={t}
                 />
               )}
             </div>
@@ -514,26 +516,28 @@ function DropshippingEditorForm({
   content,
   setContent,
   proposal,
+  t,
 }: {
   content: DropshippingContent
   setContent: (c: DropshippingContent) => void
   proposal: Proposal
+  t: ReturnType<typeof getTranslation>
 }) {
   const isOferta = proposal.template === 'oferta_limitada'
 
   return (
     <>
-      <Section title="Headline" complete={!!content.headline?.trim()} defaultOpen>
+      <Section title={t.editProposal.headline} complete={!!content.headline?.trim()} defaultOpen>
         <input
           type="text"
           value={content.headline}
           onChange={(e) => setContent({ ...content, headline: e.target.value })}
-          placeholder="Ej: La solución que esperabas"
+          placeholder={t.editProposal.headlinePlaceholder}
           className="w-full rounded-lg border border-white/[0.08] bg-background px-4 py-3 text-sm text-text-primary placeholder:text-text-muted focus:border-accent/50 focus:outline-none focus:ring-1 focus:ring-accent/30"
         />
       </Section>
 
-      <Section title="Beneficios" complete={content.benefits?.some(b => b.trim())}>
+      <Section title={t.editProposal.benefits} complete={content.benefits?.some(b => b.trim())}>
         <div className="space-y-2">
           {content.benefits.map((benefit, idx) => (
             <div key={idx} className="flex gap-2">
@@ -546,7 +550,7 @@ function DropshippingEditorForm({
                   setContent({ ...content, benefits: updated })
                 }}
                 className="flex-1 rounded-lg border border-white/[0.08] bg-background px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent/50 focus:outline-none"
-                placeholder={`Beneficio ${idx + 1}`}
+                placeholder={`${t.editProposal.benefitPlaceholder} ${idx + 1}`}
               />
               <button
                 type="button"
@@ -562,22 +566,22 @@ function DropshippingEditorForm({
             onClick={() => setContent({ ...content, benefits: [...content.benefits, ''] })}
             className="flex items-center gap-1.5 text-xs text-accent hover:text-accent-hover transition-colors pt-1"
           >
-            <Plus className="h-3 w-3" />Agregar beneficio
+            <Plus className="h-3 w-3" />{t.editProposal.addBenefit}
           </button>
         </div>
       </Section>
 
-      <Section title="Prueba Social" complete={!!content.socialProof?.trim()}>
+      <Section title={t.editProposal.socialProof} complete={!!content.socialProof?.trim()}>
         <textarea
           value={content.socialProof}
           onChange={(e) => setContent({ ...content, socialProof: e.target.value })}
           rows={3}
-          placeholder="Testimonio o estadística que genere confianza"
+          placeholder={t.editProposal.socialProofPlaceholder}
           className="w-full rounded-lg border border-white/[0.08] bg-background px-4 py-3 text-sm text-text-primary placeholder:text-text-muted focus:border-accent/50 focus:outline-none resize-none"
         />
       </Section>
 
-      <Section title="Preguntas Frecuentes" complete={content.faq?.some(f => f.question.trim())}>
+      <Section title={t.editProposal.faq} complete={content.faq?.some(f => f.question.trim())}>
         <div className="space-y-3">
           {content.faq.map((item, idx) => (
             <div key={idx} className="rounded-lg border border-white/[0.06] bg-background/50 p-3 space-y-2">
@@ -590,7 +594,7 @@ function DropshippingEditorForm({
                     updated[idx] = { ...updated[idx], question: e.target.value }
                     setContent({ ...content, faq: updated })
                   }}
-                  placeholder="Pregunta"
+                  placeholder={t.editProposal.question}
                   className="flex-1 rounded-lg border border-white/[0.08] bg-background px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent/50 focus:outline-none"
                 />
                 <button
@@ -609,7 +613,7 @@ function DropshippingEditorForm({
                   setContent({ ...content, faq: updated })
                 }}
                 rows={2}
-                placeholder="Respuesta"
+                placeholder={t.editProposal.answer}
                 className="w-full rounded-lg border border-white/[0.08] bg-background px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent/50 focus:outline-none resize-none"
               />
             </div>
@@ -619,27 +623,27 @@ function DropshippingEditorForm({
             onClick={() => setContent({ ...content, faq: [...content.faq, { question: '', answer: '' }] })}
             className="flex items-center gap-1.5 text-xs text-accent hover:text-accent-hover transition-colors"
           >
-            <Plus className="h-3 w-3" />Agregar pregunta
+            <Plus className="h-3 w-3" />{t.editProposal.addQuestion}
           </button>
         </div>
       </Section>
 
       {isOferta && (
-        <Section title="Mensaje de Urgencia" complete={!!content.urgency?.trim()}>
+        <Section title={t.editProposal.urgency} complete={!!content.urgency?.trim()}>
           <textarea
             value={content.urgency || ''}
             onChange={(e) => setContent({ ...content, urgency: e.target.value })}
             rows={2}
-            placeholder="Ej: Solo quedan 15 unidades a este precio"
+            placeholder={t.editProposal.urgencyPlaceholder}
             className="w-full rounded-lg border border-white/[0.08] bg-background px-4 py-3 text-sm text-text-primary placeholder:text-text-muted focus:border-accent/50 focus:outline-none resize-none"
           />
         </Section>
       )}
 
-      <Section title="Precio" complete={!!content.pricing?.price}>
+      <Section title={t.editProposal.price} complete={!!content.pricing?.price}>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="text-xs text-text-muted block mb-1.5">Precio de venta</label>
+            <label className="text-xs text-text-muted block mb-1.5">{t.editProposal.salePrice}</label>
             <input
               type="number"
               value={content.pricing.price}
@@ -650,7 +654,7 @@ function DropshippingEditorForm({
             />
           </div>
           <div>
-            <label className="text-xs text-text-muted block mb-1.5">Moneda</label>
+            <label className="text-xs text-text-muted block mb-1.5">{t.editProposal.currency}</label>
             <select
               value={content.pricing.currency}
               onChange={(e) => setContent({ ...content, pricing: { ...content.pricing, currency: e.target.value } })}
@@ -666,14 +670,14 @@ function DropshippingEditorForm({
         </div>
         {isOferta && (
           <div className="mt-3">
-            <label className="text-xs text-text-muted block mb-1.5">Precio original (tachado)</label>
+            <label className="text-xs text-text-muted block mb-1.5">{t.editProposal.originalPriceStriked}</label>
             <input
               type="number"
               value={content.pricing.originalPrice || ''}
               onChange={(e) => setContent({ ...content, pricing: { ...content.pricing, originalPrice: e.target.value ? parseFloat(e.target.value) : undefined } })}
               step="0.01" min="0"
               className="w-full rounded-lg border border-white/[0.08] bg-background px-3 py-2 text-sm text-text-primary focus:border-accent/50 focus:outline-none"
-              placeholder="Precio sin descuento"
+              placeholder={t.editProposal.originalPricePlaceholder}
             />
           </div>
         )}
@@ -687,23 +691,25 @@ function DropshippingEditorForm({
 function ProposalEditorForm({
   content,
   setContent,
+  t,
 }: {
   content: ProposalContent
   setContent: (c: ProposalContent) => void
+  t: ReturnType<typeof getTranslation>
 }) {
   return (
     <>
-      <Section title="Alcance del proyecto" complete={!!content.scope?.trim()} defaultOpen>
+      <Section title={t.editProposal.scope} complete={!!content.scope?.trim()} defaultOpen>
         <textarea
           value={content.scope}
           onChange={(e) => setContent({ ...content, scope: e.target.value })}
           rows={5}
           className="w-full rounded-lg border border-white/[0.08] bg-background px-4 py-3 text-sm text-text-primary placeholder:text-text-muted focus:border-accent/50 focus:outline-none resize-none"
-          placeholder="Describe el alcance del proyecto..."
+          placeholder={t.editProposal.scopePlaceholder}
         />
       </Section>
 
-      <Section title="Entregables" complete={content.deliverables?.some(d => d.trim())}>
+      <Section title={t.editProposal.deliverables} complete={content.deliverables?.some(d => d.trim())}>
         <div className="space-y-2">
           {content.deliverables.map((d, idx) => (
             <div key={idx} className="flex gap-2">
@@ -716,7 +722,7 @@ function ProposalEditorForm({
                   setContent({ ...content, deliverables: updated })
                 }}
                 className="flex-1 rounded-lg border border-white/[0.08] bg-background px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent/50 focus:outline-none"
-                placeholder={`Entregable ${idx + 1}`}
+                placeholder={`${t.editProposal.deliverablePlaceholder} ${idx + 1}`}
               />
               <button
                 type="button"
@@ -732,12 +738,12 @@ function ProposalEditorForm({
             onClick={() => setContent({ ...content, deliverables: [...content.deliverables, ''] })}
             className="flex items-center gap-1.5 text-xs text-accent hover:text-accent-hover transition-colors pt-1"
           >
-            <Plus className="h-3 w-3" />Agregar entregable
+            <Plus className="h-3 w-3" />{t.editProposal.addDeliverable}
           </button>
         </div>
       </Section>
 
-      <Section title="Timeline" complete={content.timeline?.some(t => t.phase?.trim())}>
+      <Section title={t.editProposal.timeline} complete={content.timeline?.some(p => p.phase?.trim())}>
         <div className="space-y-3">
           {content.timeline.map((phase, idx) => (
             <div key={idx} className="rounded-lg border border-white/[0.06] bg-background/50 p-3 space-y-2">
@@ -751,7 +757,7 @@ function ProposalEditorForm({
                     setContent({ ...content, timeline: updated })
                   }}
                   className="flex-1 rounded-lg border border-white/[0.08] bg-background px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent/50 focus:outline-none"
-                  placeholder="Nombre de la fase"
+                  placeholder={t.editProposal.phaseName}
                 />
                 <button
                   type="button"
@@ -770,7 +776,7 @@ function ProposalEditorForm({
                   setContent({ ...content, timeline: updated })
                 }}
                 className="w-full rounded-lg border border-white/[0.08] bg-background px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent/50 focus:outline-none"
-                placeholder="Duración (ej: 2 semanas)"
+                placeholder={t.editProposal.duration}
               />
               <textarea
                 value={phase.description}
@@ -781,7 +787,7 @@ function ProposalEditorForm({
                 }}
                 rows={2}
                 className="w-full rounded-lg border border-white/[0.08] bg-background px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent/50 focus:outline-none resize-none"
-                placeholder="¿Qué se hace en esta fase?"
+                placeholder={t.editProposal.phaseDescription}
               />
             </div>
           ))}
@@ -790,15 +796,15 @@ function ProposalEditorForm({
             onClick={() => setContent({ ...content, timeline: [...content.timeline, { phase: '', duration: '', description: '' }] })}
             className="flex items-center gap-1.5 text-xs text-accent hover:text-accent-hover transition-colors"
           >
-            <Plus className="h-3 w-3" />Agregar fase
+            <Plus className="h-3 w-3" />{t.editProposal.addPhase}
           </button>
         </div>
       </Section>
 
-      <Section title="Precio" complete={!!content.pricing?.total}>
+      <Section title={t.editProposal.price} complete={!!content.pricing?.total}>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="text-xs text-text-muted block mb-1.5">Monto total</label>
+            <label className="text-xs text-text-muted block mb-1.5">{t.editProposal.totalAmount}</label>
             <input
               type="number"
               value={content.pricing.total}
@@ -808,7 +814,7 @@ function ProposalEditorForm({
             />
           </div>
           <div>
-            <label className="text-xs text-text-muted block mb-1.5">Moneda</label>
+            <label className="text-xs text-text-muted block mb-1.5">{t.editProposal.currency}</label>
             <select
               value={content.pricing.currency}
               onChange={(e) => setContent({ ...content, pricing: { ...content.pricing, currency: e.target.value } })}
@@ -819,13 +825,13 @@ function ProposalEditorForm({
           </div>
         </div>
         <div className="mt-3">
-          <label className="text-xs text-text-muted block mb-1.5">Desglose (opcional)</label>
+          <label className="text-xs text-text-muted block mb-1.5">{t.editProposal.costBreakdown}</label>
           <textarea
             value={content.pricing.breakdown || ''}
             onChange={(e) => setContent({ ...content, pricing: { ...content.pricing, breakdown: e.target.value } })}
             rows={3}
             className="w-full rounded-lg border border-white/[0.08] bg-background px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent/50 focus:outline-none resize-none"
-            placeholder="¿Cómo se distribuye el precio?"
+            placeholder={t.editProposal.costBreakdownPlaceholder}
           />
         </div>
       </Section>
