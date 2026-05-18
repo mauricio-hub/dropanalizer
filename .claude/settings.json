@@ -38,7 +38,9 @@
       "Bash(npm run *)",
       "Bash(curl -s -I http://localhost:3000)",
       "Bash(mkdir -p \"c:/Users/mgdev/Desktop/projects/proply/src/app/api/cta-destinations/[id]\")",
-      "Bash(mkdir -p \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\\\\src\\\\app\\\\p\\\\[id]\\\\preview\")"
+      "Bash(mkdir -p \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\\\\src\\\\app\\\\p\\\\[id]\\\\preview\")",
+      "PowerShell(git add \"src/app/\\(authenticated\\)/catalog/page.tsx\" \"src/components/LanguageAndNavigation.tsx\")",
+      "PowerShell(git push origin main)"
     ],
     "additionalDirectories": [
       "c:\\Users\\mgdev\\Desktop\\projects\\proply\\src\\app\\api\\proposals\\[id]\\versions\\[versionId]\\publish",
