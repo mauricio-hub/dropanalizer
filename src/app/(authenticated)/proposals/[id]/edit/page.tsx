@@ -367,23 +367,20 @@ export default function EditProposalPage() {
       )}
 
       {isPublished && (
-        <div className="flex-shrink-0 flex items-center justify-between gap-3 px-4 py-2 border-b border-white/[0.06] bg-white/[0.02]">
-          <div className="flex items-center gap-2 min-w-0">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
-            <p className="text-xs text-text-muted truncate">
-              {typeof window !== 'undefined' ? `${window.location.origin}/p/${proposalId}` : `/p/${proposalId}`}
-            </p>
-          </div>
-          <div className="flex items-center gap-1 flex-shrink-0">
+        <div className="flex-shrink-0 flex items-center gap-2 px-4 py-2 border-b border-white/[0.06] bg-white/[0.02]">
+          <span className="h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+          <span className="text-xs text-accent font-medium">Publicado</span>
+          <div className="flex items-center gap-1 ml-1">
             <CopyLinkInline proposalId={proposalId} />
             <a
               href={`/p/${proposalId}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center h-6 w-6 rounded text-text-muted hover:text-accent transition-colors"
+              className="flex items-center gap-1 text-xs text-text-muted hover:text-accent transition-colors px-1.5 py-1 rounded hover:bg-white/5"
               title="Ver landing"
             >
-              <ExternalLink className="h-3.5 w-3.5" />
+              <ExternalLink className="h-3 w-3" />
+              Ver
             </a>
           </div>
         </div>
