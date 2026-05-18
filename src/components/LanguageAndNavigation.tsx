@@ -2,7 +2,7 @@
 
 import { useLanguage } from '@/hooks/useLanguage'
 import { getTranslation } from '@/lib/i18n'
-import { BarChart3, Settings, LogOut, Home, Globe, Package, Menu, X } from 'lucide-react'
+import { BarChart3, Settings, LogOut, Home, Globe, Menu, X } from 'lucide-react'
 import { useUser, useClerk } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
@@ -91,7 +91,6 @@ export default function LanguageAndNavigation({ children }: { children: React.Re
 
   const navItems: NavItem[] = [
     { label: t.nav.dashboard, href: '/dashboard', icon: <Home className="h-4 w-4" /> },
-    { label: t.nav.catalog, href: '/catalog', icon: <Package className="h-4 w-4" /> },
     { label: t.nav.analytics, href: '/analytics', icon: <BarChart3 className="h-4 w-4" /> },
     { label: t.nav.settings, href: '/settings', icon: <Settings className="h-4 w-4" /> },
   ]
