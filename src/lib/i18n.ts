@@ -151,6 +151,26 @@ export const translations = {
       loadingAnalytics: 'Cargando analítica...',
       backToAnalytics: 'Volver a Analítica',
     },
+    // CTA Destinations
+    cta: {
+      title: 'Destinos de Compra',
+      subtitle: 'Configura a dónde van tus clientes cuando hacen click en "Comprar Ahora"',
+      whatsappGroup: 'WhatsApp',
+      linksGroup: 'Links de pago',
+      add: 'Agregar',
+      save: 'Guardar',
+      saving: 'Guardando...',
+      cancel: 'Cancelar',
+      delete: '¿Eliminar?',
+      noWhatsapp: 'Sin números de WhatsApp guardados.',
+      noLinks: 'Sin links de pago guardados.',
+      namePlaceholderWA: 'Nombre (ej: Zapatos, Carteras) — opcional',
+      namePlaceholderLink: 'Nombre (ej: MercadoPago) — opcional',
+      countryHint: 'Con código de país. Ej: +57 Colombia, +52 México, +54 Argentina',
+      invalidNumber: 'Número inválido. Incluye el código de país.',
+      invalidUrl: 'Ingresa una URL',
+      saveError: 'Error al guardar',
+    },
     // Catalog
     catalog: {
       title: 'Catálogo',
@@ -320,6 +340,26 @@ export const translations = {
       loading: 'Loading...',
       loadingAnalytics: 'Loading analytics...',
       backToAnalytics: 'Back to Analytics',
+    },
+    // CTA Destinations
+    cta: {
+      title: 'Purchase Destinations',
+      subtitle: 'Configure where your customers go when they click "Buy Now"',
+      whatsappGroup: 'WhatsApp',
+      linksGroup: 'Payment links',
+      add: 'Add',
+      save: 'Save',
+      saving: 'Saving...',
+      cancel: 'Cancel',
+      delete: 'Delete?',
+      noWhatsapp: 'No WhatsApp numbers saved.',
+      noLinks: 'No payment links saved.',
+      namePlaceholderWA: 'Name (e.g. Shoes, Bags) — optional',
+      namePlaceholderLink: 'Name (e.g. Stripe, PayPal) — optional',
+      countryHint: 'With country code. E.g. +1 USA, +44 UK, +52 Mexico',
+      invalidNumber: 'Invalid number. Include country code.',
+      invalidUrl: 'Enter a URL',
+      saveError: 'Error saving',
     },
     // Catalog
     catalog: {
