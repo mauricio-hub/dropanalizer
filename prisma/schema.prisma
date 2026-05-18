@@ -18,9 +18,22 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  proposals Proposal[]
-  products  Product[]
+  proposals       Proposal[]
+  products        Product[]
+  ctaDestinations CtaDestination[]
   @@map("users")
+}
+
+model CtaDestination {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String   // "whatsapp" or "link"
+  name      String?  // optional label e.g. "Zapatos", "MercadoPago"
+  value     String   // phone number or URL
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("cta_destinations")
 }
 
 model Proposal {
@@ -35,6 +48,8 @@ model Proposal {
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  buyUrl    String?  // WhatsApp link or external URL for CTA buttons
 
   versions Version[]
   images   Image[]

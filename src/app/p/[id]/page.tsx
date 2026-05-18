@@ -11,6 +11,7 @@ export default async function PublicProposalPage({ params }: { params: { id: str
     },
   })
 
+
   if (!proposal) notFound()
 
   const version = proposal.versions[0]
@@ -24,6 +25,7 @@ export default async function PublicProposalPage({ params }: { params: { id: str
         template: proposal.template,
         createdAt: proposal.createdAt.toISOString(),
         images: proposal.images.map((img) => ({ url: img.url, order: img.order })),
+        buyUrl: proposal.buyUrl || undefined,
       }}
       version={{
         id: version.id,

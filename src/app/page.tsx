@@ -1,6 +1,9 @@
 'use client'
 
 import Link from 'next/link'
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { useUser } from '@clerk/nextjs'
 import { FileText, BarChart2, GitBranch, Zap } from 'lucide-react'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { useLanguage } from '@/components/LanguageContext'
@@ -10,9 +13,16 @@ export default function Home() {
   const t = language === 'es' ? esContent : enContent
   const features = language === 'es' ? featuresEs : featuresEn
   const steps = language === 'es' ? stepsEs : stepsEn
+  const { isSignedIn, isLoaded } = useUser()
+  const router = useRouter()
 
-  // If user is logged in, show landing anyway (don't redirect)
-  // Users can access dashboard from the sidebar when authenticated
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      router.replace('/dashboard')
+    }
+  }, [isLoaded, isSignedIn, router])
+
+  if (!isLoaded || isSignedIn) return null
 
   return (
     <div className="min-h-screen bg-background text-text-primary">

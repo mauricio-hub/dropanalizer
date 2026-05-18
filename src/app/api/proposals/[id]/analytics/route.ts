@@ -83,14 +83,22 @@ export async function GET(
     // Sort by most recent
     allEvents.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
+    // Buy intent = clicks on any CTA button
+    const buyIntentSections = ['nav-cta', 'hero-cta', 'pricing-cta', 'final-cta-button']
+    const buyIntentClicks = buyIntentSections.reduce(
+      (sum, section) => sum + (eventsBySection[section] || 0),
+      0
+    )
+
     return NextResponse.json(
       {
         totalViews,
         totalClicks,
+        buyIntentClicks,
         eventsBySection,
         timeBySection,
         eventsByVersion,
-        events: allEvents.slice(0, 100), // Last 100 events
+        events: allEvents.slice(0, 100),
       },
       { status: 200 }
     )

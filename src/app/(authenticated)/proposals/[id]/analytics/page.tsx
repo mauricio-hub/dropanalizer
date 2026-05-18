@@ -7,7 +7,7 @@ import { getTranslation } from '@/lib/i18n'
 import Container from '@/components/ui/Container'
 import PageHeader from '@/components/ui/PageHeader'
 import Card from '@/components/ui/Card'
-import { Eye, MousePointer, TrendingUp, Clock, ArrowLeft } from 'lucide-react'
+import { Eye, MousePointer, TrendingUp, ShoppingCart, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import {
   BarChart,
@@ -40,6 +40,7 @@ interface Event {
 interface Analytics {
   totalViews: number
   totalClicks: number
+  buyIntentClicks: number
   eventsBySection: Record<string, number>
   timeBySection: Record<string, { total: number; count: number; average: number }>
   eventsByVersion: Record<string, { views: number; clicks: number; timeSpent: number }>
@@ -190,8 +191,52 @@ export default function AnalyticsPage() {
           subtitle={t.analytics.subtitle}
         />
 
-        {/* Key Metrics */}
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Buy Intent — Hero Metric */}
+        <div className="mt-8">
+          <Card className="border-accent/30 bg-accent/5">
+            <div className="p-6 md:p-8">
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <p className="text-sm font-semibold text-accent uppercase tracking-widest mb-1">Intención Real de Compra</p>
+                  <p className="text-xs text-text-muted">Visitantes que hicieron click en "Comprar Ahora"</p>
+                </div>
+                <ShoppingCart className="h-5 w-5 text-accent mt-1" />
+              </div>
+
+              <div className="flex items-baseline gap-3 mb-4">
+                <span className="text-5xl font-bold text-text-primary">{analytics.buyIntentClicks}</span>
+                <span className="text-text-muted text-lg">de {analytics.totalViews} visitantes</span>
+              </div>
+
+              {/* Progress bar */}
+              <div className="w-full h-2 bg-white/[0.06] rounded-full overflow-hidden mb-3">
+                <div
+                  className="h-full bg-accent rounded-full transition-all"
+                  style={{ width: `${Math.min(analytics.totalViews > 0 ? (analytics.buyIntentClicks / analytics.totalViews) * 100 : 0, 100)}%` }}
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <p className="text-2xl font-bold text-accent">
+                  {analytics.totalViews > 0
+                    ? ((analytics.buyIntentClicks / analytics.totalViews) * 100).toFixed(1)
+                    : '0.0'}%
+                  <span className="text-sm font-normal text-text-muted ml-2">tasa de intención</span>
+                </p>
+                {analytics.totalViews > 0 && (
+                  <p className="text-xs text-text-muted">
+                    {analytics.buyIntentClicks / analytics.totalViews >= 0.03
+                      ? '✓ Por encima del promedio (1–3%)'
+                      : 'Promedio del sector: 1–3%'}
+                  </p>
+                )}
+              </div>
+            </div>
+          </Card>
+        </div>
+
+        {/* Secondary Metrics */}
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <Card>
             <div className="p-6">
               <div className="flex items-center justify-between mb-2">

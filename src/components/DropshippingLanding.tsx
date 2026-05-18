@@ -13,6 +13,7 @@ interface DropshippingLandingProps {
     template?: string
     createdAt: string
     images?: { url: string; order: number }[]
+    buyUrl?: string
   }
   version: {
     id: string
@@ -92,6 +93,13 @@ export default function DropshippingLanding({ proposal, version }: DropshippingL
     trackClick(version.id, section)
   }
 
+  const handleBuy = (section: string) => {
+    trackClick(version.id, section)
+    if (proposal.buyUrl) {
+      window.open(proposal.buyUrl, '_blank', 'noopener,noreferrer')
+    }
+  }
+
   return (
     <div className="min-h-screen bg-white text-gray-900">
       {/* Navigation */}
@@ -101,7 +109,7 @@ export default function DropshippingLanding({ proposal, version }: DropshippingL
             {proposal.title}
           </div>
           <button
-            onClick={() => handleSectionClick('nav-cta')}
+            onClick={() => handleBuy('nav-cta')}
             className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
           >
             {t.navBuy}
@@ -123,7 +131,7 @@ export default function DropshippingLanding({ proposal, version }: DropshippingL
                 {content.headline}
               </h1>
               <button
-                onClick={() => handleSectionClick('hero-cta')}
+                onClick={() => handleBuy('hero-cta')}
                 className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-lg transition-all transform hover:scale-105 flex items-center gap-3 text-lg"
               >
                 <ShoppingCart className="h-6 w-6" />
@@ -255,7 +263,7 @@ export default function DropshippingLanding({ proposal, version }: DropshippingL
 
             <div className="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-2xl p-12 text-center">
               <button
-                onClick={() => handleSectionClick('pricing-cta')}
+                onClick={() => handleBuy('pricing-cta')}
                 className="w-full bg-white text-blue-600 hover:bg-gray-100 font-bold py-6 px-8 rounded-xl transition-all transform hover:scale-105 text-lg mb-6 flex items-center justify-center gap-2"
               >
                 <ShoppingCart className="h-6 w-6" />
@@ -291,7 +299,7 @@ export default function DropshippingLanding({ proposal, version }: DropshippingL
           <h2 className="text-4xl font-bold mb-6">{t.readyToBuy}</h2>
           <p className="text-xl text-blue-100 mb-10 leading-relaxed">{t.ctaSubtitle}</p>
           <button
-            onClick={() => handleSectionClick('final-cta-button')}
+            onClick={() => handleBuy('final-cta-button')}
             className="bg-white text-blue-600 hover:bg-gray-100 font-bold py-4 px-10 rounded-xl transition-all transform hover:scale-105 inline-flex items-center gap-3 text-lg shadow-lg"
           >
             <ShoppingCart className="h-6 w-6" />
