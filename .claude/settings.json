@@ -40,7 +40,16 @@
       "Bash(mkdir -p \"c:/Users/mgdev/Desktop/projects/proply/src/app/api/cta-destinations/[id]\")",
       "Bash(mkdir -p \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\proply\\\\src\\\\app\\\\p\\\\[id]\\\\preview\")",
       "PowerShell(git add \"src/app/\\(authenticated\\)/catalog/page.tsx\" \"src/components/LanguageAndNavigation.tsx\")",
-      "PowerShell(git push origin main)"
+      "PowerShell(git push origin main)",
+      "PowerShell(git add \"src/components/DashboardProposalTable.tsx\" \"src/app/p/[id]/page.tsx\" \"src/app/\\(authenticated\\)/dashboard/page.tsx\" \"src/app/layout.tsx\" \"src/types/css.d.ts\")",
+      "PowerShell(git add \"src/app/\\(authenticated\\)/proposals/[id]/edit/page.tsx\")",
+      "PowerShell(git commit -m \"feat: publish nudge banner for unpublished landings`n`nShow orange banner when landing was never published with direct publish CTA.`n`nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\")",
+      "PowerShell(git commit -m \"fix: stay in editor after publishing instead of redirecting\")",
+      "PowerShell(git commit -m \"feat: keep publish banner after publishing with next action guidance\")",
+      "PowerShell(git add \"src/lib/i18n.ts\" \"src/components/DashboardProposalTable.tsx\" \"src/components/DashboardEmptyState.tsx\" \"src/app/\\(authenticated\\)/dashboard/page.tsx\")",
+      "PowerShell(git commit -m \"feat: full i18n support for dashboard with translation-aware table and empty state\")",
+      "PowerShell(git add \"src/lib/i18n.ts\" \"src/components/CtaDestinations.tsx\" \"src/components/DashboardHeader.tsx\" \"src/app/\\(authenticated\\)/dashboard/page.tsx\")",
+      "PowerShell(git commit -m \"feat: full i18n for dashboard header and CTA destinations component\")"
     ],
     "additionalDirectories": [
       "c:\\Users\\mgdev\\Desktop\\projects\\proply\\src\\app\\api\\proposals\\[id]\\versions\\[versionId]\\publish",
