@@ -57,8 +57,9 @@ model Proposal {
 
   buyUrl    String?  // WhatsApp link or external URL for CTA buttons
 
-  versions Version[]
-  images   Image[]
+  versions        Version[]
+  images          Image[]
+  recommendations Recommendation[]
   @@map("proposals")
 }
 
@@ -96,6 +97,22 @@ model Image {
   order      Int      @default(0)
   createdAt  DateTime @default(now())
   @@map("images")
+}
+
+model Recommendation {
+  id          String   @id @default(cuid())
+  proposalId  String
+  proposal    Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  layer       Int      // 1 = rules, 2 = AI
+  severity    String   // "info" | "warning" | "critical" | "success"
+  title       String
+  body        String
+  actionLabel String?
+  actionType  String?  // "edit_content" | "new_version" | "change_product" | "scale_traffic" | "share_link"
+  dismissed   Boolean  @default(false)
+  generatedAt DateTime @default(now())
+
+  @@map("recommendations")
 }
 
 model Product {

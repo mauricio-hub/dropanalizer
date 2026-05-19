@@ -279,8 +279,8 @@ function publicPlans(lang: string) {
       price: '0',
       description: isEs ? 'Para empezar a validar' : 'To start validating',
       features: isEs
-        ? ['3 páginas de venta activas', 'Analytics básico', 'Templates estándar', 'Marca de agua Proply']
-        : ['3 active sales pages', 'Basic analytics', 'Standard templates', 'Proply watermark'],
+        ? ['3 páginas de venta activas', 'Analytics básico', 'Señales básicas (2 recomendaciones)', 'Templates estándar', 'Marca de agua Proply']
+        : ['3 active sales pages', 'Basic analytics', 'Basic signals (2 recommendations)', 'Standard templates', 'Proply watermark'],
       cta: isEs ? 'Comenzar gratis' : 'Get started free',
       free: true,
       highlight: false,
@@ -290,8 +290,8 @@ function publicPlans(lang: string) {
       price: '19',
       description: isEs ? 'Para dropshippers en crecimiento' : 'For growing dropshippers',
       features: isEs
-        ? ['Páginas de venta ilimitadas', 'Analytics completo + Buy Intent', 'Todos los templates', 'Sin marca de agua', 'Múltiples destinos CTA', 'Soporte prioritario']
-        : ['Unlimited sales pages', 'Full analytics + Buy Intent', 'All templates', 'No watermark', 'Multiple CTA destinations', 'Priority support'],
+        ? ['Páginas de venta ilimitadas', 'Analytics completo + Buy Intent', 'Diagnóstico AI (actualizado cada 6h)', 'Todas las señales y recomendaciones', 'Todos los templates', 'Sin marca de agua', 'Múltiples destinos CTA', 'Soporte prioritario']
+        : ['Unlimited sales pages', 'Full analytics + Buy Intent', 'AI diagnosis (updated every 6h)', 'All signals and recommendations', 'All templates', 'No watermark', 'Multiple CTA destinations', 'Priority support'],
       cta: isEs ? 'Próximamente' : 'Coming soon',
       free: false,
       highlight: true,
@@ -301,8 +301,8 @@ function publicPlans(lang: string) {
       price: '49',
       description: isEs ? 'Para equipos y agencias' : 'For teams and agencies',
       features: isEs
-        ? ['Todo lo de Pro', 'Múltiples usuarios', 'A/B testing', 'API access', 'Onboarding dedicado']
-        : ['Everything in Pro', 'Multiple users', 'A/B testing', 'API access', 'Dedicated onboarding'],
+        ? ['Todo lo de Pro', 'Diagnóstico AI cada 2h', 'Recomendaciones cross-páginas', 'Múltiples usuarios', 'A/B testing', 'API access', 'Onboarding dedicado']
+        : ['Everything in Pro', 'AI diagnosis every 2h', 'Cross-page recommendations', 'Multiple users', 'A/B testing', 'API access', 'Dedicated onboarding'],
       cta: isEs ? 'Próximamente' : 'Coming soon',
       free: false,
       highlight: false,

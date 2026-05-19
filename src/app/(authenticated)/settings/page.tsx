@@ -14,6 +14,7 @@ const plans = [
     features: [
       '3 páginas de venta activas',
       'Analytics básico',
+      'Señales básicas (2 recomendaciones)',
       'Templates estándar',
       'Marca de agua Proply',
     ],
@@ -28,6 +29,8 @@ const plans = [
     features: [
       'Páginas de venta ilimitadas',
       'Analytics completo + Buy Intent',
+      'Diagnóstico AI (actualizado cada 6h)',
+      'Todas las señales y recomendaciones',
       'Todos los templates',
       'Sin marca de agua',
       'Múltiples destinos CTA',
@@ -43,6 +46,8 @@ const plans = [
     description: 'Para equipos y agencias',
     features: [
       'Todo lo de Pro',
+      'Diagnóstico AI cada 2h',
+      'Recomendaciones cross-páginas',
       'Múltiples usuarios',
       'A/B testing',
       'API access',

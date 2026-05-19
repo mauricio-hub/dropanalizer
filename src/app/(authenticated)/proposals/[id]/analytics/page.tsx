@@ -9,6 +9,7 @@ import PageHeader from '@/components/ui/PageHeader'
 import Card from '@/components/ui/Card'
 import { Eye, MousePointer, TrendingUp, ShoppingCart, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
+import SmartRecommendations from '@/components/SmartRecommendations'
 import {
   BarChart,
   Bar,
@@ -220,6 +221,11 @@ export default function AnalyticsPage() {
           title={t.analytics.title}
           subtitle={t.analytics.subtitle}
         />
+
+        {/* Smart Recommendations */}
+        <div className="mt-8">
+          <SmartRecommendations proposalId={proposalId} language={language as 'es' | 'en'} />
+        </div>
 
         {/* Buy Intent — Hero Metric */}
         <div className="mt-8">
