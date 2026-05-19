@@ -1,4 +1,4 @@
-# 🟢 Proply Dropshipping MVP - Ready to Test
+# 🟢 Dropanalizer Dropshipping MVP - Ready to Test
 
 ## Status: COMPLETE ✅
 

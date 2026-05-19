@@ -399,7 +399,7 @@ export default function DropshippingLanding({ proposal, version }: DropshippingL
               {t.inStock}
             </div>
             <p className="text-gray-600 text-sm">
-              {t.poweredBy} <span className="text-blue-400">Proply</span>
+              {t.poweredBy} <span className="text-blue-400">Dropanalizer</span>
             </p>
           </div>
           <div className="text-center text-gray-600 text-sm">

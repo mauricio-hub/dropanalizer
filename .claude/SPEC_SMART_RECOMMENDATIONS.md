@@ -4,7 +4,7 @@
 Un sistema que analiza el comportamiento de los visitantes en cada página de venta y genera recomendaciones accionables en lenguaje natural — sin gráficas, sin métricas técnicas. El usuario ve qué está pasando y qué hacer, con un solo click para actuar.
 
 ## Why
-Los dropshippers no saben leer métricas. Tener Google Analytics-style dashboards genera confusión, no acción. Proply debe actuar como un mentor de ventas: diagnosticar el problema y decir exactamente qué hacer.
+Los dropshippers no saben leer métricas. Tener Google Analytics-style dashboards genera confusión, no acción. Dropanalizer debe actuar como un mentor de ventas: diagnosticar el problema y decir exactamente qué hacer.
 
 ## Arquitectura: Dos capas
 

@@ -230,7 +230,7 @@ function B2BLanding({ proposal, version }: { proposal: ProposalLandingProps['pro
         <div className="mx-auto max-w-5xl px-6 py-12">
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
-              <p className="font-semibold text-text-primary mb-2">Proply</p>
+              <p className="font-semibold text-text-primary mb-2">Dropanalizer</p>
               <p className="text-sm text-text-muted">Professional proposals, made simple.</p>
             </div>
             <div>
@@ -249,8 +249,8 @@ function B2BLanding({ proposal, version }: { proposal: ProposalLandingProps['pro
             </div>
           </div>
           <div className="border-t border-white/[0.06] pt-8 flex items-center justify-between text-xs text-text-muted">
-            <span>© 2026 Proply. All rights reserved.</span>
-            <span>Powered by <span className="text-accent font-medium">Proply</span></span>
+            <span>© 2026 Dropanalizer. All rights reserved.</span>
+            <span>Powered by <span className="text-accent font-medium">Dropanalizer</span></span>
           </div>
         </div>
       </footer>

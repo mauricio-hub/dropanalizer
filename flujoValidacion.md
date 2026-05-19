@@ -5,7 +5,7 @@ Elige algo concreto — ej. un organizador de cables, una lámpara LED, cualquie
 2. Define tu precio de venta
 Proveedor cobra $8 → tú vendes a $25 → margen $17.
 
-3. Crea la landing en Proply
+3. Crea la landing en Dropanalizer
 
 Nombre del producto
 Tu precio ($25)
@@ -16,7 +16,7 @@ CTA apunta a tu WhatsApp o un link de MercadoPago/PayU
 Mándala a un grupo de WhatsApp
 Ponla en tus stories de Instagram
 No necesitas gastar en ads para validar
-5. Mide en Proply
+5. Mide en Dropanalizer
 
 ¿Cuántos entraron?
 ¿En qué sección perdieron interés?

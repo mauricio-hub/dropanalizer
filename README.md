@@ -1,10 +1,10 @@
-# Proply
+# Dropanalizer
 
 SaaS platform that lets dropshippers create, publish, and optimize product sales pages — without design or copywriting skills.
 
-Instead of a blank page builder, Proply generates complete landing pages from a product description, tracks real visitor behavior, and surfaces actionable recommendations on what to change and when.
+Instead of a blank page builder, Dropanalizer generates complete landing pages from a product description, tracks real visitor behavior, and surfaces actionable recommendations on what to change and when.
 
-**Live:** [proply.app](https://proply.app)
+**Live:** [dropanalizer.ai](https://dropanalizer.ai)
 
 ---
 

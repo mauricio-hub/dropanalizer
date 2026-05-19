@@ -1,4 +1,4 @@
-# Proply — Roadmap
+# Dropanalizer — Roadmap
 
 ## Phase 1 — First working feature (current focus)
 

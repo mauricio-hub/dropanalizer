@@ -128,14 +128,14 @@ metadata:
 
 ---
 
-## 🎯 Proply's Value for Dropshippers
+## 🎯 Dropanalizer's Value for Dropshippers
 
-### Before Proply
+### Before Dropanalizer
 ```
 Product idea → Generic landing → Run ads → Hope → Lose money → Quit
 ```
 
-### With Proply
+### With Dropanalizer
 ```
 Product idea → Smart landing (instant) → Run ads → See exact data → 
 Iterate in hours (not weeks) → Validate faster → Scale winners
@@ -175,7 +175,7 @@ Iterate in hours (not weeks) → Validate faster → Scale winners
 
 ---
 
-## 🎬 Ideal Proply User Journey (Dropshipping)
+## 🎬 Ideal Dropanalizer User Journey (Dropshipping)
 
 1. **Signup** (2 min)
    - Email/password or social login
@@ -192,12 +192,12 @@ Iterate in hours (not weeks) → Validate faster → Scale winners
 
 4. **Run Ads** (ongoing)
    - Share link on Facebook, TikTok, etc.
-   - Proply tracks everything (clicks, behavior, abandonment)
+   - Dropanalizer tracks everything (clicks, behavior, abandonment)
 
 5. **Analyze** (weekly)
    - See where users drop off
    - Get specific improvement suggestions
-   - Create variant (Proply generates automatically)
+   - Create variant (Dropanalizer generates automatically)
 
 6. **Iterate** (days, not weeks)
    - Launch variant, compare results
@@ -232,4 +232,4 @@ Iterate in hours (not weeks) → Validate faster → Scale winners
 - Expect GDPR compliance
 - More design-conscious
 
-**Implication for Proply:** Core features work everywhere, but templates and messaging should adapt.
+**Implication for Dropanalizer:** Core features work everywhere, but templates and messaging should adapt.

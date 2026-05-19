@@ -32,7 +32,7 @@ export default function Home() {
       {/* Topbar */}
       <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b border-white/[0.06] bg-background/90 backdrop-blur-xl px-6 md:px-10">
         <span className="text-lg font-bold tracking-tight">
-          Pro<span className="text-accent">ply</span>
+          Drop<span className="text-accent">analizer</span>
         </span>
         <nav className="hidden md:flex items-center gap-1 text-sm text-text-secondary">
           <a href="#features" className="px-3 py-1.5 rounded-lg hover:bg-white/[0.06] hover:text-text-primary transition-all">{t.features}</a>
@@ -263,8 +263,8 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-white/[0.06] px-6 py-8">
         <div className="mx-auto max-w-6xl flex items-center justify-between text-sm text-text-muted">
-          <span>Pro<span className="text-accent">ply</span></span>
-          <span>© {new Date().getFullYear()} Proply</span>
+          <span>Drop<span className="text-accent">analizer</span></span>
+          <span>© {new Date().getFullYear()} Dropanalizer</span>
         </div>
       </footer>
     </div>
@@ -279,8 +279,8 @@ function publicPlans(lang: string) {
       price: '0',
       description: isEs ? 'Para empezar a validar' : 'To start validating',
       features: isEs
-        ? ['3 páginas de venta activas', 'Analytics básico', 'Señales básicas (2 recomendaciones)', 'Templates estándar', 'Marca de agua Proply']
-        : ['3 active sales pages', 'Basic analytics', 'Basic signals (2 recommendations)', 'Standard templates', 'Proply watermark'],
+        ? ['3 páginas de venta activas', 'Analytics básico', 'Señales básicas (2 recomendaciones)', 'Templates estándar', 'Marca de agua Dropanalizer']
+        : ['3 active sales pages', 'Basic analytics', 'Basic signals (2 recommendations)', 'Standard templates', 'Dropanalizer watermark'],
       cta: isEs ? 'Comenzar gratis' : 'Get started free',
       free: true,
       highlight: false,
@@ -324,7 +324,7 @@ const esContent = {
   howLabel: 'Cómo funciona',
   howTitle: 'De fotos a primera venta',
   ctaTitle: '¿Listo para vender más?',
-  ctaDescription: 'Únete a dropshippers que triplicaron sus conversiones con Proply.',
+  ctaDescription: 'Únete a dropshippers que triplicaron sus conversiones con Dropanalizer.',
   ctaPrimary: 'Comenzar gratis',
   socialProofTitle: 'Miles de dropshippers ya están vendiendo más',
   socialProofDesc: 'Deja de adivinar qué funciona. Genera, mide y optimiza tus landing pages con IA — como lo hacen los que más venden.',
@@ -333,7 +333,7 @@ const esContent = {
   statConversion: 'más conversiones promedio',
   previewLabel: 'Demo en vivo',
   previewTitle: 'Mira tu landing y lo que hacen tus clientes — en tiempo real',
-  previewDesc: 'No es solo una página bonita. Proply detecta intención de compra, identifica dónde abandonan y te dice qué mejorar.',
+  previewDesc: 'No es solo una página bonita. Dropanalizer detecta intención de compra, identifica dónde abandonan y te dice qué mejorar.',
   pricingLabel: 'Precios',
   pricingTitle: 'Simple, sin sorpresas',
   popular: 'Popular',
@@ -354,7 +354,7 @@ const enContent = {
   howLabel: 'How it works',
   howTitle: 'From photos to first sale',
   ctaTitle: 'Ready to sell more?',
-  ctaDescription: 'Join dropshippers who tripled their conversions with Proply.',
+  ctaDescription: 'Join dropshippers who tripled their conversions with Dropanalizer.',
   ctaPrimary: 'Get started for free',
   socialProofTitle: 'Thousands of dropshippers are already selling more',
   socialProofDesc: 'Stop guessing what works. Generate, measure and optimize your landing pages with AI — just like top sellers do.',
@@ -363,7 +363,7 @@ const enContent = {
   statConversion: 'avg conversion uplift',
   previewLabel: 'Live demo',
   previewTitle: 'See your landing and what your customers do — in real time',
-  previewDesc: "It's not just a pretty page. Proply detects buy intent, identifies where visitors drop off, and tells you what to improve.",
+  previewDesc: "It's not just a pretty page. Dropanalizer detects buy intent, identifies where visitors drop off, and tells you what to improve.",
   pricingLabel: 'Pricing',
   pricingTitle: 'Simple, no surprises',
   popular: 'Popular',
@@ -423,7 +423,7 @@ const stepsEs = [
   },
   {
     title: 'IA crea tu página',
-    description: 'Proply genera automáticamente una landing page lista para vender.',
+    description: 'Dropanalizer genera automáticamente una landing page lista para vender.',
   },
   {
     title: 'Comparte y vende',
@@ -438,7 +438,7 @@ const stepsEn = [
   },
   {
     title: 'AI creates your page',
-    description: 'Proply automatically generates a landing page ready to sell.',
+    description: 'Dropanalizer automatically generates a landing page ready to sell.',
   },
   {
     title: 'Share and sell',

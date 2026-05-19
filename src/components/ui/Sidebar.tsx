@@ -25,11 +25,11 @@ export default function Sidebar({ items, footer, collapsed = false }: SidebarPro
       <div className="flex h-14 items-center px-4 border-b border-white/[0.08] overflow-hidden">
         {!collapsed && (
           <span className="text-lg font-semibold text-text-primary tracking-tight whitespace-nowrap">
-            Pro<span className="text-accent">ply</span>
+            Drop<span className="text-accent">analizer</span>
           </span>
         )}
         {collapsed && (
-          <span className="text-lg font-semibold text-accent mx-auto">P</span>
+          <span className="text-lg font-semibold text-accent mx-auto">D</span>
         )}
       </div>
 

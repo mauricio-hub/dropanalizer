@@ -227,7 +227,7 @@ export function LandingPreview({ lang }: LandingPreviewProps) {
                 <div className="h-2.5 w-2.5 rounded-full bg-green-500/70" />
               </div>
               <div className="flex-1 mx-3 bg-white/[0.06] rounded-md px-3 py-1 text-[10px] text-text-muted font-mono">
-                proply.app/p/{'{'}{product.id}{'}'}
+                dropanalizer.ai/p/{'{'}{product.id}{'}'}
               </div>
               <div className="flex items-center gap-1 text-[10px] text-emerald-400">
                 <div className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />

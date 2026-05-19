@@ -1,7 +1,7 @@
-# Project: Proply
+# Project: Dropanalizer
 
 ## Product Overview
-Proply is a SaaS platform that allows freelancers and companies to create, send, and optimize commercial proposals as dynamic landing pages.
+Dropanalizer is a SaaS platform that allows freelancers and companies to create, send, and optimize commercial proposals as dynamic landing pages.
 
 The goal is to help users close deals faster by:
 - Structuring professional proposals
@@ -14,7 +14,7 @@ The goal is to help users close deals faster by:
 ## Primary Market: Dropshipping (Initial Focus)
 
 **Why Dropshipping:**
-Dropshippers struggle to generate consistent sales because they lack tools to create effective landing pages and understand buyer behavior. Proply solves this by providing:
+Dropshippers struggle to generate consistent sales because they lack tools to create effective landing pages and understand buyer behavior. Dropanalizer solves this by providing:
 - Quick landing page creation without copywriting expertise
 - Real-time tracking of user behavior (where do they drop off?)
 - Data-driven iteration (A/B testing, version management)
@@ -33,9 +33,9 @@ This is NOT exclusive—we remain open to other markets (agencies, SaaS, service
 
 ## Core Philosophy: NOT a Traditional Page Builder
 
-**This is critical to Proply's differentiation:**
+**This is critical to Dropanalizer's differentiation:**
 
-Proply is NOT a page builder like Unbounce, Leadpages, or Instapage.
+Dropanalizer is NOT a page builder like Unbounce, Leadpages, or Instapage.
 
 In traditional page builders:
 - User has full control → creates poor-quality pages
@@ -43,7 +43,7 @@ In traditional page builders:
 - System is passive (doesn't learn or suggest)
 - Iteration is slow and requires expertise
 
-**In Proply:**
+**In Dropanalizer:**
 - System takes intelligent decisions for the user
 - AI generates and optimizes pages automatically based on:
   - Unstructured user input (brief/product description)
@@ -55,13 +55,13 @@ In traditional page builders:
 
 **The UX difference:**
 - Page builder: "Build your page" → blank canvas
-- Proply: "Tell me about your offer" → smart landing page → automatic optimization
+- Dropanalizer: "Tell me about your offer" → smart landing page → automatic optimization
 
 ---
 
 ## Solution Overview
 
-Proply is a platform that allows users to generate, measure, and automatically optimize landing pages without technical, design, or marketing expertise.
+Dropanalizer is a platform that allows users to generate, measure, and automatically optimize landing pages without technical, design, or marketing expertise.
 
 Instead of functioning as a traditional page builder, the system uses:
 - Intelligent templates
@@ -95,7 +95,7 @@ The user doesn't need to design or guess what works. The system decides, measure
 
 ## Intelligent Templates
 
-Rather than offering a blank builder, Proply uses structured templates optimized for conversion.
+Rather than offering a blank builder, Dropanalizer uses structured templates optimized for conversion.
 
 Each template:
 - Has predefined sections (hero, benefits, social proof, CTA, etc.)
@@ -145,7 +145,7 @@ Data is associated with each proposal version, enabling understanding of real us
 
 System doesn't just show metrics—it acts on them.
 
-Based on user behavior, Proply:
+Based on user behavior, Dropanalizer:
 - Detects conversion problems
 - Suggests improvements
 - Generates optimized versions automatically
@@ -177,7 +177,7 @@ Transform manual, slow, uncertain processes into automated, data-driven systems.
 
 **Instead of:** Create → Test → Guess
 
-**Proply enables:** Generate → Measure → Optimize Automatically
+**Dropanalizer enables:** Generate → Measure → Optimize Automatically
 
 ---
 

@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 
   if (!proposal) return {}
 
-  const title = `${proposal.title} — Proply`
+  const title = `${proposal.title} — Dropanalizer`
   const description = proposal.description
     ? proposal.description.slice(0, 155)
     : `Conoce ${proposal.title} y consíguelo ahora.`

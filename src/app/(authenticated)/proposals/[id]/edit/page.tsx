@@ -175,12 +175,12 @@ export default function EditProposalPage() {
   // Listen for iframe ready signal
   useEffect(() => {
     function handleMessage(event: MessageEvent) {
-      if (event.data?.type === 'PROPLY_PREVIEW_READY') {
+      if (event.data?.type === 'DROPANALIZER_PREVIEW_READY') {
         setIframeReady(true)
         // Send current content immediately once iframe is ready
         if (content) {
           iframeRef.current?.contentWindow?.postMessage(
-            { type: 'PROPLY_PREVIEW_UPDATE', content },
+            { type: 'DROPANALIZER_PREVIEW_UPDATE', content },
             '*'
           )
         }
@@ -254,7 +254,7 @@ export default function EditProposalPage() {
     // Push to iframe immediately — no debounce needed for preview
     if (iframeReady) {
       iframeRef.current?.contentWindow?.postMessage(
-        { type: 'PROPLY_PREVIEW_UPDATE', content: newContent },
+        { type: 'DROPANALIZER_PREVIEW_UPDATE', content: newContent },
         '*'
       )
     }

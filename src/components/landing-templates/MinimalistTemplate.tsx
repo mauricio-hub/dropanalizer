@@ -304,7 +304,7 @@ export default function MinimalistTemplate({ proposal, version }: MinimalistTemp
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <span className="text-sm tracking-[0.3em] uppercase text-amber-400/60">{proposal.title}</span>
           <p className="text-white/20 text-sm">© {new Date().getFullYear()} · {t.allRights}</p>
-          <p className="text-white/20 text-xs tracking-widest uppercase">{t.poweredBy} Proply</p>
+          <p className="text-white/20 text-xs tracking-widest uppercase">{t.poweredBy} Dropanalizer</p>
         </div>
       </footer>
     </div>
