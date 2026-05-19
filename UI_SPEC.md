@@ -1,4 +1,4 @@
-# Proply — UI Spec
+# Dropanalizer — UI Spec
 
 Inspired by [Protocol (Tailwind UI)](https://protocol.tailwindui.com/). Dark, minimal, professional.
 

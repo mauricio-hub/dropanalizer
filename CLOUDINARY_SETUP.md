@@ -1,7 +1,7 @@
-# Cloudinary Setup for Proply
+# Cloudinary Setup for Dropanalizer
 
 ## Current Status
-✅ **COMPLETE** - The Proply dropshipping MVP is fully implemented and ready for testing!
+✅ **COMPLETE** - The Dropanalizer dropshipping MVP is fully implemented and ready for testing!
 
 ## What's Done
 ✅ Environment variables configured in `.env.local`
@@ -74,7 +74,7 @@ node setup-cloudinary-preset.js
 
 ## Security Note
 The unsigned preset means image uploads don't require server-side signing. This is safe for the MVP because:
-1. Only authenticated Proply users can access the upload page
+1. Only authenticated Dropanalizer users can access the upload page
 2. Uploads go directly to your Cloudinary account
 3. The preset is specific to this project only
 

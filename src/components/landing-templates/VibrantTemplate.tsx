@@ -373,7 +373,7 @@ export default function VibrantTemplate({ proposal, version }: VibrantTemplatePr
               <span className="font-bold text-lg">{proposal.title}</span>
             </div>
             <p className="text-gray-500 text-sm">{t.footerTagline2}</p>
-            <p className="text-gray-600 text-sm">Powered by Proply</p>
+            <p className="text-gray-600 text-sm">Powered by Dropanalizer</p>
           </div>
           <div className="text-center text-gray-600 text-sm">
             © {new Date().getFullYear()} {proposal.title}. {t.allRights}

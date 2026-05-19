@@ -57,13 +57,21 @@
       "PowerShell(git commit -m \"fix: simplify published bar to status dot + copy + ver icons only\")",
       "PowerShell(git add \"src/components/LanguageAndNavigation.tsx\")",
       "PowerShell(git commit -m \"fix: language dropdown z-index above editor topbar backdrop-blur stacking context\")",
-      "PowerShell(git commit -m \"fix: remove z-10 from editor topbar so language dropdown renders above it\")"
+      "PowerShell(git commit -m \"fix: remove z-10 from editor topbar so language dropdown renders above it\")",
+      "Bash(sed -i 's/\"name\": \"proply\"/\"name\": \"dropanalizer\"/g' c:/Users/mgdev/Desktop/projects/proply/package.json)",
+      "Bash(sed -i 's/\"name\": \"proply\"/\"name\": \"dropanalizer\"/g' c:/Users/mgdev/Desktop/projects/proply/package-lock.json)",
+      "Bash(\nsed -i 's/Proply/Dropanalizer/g; s/proply\\\\.app/dropanalizer.ai/g' \\\\\n  c:/Users/mgdev/Desktop/projects/proply/PRODUCT.md \\\\\n  c:/Users/mgdev/Desktop/projects/proply/PRODUCT_SPEC.md \\\\\n  c:/Users/mgdev/Desktop/projects/proply/README.md \\\\\n  c:/Users/mgdev/Desktop/projects/proply/ROADMAP.md \\\\\n  c:/Users/mgdev/Desktop/projects/proply/SYSTEM_DESIGN.md \\\\\n  c:/Users/mgdev/Desktop/projects/proply/UI_SPEC.md \\\\\n  c:/Users/mgdev/Desktop/projects/proply/CLOUDINARY_SETUP.md \\\\\n  c:/Users/mgdev/Desktop/projects/proply/READY_TO_TEST.md \\\\\n  c:/Users/mgdev/Desktop/projects/proply/flujoValidacion.md \\\\\n  c:/Users/mgdev/Desktop/projects/proply/perfilInicial.md \\\\\n  c:/Users/mgdev/Desktop/projects/proply/.claude/CLAUDE.md \\\\\n  c:/Users/mgdev/Desktop/projects/proply/.claude/IMPLEMENTATION_ROADMAP.md \\\\\n  c:/Users/mgdev/Desktop/projects/proply/.claude/SPEC_SMART_RECOMMENDATIONS.md \\\\\n  c:/Users/mgdev/Desktop/projects/proply/setup-cloudinary-preset.js \\\\\n  && echo \"docs done\"\n)",
+      "Bash(sed -i 's/Proply/Dropanalizer/g; s/proply\\\\.app/dropanalizer.ai/g' \\\\ *)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\mgdev\\\\Desktop\\\\projects\\\\dropanalizer\\\\src\" -Directory)",
+      "Bash(Select-Object -ExpandProperty Name)",
+      "PowerShell(grep -E \"^\\\\.\")"
     ],
     "additionalDirectories": [
       "c:\\Users\\mgdev\\Desktop\\projects\\proply\\src\\app\\api\\proposals\\[id]\\versions\\[versionId]\\publish",
       "c:\\Users\\mgdev\\.claude\\projects\\c--Users-mgdev-Desktop-projects-proply\\memory",
       "c:\\Users\\mgdev\\Desktop\\projects\\proply\\src\\app\\api\\cta-destinations",
-      "c:\\Users\\mgdev\\Desktop\\projects\\proply\\src\\app\\p\\[id]"
+      "c:\\Users\\mgdev\\Desktop\\projects\\proply\\src\\app\\p\\[id]",
+      "c:\\Users\\mgdev\\Desktop\\projects\\proply\\.claude"
     ]
   }
 }

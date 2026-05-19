@@ -3,7 +3,7 @@
 /**
  * Setup Cloudinary Unsigned Upload Preset
  *
- * This script creates an unsigned upload preset for the Proply project
+ * This script creates an unsigned upload preset for the Dropanalizer project
  * It requires Cloudinary API credentials
  */
 
@@ -55,10 +55,10 @@ const req = https.request(options, (res) => {
       console.log('✅ Success! Unsigned preset created.');
       console.log(`   Preset ID: ${result.name}`);
       console.log(`   Unsigned: ${result.unsigned}`);
-      console.log('\nYou can now upload images to Proply!');
+      console.log('\nYou can now upload images to Dropanalizer!');
     } else if (res.statusCode === 409) {
       console.log('ℹ️  Preset already exists (this is fine!)');
-      console.log('   You can now upload images to Proply!');
+      console.log('   You can now upload images to Dropanalizer!');
     } else {
       console.error(`❌ Error: ${res.statusCode}`);
       console.error(data);

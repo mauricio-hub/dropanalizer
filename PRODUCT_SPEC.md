@@ -1,8 +1,8 @@
-# Proply — Product Spec
+# Dropanalizer — Product Spec
 
-## What is Proply
+## What is Dropanalizer
 
-Proply is a SaaS platform that lets freelancers and small agencies create, send, and track commercial proposals as dynamic landing pages.
+Dropanalizer is a SaaS platform that lets freelancers and small agencies create, send, and track commercial proposals as dynamic landing pages.
 
 Instead of sending a PDF or a Word doc, users send a link. The client opens a polished landing page. The user sees exactly how the client engaged with it.
 
@@ -20,7 +20,7 @@ Instead of sending a PDF or a Word doc, users send a link. The client opens a po
 
 Proposals sent as PDFs are static, untrackable, and hard to iterate on.
 
-Proply solves:
+Dropanalizer solves:
 - **No visibility** — you don't know if the client read your proposal
 - **Slow iteration** — editing a PDF and resending is painful
 - **Unprofessional format** — a landing page looks better than an attachment

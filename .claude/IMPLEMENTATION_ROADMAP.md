@@ -1,8 +1,8 @@
-# Implementation Roadmap - Proply MVP
+# Implementation Roadmap - Dropanalizer MVP
 
 ## 📋 Overview
 
-Este documento define el roadmap técnico para llevar Proply desde su estado actual (creación básica de propuestas) a un MVP funcional (propuestas con IA, versioning, tracking).
+Este documento define el roadmap técnico para llevar Dropanalizer desde su estado actual (creación básica de propuestas) a un MVP funcional (propuestas con IA, versioning, tracking).
 
 **Fase Actual:** Infraestructura + Primera funcionalidad (Generación con IA)
 

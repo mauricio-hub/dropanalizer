@@ -7,7 +7,7 @@ import { LanguageProvider } from '@/components/LanguageContext'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Proply – Crea landing pages que venden, sin diseñador',
+  title: 'Dropanalizer – Crea landing pages que venden, sin diseñador',
   description:
     'Genera landing pages profesionales para tus productos en minutos. Con IA, imágenes y CTA a WhatsApp o tu tienda. Ideal para dropshipping y ventas online.',
   keywords: [
@@ -16,21 +16,21 @@ export const metadata: Metadata = {
     'generador de landing pages',
     'landing page para productos',
     'landing page con whatsapp',
-    'proply',
+    'dropanalizer',
   ],
-  authors: [{ name: 'Proply' }],
+  authors: [{ name: 'Dropanalizer' }],
   openGraph: {
-    title: 'Proply – Crea landing pages que venden, sin diseñador',
+    title: 'Dropanalizer – Crea landing pages que venden, sin diseñador',
     description:
       'Genera landing pages profesionales para tus productos en minutos. Con IA, imágenes y CTA a WhatsApp o tu tienda.',
-    url: 'https://proply.app',
-    siteName: 'Proply',
+    url: 'https://dropanalizer.ai',
+    siteName: 'Dropanalizer',
     locale: 'es_ES',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Proply – Landing pages que venden',
+    title: 'Dropanalizer – Landing pages que venden',
     description:
       'Crea tu landing page en minutos con IA. Ideal para dropshipping y ventas online.',
   },

@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import type { Language } from '@/lib/i18n'
 
-const LANGUAGE_CHANGE_EVENT = 'PROPLY_LANGUAGE_CHANGE'
+const LANGUAGE_CHANGE_EVENT = 'DROPANALIZER_LANGUAGE_CHANGE'
 
 export function useLanguage() {
   const [language, setLanguageState] = useState<Language>('es')

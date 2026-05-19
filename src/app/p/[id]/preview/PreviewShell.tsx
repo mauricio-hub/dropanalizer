@@ -22,13 +22,13 @@ export default function PreviewShell({ proposal, initialContent, initialVersionI
 
   useEffect(() => {
     function handleMessage(event: MessageEvent) {
-      if (event.data?.type === 'PROPLY_PREVIEW_UPDATE') {
+      if (event.data?.type === 'DROPANALIZER_PREVIEW_UPDATE') {
         setContent(event.data.content)
       }
     }
     window.addEventListener('message', handleMessage)
     // Signal to the parent that the iframe is ready
-    window.parent.postMessage({ type: 'PROPLY_PREVIEW_READY' }, '*')
+    window.parent.postMessage({ type: 'DROPANALIZER_PREVIEW_READY' }, '*')
     return () => window.removeEventListener('message', handleMessage)
   }, [])
 

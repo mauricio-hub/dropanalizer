@@ -16,7 +16,7 @@ const plans = [
       'Analytics básico',
       'Señales básicas (2 recomendaciones)',
       'Templates estándar',
-      'Marca de agua Proply',
+      'Marca de agua Dropanalizer',
     ],
     cta: 'Tu plan actual',
     current: true,
