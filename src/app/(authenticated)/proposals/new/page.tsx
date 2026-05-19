@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import Container from '@/components/ui/Container'
 import PageHeader from '@/components/ui/PageHeader'
 import Button from '@/components/ui/Button'
-import { Sparkles, Check, Rocket, Flame, Upload, X, AlertCircle, MessageCircle, Link, ExternalLink } from 'lucide-react'
+import { Sparkles, Check, Rocket, Flame, Upload, X, AlertCircle, MessageCircle, Link, ExternalLink, Brain, Wand2, BarChart2, Zap } from 'lucide-react'
 import type { CtaDestination } from '@/components/CtaDestinations'
 import { useLanguage } from '@/hooks/useLanguage'
 import { getTranslation } from '@/lib/i18n'
@@ -53,6 +53,7 @@ export default function NewProposalPage() {
 
   // Step 3: Generation
   const [generationProgress, setGenerationProgress] = useState(0)
+  const [activeStep, setActiveStep] = useState(0)
 
   useEffect(() => {
     fetch('/api/cta-destinations')
@@ -70,13 +71,21 @@ export default function NewProposalPage() {
   // Simulate generation progress animation
   useEffect(() => {
     if (step === 3 && loading) {
-      const interval = setInterval(() => {
-        setGenerationProgress((prev) => {
-          if (prev >= 95) return 95
-          return prev + Math.random() * 25
-        })
-      }, 1000)
-      return () => clearInterval(interval)
+      setActiveStep(0)
+      const stepDurations = [1200, 2000, 1800, 1000]
+      let current = 0
+      const timers: ReturnType<typeof setTimeout>[] = []
+
+      stepDurations.forEach((delay, i) => {
+        const accumulated = stepDurations.slice(0, i).reduce((a, b) => a + b, 0)
+        const t = setTimeout(() => {
+          setActiveStep(i)
+          setGenerationProgress(Math.min(95, ((i + 1) / stepDurations.length) * 95))
+        }, accumulated)
+        timers.push(t)
+      })
+
+      return () => timers.forEach(clearTimeout)
     }
   }, [step, loading])
 
@@ -192,6 +201,7 @@ export default function NewProposalPage() {
     setLoading(true)
     setError('')
     setGenerationProgress(0)
+    setActiveStep(0)
 
     try {
       // Prepare image data
@@ -223,6 +233,7 @@ export default function NewProposalPage() {
       })
 
       setGenerationProgress(100)
+      setActiveStep(4)
 
       if (!res.ok) {
         const data = await res.json()
@@ -777,32 +788,110 @@ export default function NewProposalPage() {
               )}
 
               {!error && (
-                <div className="text-center space-y-6">
-                  <div className="space-y-3">
-                    <div className="inline-block">
-                      <Sparkles className="h-12 w-12 text-accent animate-spin" />
+                <div className="space-y-8">
+                  {/* Header */}
+                  <div className="text-center space-y-2">
+                    <div className="relative inline-flex items-center justify-center w-14 h-14">
+                      <div className="absolute inset-0 rounded-full bg-accent/10 animate-ping" />
+                      <div className="relative rounded-full bg-accent/20 p-3">
+                        <Brain className="h-7 w-7 text-accent" />
+                      </div>
                     </div>
                     <h3 className="text-lg font-semibold text-text-primary">
-                      {currentGenerationText}
+                      {t.createProposal.generationStep1.replace('...', '')}
                     </h3>
-                    <p className="text-sm text-text-muted">
-                      {t.createProposal.takingSeconds}
+                    <p className="text-sm text-text-muted">{t.createProposal.takingSeconds}</p>
+                  </div>
+
+                  {/* Steps */}
+                  <div className="rounded-xl border border-white/[0.08] bg-surface/60 p-5 space-y-4">
+                    {[
+                      { icon: Brain, label: t.createProposal.generationStep1 },
+                      { icon: Wand2, label: t.createProposal.generationStep2 },
+                      { icon: BarChart2, label: t.createProposal.generationStep3 },
+                      { icon: Zap, label: t.createProposal.generationStep4 },
+                    ].map((s, i) => {
+                      const isDone = i < activeStep
+                      const isActive = i === activeStep
+                      const isPending = i > activeStep
+
+                      return (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, x: -8 }}
+                          animate={{ opacity: isPending ? 0.35 : 1, x: 0 }}
+                          transition={{ delay: i * 0.08, duration: 0.3 }}
+                          className="flex items-center gap-4"
+                        >
+                          {/* Icon bubble */}
+                          <div className={`flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-500 ${
+                            isDone
+                              ? 'bg-accent/20'
+                              : isActive
+                              ? 'bg-accent/15 ring-1 ring-accent/40'
+                              : 'bg-white/[0.04]'
+                          }`}>
+                            {isDone ? (
+                              <Check className="h-4 w-4 text-accent" />
+                            ) : (
+                              <s.icon className={`h-4 w-4 ${isActive ? 'text-accent' : 'text-text-muted'}`} />
+                            )}
+                          </div>
+
+                          {/* Label */}
+                          <div className="flex-1 min-w-0">
+                            <p className={`text-sm font-medium transition-colors duration-300 ${
+                              isDone ? 'text-accent' : isActive ? 'text-text-primary' : 'text-text-muted'
+                            }`}>
+                              {s.label}
+                            </p>
+                            {isActive && (
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: '100%' }}
+                                transition={{ duration: 1.5, ease: 'easeInOut' }}
+                                className="mt-1.5 h-0.5 bg-gradient-to-r from-accent to-accent/20 rounded-full"
+                              />
+                            )}
+                          </div>
+
+                          {/* Right indicator */}
+                          <div className="flex-shrink-0">
+                            {isDone && (
+                              <span className="text-xs text-accent/70 font-mono">✓</span>
+                            )}
+                            {isActive && (
+                              <div className="flex gap-0.5">
+                                {[0, 1, 2].map((dot) => (
+                                  <motion.div
+                                    key={dot}
+                                    className="w-1 h-1 rounded-full bg-accent"
+                                    animate={{ opacity: [0.3, 1, 0.3] }}
+                                    transition={{ duration: 1, repeat: Infinity, delay: dot * 0.2 }}
+                                  />
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </motion.div>
+                      )
+                    })}
+                  </div>
+
+                  {/* Progress bar */}
+                  <div className="space-y-1.5">
+                    <div className="w-full h-1 bg-white/[0.06] rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${generationProgress}%` }}
+                        transition={{ duration: 0.8, ease: 'easeOut' }}
+                        className="h-full bg-gradient-to-r from-accent/70 to-accent rounded-full"
+                      />
+                    </div>
+                    <p className="text-xs text-text-muted text-right font-mono">
+                      {Math.round(generationProgress)}%
                     </p>
                   </div>
-
-                  {/* Progress Bar */}
-                  <div className="w-full h-1 bg-surface rounded-full overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: `${generationProgress}%` }}
-                      transition={{ duration: 0.5 }}
-                      className="h-full bg-accent"
-                    />
-                  </div>
-
-                  <p className="text-xs text-text-muted">
-                    {Math.round(generationProgress)}%
-                  </p>
                 </div>
               )}
             </motion.div>
