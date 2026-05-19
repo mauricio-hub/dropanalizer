@@ -13,16 +13,23 @@ export async function POST(req: Request) {
       )
     }
 
-    // Verify version exists
+    // Only track events on published versions
     const version = await prisma.version.findUnique({
       where: { id: versionId },
-      select: { id: true },
+      select: { id: true, isPublished: true },
     })
 
     if (!version) {
       return NextResponse.json(
         { error: 'Version not found' },
         { status: 404 }
+      )
+    }
+
+    if (!version.isPublished) {
+      return NextResponse.json(
+        { error: 'Tracking is only available for published versions' },
+        { status: 403 }
       )
     }
 

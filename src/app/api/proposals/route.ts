@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
 import { generateProposalContent, generateDropshippingContent } from '@/lib/openai'
+import { isLimitedByFreePlan, FREE_PLAN_PROPOSAL_LIMIT } from '@/lib/permissions'
 
 export async function GET() {
   const user = await getCurrentUser()
@@ -16,23 +17,23 @@ export async function GET() {
   return NextResponse.json(proposals)
 }
 
-const FREE_PLAN_LIMIT = 3
-
 export async function POST(req: Request) {
   const user = await getCurrentUser()
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   try {
-    // Enforce Free plan limit
-    const count = await prisma.proposal.count({ where: { userId: user.id } })
-    if (count >= FREE_PLAN_LIMIT) {
-      return NextResponse.json(
-        {
-          error: 'free_limit_reached',
-          message: `El plan gratuito permite hasta ${FREE_PLAN_LIMIT} landings. Elimina una existente o actualiza tu plan.`,
-        },
-        { status: 403 }
-      )
+    // Enforce Free plan limit (ADMINs are exempt)
+    if (isLimitedByFreePlan(user)) {
+      const count = await prisma.proposal.count({ where: { userId: user.id } })
+      if (count >= FREE_PLAN_PROPOSAL_LIMIT) {
+        return NextResponse.json(
+          {
+            error: 'free_limit_reached',
+            message: `El plan gratuito permite hasta ${FREE_PLAN_PROPOSAL_LIMIT} landings. Elimina una existente o actualiza tu plan.`,
+          },
+          { status: 403 }
+        )
+      }
     }
 
     const body = await req.json()

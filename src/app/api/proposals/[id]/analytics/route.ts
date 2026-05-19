@@ -18,9 +18,10 @@ export async function GET(
         versions: {
           include: {
             events: {
-              orderBy: { createdAt: 'desc' },
+              orderBy: { createdAt: 'asc' },
             },
           },
+          orderBy: { version: 'asc' },
         },
       },
     })
@@ -29,20 +30,23 @@ export async function GET(
       return NextResponse.json({ error: 'Proposal not found' }, { status: 404 })
     }
 
-    // Verify ownership
     if (proposal.userId !== user.id) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
-    // Aggregate analytics from all versions
+    // Only aggregate events from published versions
+    const publishedVersions = proposal.versions.filter((v) => v.isPublished)
+    const hasPublishedVersion = publishedVersions.length > 0
+
     let totalViews = 0
     let totalClicks = 0
+    let totalTimeSpentEvents = 0
     const eventsBySection: Record<string, number> = {}
     const timeBySection: Record<string, { total: number; count: number; average: number }> = {}
     const eventsByVersion: Record<string, { views: number; clicks: number; timeSpent: number }> = {}
     const allEvents: any[] = []
 
-    for (const version of proposal.versions) {
+    for (const version of publishedVersions) {
       eventsByVersion[`v${version.version}`] = { views: 0, clicks: 0, timeSpent: 0 }
 
       for (const event of version.events) {
@@ -65,35 +69,40 @@ export async function GET(
             eventsBySection[section] = (eventsBySection[section] || 0) + 1
           }
         } else if (event.type === 'time_spent') {
-          eventsByVersion[`v${version.version}`].timeSpent++
+          totalTimeSpentEvents++
           const section = (event.data as any)?.section
           const duration = (event.data as any)?.duration || 0
           if (section && duration > 0) {
+            // Accumulate real seconds, not event count
+            eventsByVersion[`v${version.version}`].timeSpent += duration
             if (!timeBySection[section]) {
               timeBySection[section] = { total: 0, count: 0, average: 0 }
             }
             timeBySection[section].total += duration
             timeBySection[section].count += 1
-            timeBySection[section].average = timeBySection[section].total / timeBySection[section].count
+            timeBySection[section].average = Math.round(timeBySection[section].total / timeBySection[section].count)
           }
         }
       }
     }
 
-    // Sort by most recent
     allEvents.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
-    // Buy intent = clicks on any CTA button
+    // Buy intent: unique views that clicked a CTA (capped at totalViews)
     const buyIntentSections = ['nav-cta', 'hero-cta', 'pricing-cta', 'final-cta-button']
-    const buyIntentClicks = buyIntentSections.reduce(
+    const rawBuyIntentClicks = buyIntentSections.reduce(
       (sum, section) => sum + (eventsBySection[section] || 0),
       0
     )
+    // A visitor can click CTA multiple times — cap to totalViews so rate never exceeds 100%
+    const buyIntentClicks = Math.min(rawBuyIntentClicks, totalViews)
 
     return NextResponse.json(
       {
+        hasPublishedVersion,
         totalViews,
         totalClicks,
+        totalTimeSpentEvents,
         buyIntentClicks,
         eventsBySection,
         timeBySection,

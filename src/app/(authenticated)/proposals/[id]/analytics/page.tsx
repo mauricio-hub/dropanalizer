@@ -38,8 +38,10 @@ interface Event {
 }
 
 interface Analytics {
+  hasPublishedVersion: boolean
   totalViews: number
   totalClicks: number
+  totalTimeSpentEvents: number
   buyIntentClicks: number
   eventsBySection: Record<string, number>
   timeBySection: Record<string, { total: number; count: number; average: number }>
@@ -107,6 +109,34 @@ export default function AnalyticsPage() {
     return (
       <div className="min-h-screen bg-background py-12 flex items-center justify-center">
         <p className="text-text-muted">{t.analytics.loadingAnalytics}</p>
+      </div>
+    )
+  }
+
+  // No published version yet — data would be meaningless
+  if (!analytics.hasPublishedVersion) {
+    return (
+      <div className="min-h-screen bg-background py-12">
+        <Container>
+          <Link href="/analytics" className="inline-flex items-center gap-2 text-accent hover:text-accent-hover transition-colors mb-6 text-sm font-medium">
+            <ArrowLeft className="h-4 w-4" />
+            {t.analytics.backToAnalytics || 'Volver a Analítica'}
+          </Link>
+          {proposalInfo && (
+            <h1 className="text-3xl font-bold text-text-primary mb-2">{proposalInfo.title}</h1>
+          )}
+          <div className="mt-12 flex flex-col items-center justify-center rounded-2xl border border-dashed border-white/[0.10] py-20 text-center">
+            <Eye className="h-10 w-10 text-text-muted mb-4" />
+            <p className="text-sm font-medium text-text-primary mb-1">
+              {language === 'es' ? 'Aún no hay datos' : 'No data yet'}
+            </p>
+            <p className="text-sm text-text-muted max-w-xs">
+              {language === 'es'
+                ? 'Publica una versión de esta página de venta para empezar a recopilar analytics.'
+                : 'Publish a version of this sales page to start collecting analytics.'}
+            </p>
+          </div>
+        </Container>
       </div>
     )
   }
@@ -399,7 +429,7 @@ export default function AnalyticsPage() {
         )}
 
         {/* Engagement Distribution Pie Chart */}
-        {(analytics.totalViews > 0 || analytics.totalClicks > 0) && (
+        {analytics.totalViews > 0 && (
           <div className="mt-12">
             <h2 className="text-2xl font-bold text-text-primary mb-6">{t.analytics.engagementDistribution}</h2>
             <div className="grid md:grid-cols-2 gap-6">
@@ -445,7 +475,7 @@ export default function AnalyticsPage() {
                         data={[
                           { name: 'Views', value: analytics.totalViews },
                           { name: 'Clicks', value: analytics.totalClicks },
-                          { name: 'Time Tracked', value: Object.values(analytics.timeBySection).length },
+                          { name: 'Time Tracked', value: analytics.totalTimeSpentEvents },
                         ]}
                         cx="50%"
                         cy="50%"
@@ -483,27 +513,23 @@ export default function AnalyticsPage() {
                 <ResponsiveContainer width="100%" height={300}>
                   <LineChart
                     data={(() => {
-                      const eventsByHour: Record<string, { views: number; clicks: number; timeSpent: number }> = {}
+                      // Key by "YYYY-MM-DD HH:mm" so same clock time on different days don't merge
+                      const grouped: Record<string, { views: number; clicks: number; timeSpent: number }> = {}
 
-                      analytics.events.forEach((event) => {
+                      ;[...analytics.events].reverse().forEach((event) => {
                         const date = new Date(event.createdAt)
-                        const hour = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+                        const key = `${date.toLocaleDateString('en-CA')} ${date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}`
 
-                        if (!eventsByHour[hour]) {
-                          eventsByHour[hour] = { views: 0, clicks: 0, timeSpent: 0 }
-                        }
+                        if (!grouped[key]) grouped[key] = { views: 0, clicks: 0, timeSpent: 0 }
 
-                        if (event.type === 'view') eventsByHour[hour].views++
-                        else if (event.type === 'click') eventsByHour[hour].clicks++
-                        else if (event.type === 'time_spent') eventsByHour[hour].timeSpent++
+                        if (event.type === 'view') grouped[key].views++
+                        else if (event.type === 'click') grouped[key].clicks++
+                        else if (event.type === 'time_spent') grouped[key].timeSpent++
                       })
 
-                      return Object.entries(eventsByHour)
-                        .slice(-20)
-                        .map(([time, data]) => ({
-                          time,
-                          ...data,
-                        }))
+                      return Object.entries(grouped)
+                        .slice(-24)
+                        .map(([time, data]) => ({ time, ...data }))
                     })()}
                     margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
                   >

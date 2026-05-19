@@ -22,7 +22,7 @@ export default function DashboardEmptyState() {
         <Zap className="h-7 w-7 text-accent" />
       </div>
       <h2 className="text-xl font-semibold text-text-primary mb-2">
-        {language === 'es' ? 'Crea tu primera landing' : 'Create your first landing'}
+        {language === 'es' ? 'Crea tu primera página de venta' : 'Create your first sales page'}
       </h2>
       <p className="text-sm text-text-muted max-w-sm mb-8">
         {language === 'es'
@@ -45,7 +45,7 @@ export default function DashboardEmptyState() {
       <Link href="/proposals/new">
         <Button>
           <Plus className="h-4 w-4" />
-          {language === 'es' ? 'Crear mi primera landing' : 'Create my first landing'}
+          {language === 'es' ? 'Crear mi primera página de venta' : 'Create my first sales page'}
         </Button>
       </Link>
     </div>

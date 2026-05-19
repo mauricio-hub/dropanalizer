@@ -1,3 +1,32 @@
+// ─── Roles & Permissions ────────────────────────────────────────────────────
+
+export type Role = 'USER' | 'ADMIN'
+
+export interface AppUser {
+  id: string
+  clerkId: string
+  email: string
+  name: string | null
+  role: Role
+  createdAt: Date
+  updatedAt: Date
+}
+
+export type Permission =
+  | 'proposals:create'
+  | 'proposals:read'
+  | 'proposals:update'
+  | 'proposals:delete'
+  | 'proposals:publish'
+  | 'versions:create'
+  | 'versions:read'
+  | 'catalog:manage'
+  | 'analytics:read'
+  | 'admin:access'
+  | 'admin:manage_users'
+
+// ─── Domain types ────────────────────────────────────────────────────────────
+
 export interface TimelinePhase {
   phase: string
   duration: string
