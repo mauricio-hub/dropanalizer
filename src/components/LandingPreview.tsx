@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Eye, Clock, MousePointer, TrendingUp, ShoppingCart, Zap, AlertCircle } from 'lucide-react'
+import { Eye, Clock, MousePointer, TrendingUp, ShoppingCart, Zap, AlertTriangle, CheckCircle, XCircle } from 'lucide-react'
 import Card from '@/components/ui/Card'
 
 const PRODUCTS = [
@@ -78,6 +78,56 @@ const PRODUCTS = [
     },
   },
 ]
+
+const SIGNALS: Record<string, {
+  severity: 'critical' | 'warning' | 'success'
+  titleEs: string
+  titleEn: string
+  bodyEs: string
+  bodyEn: string
+  actionEs: string
+  actionEn: string
+}[]> = {
+  reloj: [
+    {
+      severity: 'warning',
+      titleEs: 'Hay interés pero algo frena la decisión',
+      titleEn: "There's interest but something stops the purchase",
+      bodyEs: 'El 23.9% de visitantes hace click en Comprar — hay interés, pero se quedan a mitad de camino. Prueba agregar urgencia o una garantía visible.',
+      bodyEn: '23.9% of visitors click Buy — there\'s interest but they\'re not following through. Try adding urgency or a visible guarantee.',
+      actionEs: 'Editar página',
+      actionEn: 'Edit page',
+    },
+  ],
+  carteras: [
+    {
+      severity: 'success',
+      titleEs: 'Buena intención de compra',
+      titleEn: 'Strong buy intent',
+      bodyEs: 'El 14.4% de tus visitantes hace click en Comprar — eso está por encima del promedio del sector (1–3%). Es momento de escalar el tráfico.',
+      bodyEn: '14.4% of your visitors click Buy — above the industry average (1–3%). Time to scale your traffic.',
+      actionEs: 'Copiar link',
+      actionEn: 'Copy link',
+    },
+  ],
+  zapatos: [
+    {
+      severity: 'critical',
+      titleEs: 'Esta página lleva 7+ días sin convertir bien',
+      titleEn: 'This page has been underperforming for 7+ days',
+      bodyEs: 'Llevas 9 días con una tasa del 11%. Tienes suficientes datos — genera una nueva versión con IA para ver si mejora.',
+      bodyEn: 'You\'ve had an 11% rate for 9 days. You have enough data — generate a new AI version to see if it performs better.',
+      actionEs: 'Generar nueva versión con IA',
+      actionEn: 'Generate new version with AI',
+    },
+  ],
+}
+
+const SEVERITY_CONFIG = {
+  critical: { icon: XCircle, color: 'text-red-400', border: 'border-red-500/20', bg: 'bg-red-500/[0.05]', dot: 'bg-red-400', labelEs: 'Acción urgente', labelEn: 'Urgent' },
+  warning:  { icon: AlertTriangle, color: 'text-amber-400', border: 'border-amber-500/20', bg: 'bg-amber-500/[0.05]', dot: 'bg-amber-400', labelEs: 'Atención', labelEn: 'Attention' },
+  success:  { icon: CheckCircle, color: 'text-accent', border: 'border-accent/20', bg: 'bg-accent/[0.05]', dot: 'bg-accent', labelEs: 'Bien', labelEn: 'Good' },
+}
 
 const SECTIONS = ['Hero', 'Beneficios', 'Galería', 'Precio', 'FAQ', 'CTA']
 const SECTIONS_EN = ['Hero', 'Benefits', 'Gallery', 'Price', 'FAQ', 'CTA']
@@ -322,43 +372,40 @@ export function LandingPreview({ lang }: LandingPreviewProps) {
               </div>
             </Card>
 
-            {/* Buy intent insight */}
-            <div className="rounded-xl border border-accent/20 bg-accent/5 p-4">
-              <div className="flex items-start gap-3">
-                <div className="h-7 w-7 rounded-lg bg-accent/15 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Zap className="h-3.5 w-3.5 text-accent" />
-                </div>
-                <div>
-                  <p className="text-xs font-semibold text-accent mb-1">
-                    {isEs ? 'Intención de compra detectada' : 'Buy intent detected'}
-                  </p>
-                  <p className="text-[11px] text-text-secondary leading-relaxed">
-                    {isEs
-                      ? `${a.buyIntent}% de visitantes pasaron más de 30s en la sección "${isEs ? a.hotSection : a.hotSectionEn}" y volvieron al CTA.`
-                      : `${a.buyIntent}% of visitors spent 30s+ on the "${a.hotSectionEn}" section and returned to the CTA.`
-                    }
-                  </p>
-                </div>
+            {/* Smart Signals preview */}
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <Zap className="h-3.5 w-3.5 text-accent" />
+                <p className="text-xs font-semibold text-text-primary uppercase tracking-widest">
+                  {isEs ? 'Señales' : 'Signals'}
+                </p>
               </div>
-            </div>
-
-            {/* Drop-off warning */}
-            <div className="rounded-xl border border-orange-400/20 bg-orange-400/5 p-4">
-              <div className="flex items-start gap-3">
-                <div className="h-7 w-7 rounded-lg bg-orange-400/15 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <AlertCircle className="h-3.5 w-3.5 text-orange-400" />
-                </div>
-                <div>
-                  <p className="text-xs font-semibold text-orange-400 mb-1">
-                    {isEs ? 'Abandono detectado' : 'Drop-off detected'}
-                  </p>
-                  <p className="text-[11px] text-text-secondary leading-relaxed">
-                    {isEs
-                      ? `La sección "${a.dropSection}" tiene alto abandono. Proply sugiere optimizar el copy.`
-                      : `The "${a.dropSectionEn}" section has high drop-off. Proply suggests optimizing the copy.`
-                    }
-                  </p>
-                </div>
+              <div className="space-y-2">
+                {SIGNALS[product.id].map((signal, i) => {
+                  const cfg = SEVERITY_CONFIG[signal.severity]
+                  const Icon = cfg.icon
+                  return (
+                    <div key={i} className={`rounded-xl border p-4 ${cfg.border} ${cfg.bg}`}>
+                      <div className="flex items-start gap-2.5">
+                        <Icon className={`h-4 w-4 flex-shrink-0 mt-0.5 ${cfg.color}`} />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-1.5 mb-1">
+                            <span className={`inline-block h-1.5 w-1.5 rounded-full flex-shrink-0 ${cfg.dot}`} />
+                            <p className="text-[11px] font-semibold text-text-primary leading-tight">
+                              {isEs ? signal.titleEs : signal.titleEn}
+                            </p>
+                          </div>
+                          <p className="text-[10px] text-text-muted leading-relaxed">
+                            {isEs ? signal.bodyEs : signal.bodyEn}
+                          </p>
+                          <p className={`mt-2 text-[10px] font-semibold ${cfg.color}`}>
+                            → {isEs ? signal.actionEs : signal.actionEn}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           </div>
