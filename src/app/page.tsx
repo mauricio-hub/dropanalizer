@@ -4,9 +4,12 @@ import Link from 'next/link'
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
-import { FileText, BarChart2, GitBranch, Zap } from 'lucide-react'
+import { FileText, BarChart2, GitBranch, Zap, Check, Building2, Star } from 'lucide-react'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { useLanguage } from '@/components/LanguageContext'
+import { LandingPreview } from '@/components/LandingPreview'
+import Button from '@/components/ui/Button'
+import Card from '@/components/ui/Card'
 
 export default function Home() {
   const { language } = useLanguage()
@@ -27,27 +30,23 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background text-text-primary">
       {/* Topbar */}
-      <header className="sticky top-0 z-10 flex h-14 items-center justify-between border-b border-white/[0.08] bg-background/80 backdrop-blur-md px-6">
-        <span className="text-base font-semibold tracking-tight">
+      <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b border-white/[0.06] bg-background/90 backdrop-blur-xl px-6 md:px-10">
+        <span className="text-lg font-bold tracking-tight">
           Pro<span className="text-accent">ply</span>
         </span>
-        <nav className="hidden md:flex items-center gap-6 text-sm text-text-secondary">
-          <a href="#features" className="hover:text-text-primary transition-colors">{t.features}</a>
-          <a href="#how" className="hover:text-text-primary transition-colors">{t.howWorks}</a>
+        <nav className="hidden md:flex items-center gap-1 text-sm text-text-secondary">
+          <a href="#features" className="px-3 py-1.5 rounded-lg hover:bg-white/[0.06] hover:text-text-primary transition-all">{t.features}</a>
+          <a href="#how" className="px-3 py-1.5 rounded-lg hover:bg-white/[0.06] hover:text-text-primary transition-all">{t.howWorks}</a>
+          <a href="#pricing" className="px-3 py-1.5 rounded-lg hover:bg-white/[0.06] hover:text-text-primary transition-all">{t.pricing}</a>
         </nav>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <LanguageSwitcher />
-          <Link
-            href="/sign-in"
-            className="text-sm text-text-secondary hover:text-text-primary transition-colors"
-          >
-            {t.signIn}
+          <div className="w-px h-4 bg-white/[0.08] mx-1" />
+          <Link href="/sign-in">
+            <Button variant="ghost" size="sm">{t.signIn}</Button>
           </Link>
-          <Link
-            href="/sign-up"
-            className="inline-flex items-center gap-2 rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-background hover:bg-accent-hover shadow-glow-green-sm hover:shadow-glow-green transition-all"
-          >
-            {t.startBtn}
+          <Link href="/sign-up">
+            <Button size="sm">{t.startBtn} →</Button>
           </Link>
         </div>
       </header>
@@ -67,17 +66,11 @@ export default function Home() {
             {t.heroDescription}
           </p>
           <div className="mt-8 flex items-center gap-4">
-            <Link
-              href="/sign-up"
-              className="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-2.5 text-base font-semibold text-background hover:bg-accent-hover shadow-glow-green-sm hover:shadow-glow-green transition-all"
-            >
-              {t.ctaPrimary} →
+            <Link href="/sign-up">
+              <Button size="lg">{t.ctaPrimary} →</Button>
             </Link>
-            <Link
-              href="/sign-in"
-              className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-6 py-2.5 text-base font-medium text-text-primary hover:bg-white/10 hover:border-white/20 transition-all"
-            >
-              {t.signIn}
+            <Link href="/sign-in">
+              <Button size="lg" variant="secondary">{t.signIn}</Button>
             </Link>
           </div>
         </div>
@@ -94,16 +87,13 @@ export default function Home() {
         </h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((f) => (
-            <div
-              key={f.title}
-              className="rounded-xl border border-white/[0.08] bg-surface p-6 shadow-card hover:border-white/[0.14] hover:shadow-glow-green-sm transition-all"
-            >
+            <Card key={f.title} hover className="p-6">
               <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-lg bg-accent/10 text-accent">
                 <f.icon className="h-4 w-4" />
               </div>
               <h3 className="mb-2 text-sm font-semibold text-text-primary">{f.title}</h3>
               <p className="text-sm text-text-secondary leading-relaxed">{f.description}</p>
-            </div>
+            </Card>
           ))}
         </div>
       </section>
@@ -131,10 +121,129 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Live Preview + Analytics */}
+      <section id="preview" className="border-t border-white/[0.06]">
+        <div className="mx-auto max-w-6xl px-6 py-20">
+          <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-4">{t.previewLabel}</p>
+          <h2 className="text-2xl md:text-3xl font-semibold text-text-primary mb-3">
+            {t.previewTitle}
+          </h2>
+          <p className="text-text-secondary text-base mb-12 max-w-xl">
+            {t.previewDesc}
+          </p>
+          <LandingPreview lang={language} />
+        </div>
+      </section>
+
+      {/* Social proof banner */}
+      <section className="border-t border-white/[0.06]">
+        <div className="mx-auto max-w-6xl px-6 py-16">
+          <div className="relative overflow-hidden rounded-2xl border border-accent/20 bg-gradient-to-br from-accent/10 via-accent/5 to-transparent p-10 md:p-14 text-center">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(34,197,94,0.12)_0%,transparent_60%)]" />
+            <div className="relative">
+              <div className="flex justify-center gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                ))}
+              </div>
+              <h2 className="text-2xl md:text-4xl font-bold text-text-primary mb-3">
+                {t.socialProofTitle}
+              </h2>
+              <p className="text-text-secondary text-base md:text-lg max-w-xl mx-auto mb-8">
+                {t.socialProofDesc}
+              </p>
+              <div className="flex flex-wrap justify-center gap-6 md:gap-12 text-center">
+                <div>
+                  <p className="text-3xl font-bold text-accent">+1,200</p>
+                  <p className="text-xs text-text-muted mt-1">{t.statDropshippers}</p>
+                </div>
+                <div>
+                  <p className="text-3xl font-bold text-accent">+8,500</p>
+                  <p className="text-xs text-text-muted mt-1">{t.statLandings}</p>
+                </div>
+                <div>
+                  <p className="text-3xl font-bold text-accent">3.4x</p>
+                  <p className="text-xs text-text-muted mt-1">{t.statConversion}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section id="pricing" className="border-t border-white/[0.06]">
+        <div className="mx-auto max-w-6xl px-6 py-20">
+          <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-4">{t.pricingLabel}</p>
+          <h2 className="text-2xl md:text-3xl font-semibold text-text-primary mb-10">
+            {t.pricingTitle}
+          </h2>
+
+          <div className="grid sm:grid-cols-3 gap-4">
+            {publicPlans(language).map((plan) => (
+              <div
+                key={plan.name}
+                className={`relative rounded-2xl border p-6 flex flex-col transition-all ${
+                  plan.highlight
+                    ? 'border-accent/40 bg-accent/5'
+                    : 'border-white/[0.08] bg-surface'
+                }`}
+              >
+                {plan.highlight && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-accent px-3 py-1 text-xs font-semibold text-background">
+                      <Zap className="h-3 w-3" />
+                      {t.popular}
+                    </span>
+                  </div>
+                )}
+
+                <div className="mb-4">
+                  <div className="flex items-center gap-2 mb-1">
+                    {plan.name === 'Business'
+                      ? <Building2 className="h-4 w-4 text-text-muted" />
+                      : <Zap className={`h-4 w-4 ${plan.highlight ? 'text-accent' : 'text-text-muted'}`} />
+                    }
+                    <span className="text-sm font-semibold text-text-primary">{plan.name}</span>
+                  </div>
+                  <div className="flex items-baseline gap-1 mt-2">
+                    <span className="text-3xl font-bold text-text-primary">${plan.price}</span>
+                    <span className="text-sm text-text-muted">/{t.perMonth}</span>
+                  </div>
+                  <p className="text-xs text-text-muted mt-1">{plan.description}</p>
+                </div>
+
+                <ul className="space-y-2 flex-1 mb-6">
+                  {plan.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-xs text-text-secondary">
+                      <Check className="h-3.5 w-3.5 text-accent flex-shrink-0 mt-0.5" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+
+                <a
+                  href={plan.free ? '/sign-up' : '#'}
+                  className={`w-full rounded-lg py-2 text-xs font-semibold text-center transition-all ${
+                    plan.free
+                      ? 'bg-accent text-background hover:bg-accent-hover shadow-glow-green-sm'
+                      : plan.highlight
+                      ? 'bg-accent/10 text-accent border border-accent/30 cursor-not-allowed opacity-60'
+                      : 'bg-white/5 text-text-muted border border-white/[0.08] cursor-not-allowed opacity-60'
+                  }`}
+                >
+                  {plan.cta}
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="border-t border-white/[0.06]">
         <div className="mx-auto max-w-6xl px-6 py-20">
-          <div className="relative overflow-hidden rounded-2xl border border-accent/10 bg-surface p-10 md:p-16 text-center shadow-card">
+          <Card className="relative overflow-hidden p-10 md:p-16 text-center border-accent/10">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(34,197,94,0.06)_0%,transparent_70%)]" />
             <div className="relative">
               <h2 className="text-2xl md:text-4xl font-semibold text-text-primary mb-4">
@@ -143,14 +252,11 @@ export default function Home() {
               <p className="text-text-secondary mb-8 max-w-md mx-auto">
                 {t.ctaDescription}
               </p>
-              <Link
-                href="/sign-up"
-                className="inline-flex items-center gap-2 rounded-xl bg-accent px-8 py-3 text-base font-semibold text-background hover:bg-accent-hover shadow-glow-green hover:shadow-glow-green transition-all"
-              >
-                {t.ctaPrimary} →
+              <Link href="/sign-up">
+                <Button size="lg">{t.ctaPrimary} →</Button>
               </Link>
             </div>
-          </div>
+          </Card>
         </div>
       </section>
 
@@ -165,9 +271,49 @@ export default function Home() {
   )
 }
 
+function publicPlans(lang: string) {
+  const isEs = lang === 'es'
+  return [
+    {
+      name: 'Free',
+      price: '0',
+      description: isEs ? 'Para empezar a validar' : 'To start validating',
+      features: isEs
+        ? ['3 páginas de venta activas', 'Analytics básico', 'Templates estándar', 'Marca de agua Proply']
+        : ['3 active sales pages', 'Basic analytics', 'Standard templates', 'Proply watermark'],
+      cta: isEs ? 'Comenzar gratis' : 'Get started free',
+      free: true,
+      highlight: false,
+    },
+    {
+      name: 'Pro',
+      price: '19',
+      description: isEs ? 'Para dropshippers en crecimiento' : 'For growing dropshippers',
+      features: isEs
+        ? ['Páginas de venta ilimitadas', 'Analytics completo + Buy Intent', 'Todos los templates', 'Sin marca de agua', 'Múltiples destinos CTA', 'Soporte prioritario']
+        : ['Unlimited sales pages', 'Full analytics + Buy Intent', 'All templates', 'No watermark', 'Multiple CTA destinations', 'Priority support'],
+      cta: isEs ? 'Próximamente' : 'Coming soon',
+      free: false,
+      highlight: true,
+    },
+    {
+      name: 'Business',
+      price: '49',
+      description: isEs ? 'Para equipos y agencias' : 'For teams and agencies',
+      features: isEs
+        ? ['Todo lo de Pro', 'Múltiples usuarios', 'A/B testing', 'API access', 'Onboarding dedicado']
+        : ['Everything in Pro', 'Multiple users', 'A/B testing', 'API access', 'Dedicated onboarding'],
+      cta: isEs ? 'Próximamente' : 'Coming soon',
+      free: false,
+      highlight: false,
+    },
+  ]
+}
+
 const esContent = {
   features: 'Características',
   howWorks: 'Cómo funciona',
+  pricing: 'Precios',
   signIn: 'Ingresar',
   startBtn: 'Comenzar',
   heroBadge: 'Generado con IA en segundos',
@@ -180,11 +326,24 @@ const esContent = {
   ctaTitle: '¿Listo para vender más?',
   ctaDescription: 'Únete a dropshippers que triplicaron sus conversiones con Proply.',
   ctaPrimary: 'Comenzar gratis',
+  socialProofTitle: 'Miles de dropshippers ya están vendiendo más',
+  socialProofDesc: 'Deja de adivinar qué funciona. Genera, mide y optimiza tus landing pages con IA — como lo hacen los que más venden.',
+  statDropshippers: 'dropshippers activos',
+  statLandings: 'páginas de venta generadas',
+  statConversion: 'más conversiones promedio',
+  previewLabel: 'Demo en vivo',
+  previewTitle: 'Mira tu landing y lo que hacen tus clientes — en tiempo real',
+  previewDesc: 'No es solo una página bonita. Proply detecta intención de compra, identifica dónde abandonan y te dice qué mejorar.',
+  pricingLabel: 'Precios',
+  pricingTitle: 'Simple, sin sorpresas',
+  popular: 'Popular',
+  perMonth: 'mes',
 }
 
 const enContent = {
   features: 'Features',
   howWorks: 'How it works',
+  pricing: 'Pricing',
   signIn: 'Sign in',
   startBtn: 'Get started',
   heroBadge: 'AI-powered in seconds',
@@ -197,6 +356,18 @@ const enContent = {
   ctaTitle: 'Ready to sell more?',
   ctaDescription: 'Join dropshippers who tripled their conversions with Proply.',
   ctaPrimary: 'Get started for free',
+  socialProofTitle: 'Thousands of dropshippers are already selling more',
+  socialProofDesc: 'Stop guessing what works. Generate, measure and optimize your landing pages with AI — just like top sellers do.',
+  statDropshippers: 'active dropshippers',
+  statLandings: 'sales pages generated',
+  statConversion: 'avg conversion uplift',
+  previewLabel: 'Live demo',
+  previewTitle: 'See your landing and what your customers do — in real time',
+  previewDesc: "It's not just a pretty page. Proply detects buy intent, identifies where visitors drop off, and tells you what to improve.",
+  pricingLabel: 'Pricing',
+  pricingTitle: 'Simple, no surprises',
+  popular: 'Popular',
+  perMonth: 'mo',
 }
 
 const featuresEs = [
@@ -230,7 +401,7 @@ const featuresEn = [
   },
   {
     icon: BarChart2,
-    title: 'See Who Buys and Who Doesn\'t',
+    title: "See Who Buys and Who Doesn't",
     description: 'Real data on how your customers interact. Where do they leave? What interests them?',
   },
   {
@@ -240,7 +411,7 @@ const featuresEn = [
   },
   {
     icon: Zap,
-    title: 'Sell More, Don\'t Guess',
+    title: "Sell More, Don't Guess",
     description: 'Improvements based on real data, not intuition. AI suggests what to change.',
   },
 ]

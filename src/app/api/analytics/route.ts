@@ -13,9 +13,8 @@ export async function GET() {
       where: { userId: user.id },
       include: {
         versions: {
-          include: {
-            events: true,
-          },
+          where: { isPublished: true },
+          include: { events: true },
         },
       },
       orderBy: { createdAt: 'desc' },
@@ -40,7 +39,8 @@ export async function GET() {
         }
       }
 
-      const engagementRate = totalViews > 0 ? Math.round((totalClicks / totalViews) * 100) : 0
+      // Cap engagement at 100% — multiple CTA clicks from same visitor can exceed views
+      const engagementRate = totalViews > 0 ? Math.min(Math.round((totalClicks / totalViews) * 100), 100) : 0
 
       return {
         id: proposal.id,
@@ -49,6 +49,7 @@ export async function GET() {
         totalViews,
         totalClicks,
         engagementRate,
+        hasPublishedVersion: proposal.versions.length > 0,
         createdAt: proposal.createdAt,
       }
     })

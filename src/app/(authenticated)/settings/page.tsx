@@ -12,7 +12,7 @@ const plans = [
     price: '0',
     description: 'Para empezar a validar',
     features: [
-      '3 landings activas',
+      '3 páginas de venta activas',
       'Analytics básico',
       'Templates estándar',
       'Marca de agua Proply',
@@ -26,7 +26,7 @@ const plans = [
     price: '19',
     description: 'Para dropshippers en crecimiento',
     features: [
-      'Landings ilimitadas',
+      'Páginas de venta ilimitadas',
       'Analytics completo + Buy Intent',
       'Todos los templates',
       'Sin marca de agua',
@@ -122,12 +122,8 @@ export default function SettingsPage() {
 
         {/* Plan section */}
         <div className="mt-10">
-          <div className="flex items-center justify-between mb-4">
+          <div className="mb-4">
             <h2 className="text-sm font-semibold text-text-secondary uppercase tracking-widest">Plan</h2>
-            <span className="inline-flex items-center gap-1.5 text-xs text-text-muted border border-white/[0.08] rounded-full px-3 py-1">
-              <Zap className="h-3 w-3 text-yellow-400" />
-              Precios tentativos — aún no se cobra nada
-            </span>
           </div>
 
           <div className="grid sm:grid-cols-3 gap-4">

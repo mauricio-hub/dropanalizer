@@ -180,7 +180,7 @@ export default function DashboardProposalTable({ proposals: initialProposals }: 
                         </Link>
                       ) : (
                         <span
-                          title={language === 'es' ? 'Publica la landing para ver analytics' : 'Publish the landing to see analytics'}
+                          title={language === 'es' ? 'Publica la página de venta para ver analytics' : 'Publish the sales page to see analytics'}
                           className="text-xs text-text-muted py-1 px-2 opacity-40 cursor-not-allowed"
                         >
                           {t.dashboard.analytics}
@@ -197,7 +197,7 @@ export default function DashboardProposalTable({ proposals: initialProposals }: 
                         </Link>
                       ) : (
                         <span
-                          title={language === 'es' ? 'Publica la landing para poder verla' : 'Publish the landing to view it'}
+                          title={language === 'es' ? 'Publica la página de venta para poder verla' : 'Publish the sales page to view it'}
                           className="flex items-center gap-1 text-xs text-text-muted py-1 px-2 opacity-40 cursor-not-allowed"
                         >
                           <ExternalLink className="h-3 w-3" />
@@ -218,7 +218,7 @@ export default function DashboardProposalTable({ proposals: initialProposals }: 
           ) : (
             <tr>
               <td colSpan={5} className="px-6 py-12 text-center text-sm text-text-muted">
-                {language === 'es' ? 'No tienes propuestas aún. ¡Crea tu primera landing!' : 'No proposals yet. Create your first landing!'}
+                {language === 'es' ? 'No tienes páginas de venta aún. ¡Crea la primera!' : 'No sales pages yet. Create your first one!'}
               </td>
             </tr>
           )}
