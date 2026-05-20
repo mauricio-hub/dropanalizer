@@ -234,7 +234,7 @@ export default function AnalyticsPage() {
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <p className="text-sm font-semibold text-accent uppercase tracking-widest mb-1">Intención Real de Compra</p>
-                  <p className="text-xs text-text-muted">Visitantes que hicieron click en "Comprar Ahora"</p>
+                  <p className="text-xs text-text-muted">Visitantes que hicieron click en &quot;Comprar Ahora&quot;</p>
                 </div>
                 <ShoppingCart className="h-5 w-5 text-accent mt-1" />
               </div>
