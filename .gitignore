@@ -37,3 +37,4 @@ next-env.d.ts.env
 
 # Claude Code settings (local machine config)
 .claude/settings.local.json
+.claude/settings.json
