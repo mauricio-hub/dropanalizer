@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1100 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title-es desc-es" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background:#0B0F14;">
+  <title id="title-es">Dropanalizer — Flujo de usabilidad (ES)</title>
+  <desc id="desc-es">Diagrama de flujo que muestra cómo el usuario crea, publica, mide y optimiza páginas de venta, junto con la visita del comprador y el ciclo de iteración con IA.</desc>
+
+  <defs>
+    <marker id="arrow-es" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6B7280"/>
+    </marker>
+    <marker id="arrow-green-es" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#22C55E"/>
+    </marker>
+  </defs>
+
+  <style>
+    .lane-bg-es { fill: #111827; opacity: 0.35; }
+    .lane-label-es { fill: #9CA3AF; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; }
+    .box-es { fill: #111827; stroke: #1F2937; stroke-width: 1.5; }
+    .box-accent-es { fill: #111827; stroke: #22C55E; stroke-width: 1.8; }
+    .title-es { fill: #E5E7EB; font-size: 14px; font-weight: 700; }
+    .subtitle-es { fill: #9CA3AF; font-size: 11.5px; }
+    .badge-es { fill: #22C55E; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
+    .edge-es { stroke: #6B7280; stroke-width: 1.5; fill: none; }
+    .edge-green-es { stroke: #22C55E; stroke-width: 2; fill: none; stroke-dasharray: 5 4; }
+    .edge-label-es { fill: #9CA3AF; font-size: 10.5px; font-weight: 500; }
+    .header-es { fill: #E5E7EB; font-size: 18px; font-weight: 700; }
+    .header-sub-es { fill: #9CA3AF; font-size: 12px; }
+    .icon-circle-es { fill: #22C55E; opacity: 0.15; }
+    .icon-glyph-es { fill: #22C55E; font-size: 13px; font-weight: 700; }
+  </style>
+
+  <rect x="0" y="0" width="1100" height="720" fill="#0B0F14"/>
+
+  <text x="40" y="36" class="header-es">Dropanalizer · Flujo de usabilidad</text>
+  <text x="40" y="56" class="header-sub-es">Generar → Medir → Optimizar automáticamente</text>
+
+  <rect x="30" y="82" width="1040" height="150" rx="10" class="lane-bg-es"/>
+  <rect x="30" y="246" width="1040" height="150" rx="10" class="lane-bg-es"/>
+  <rect x="30" y="410" width="1040" height="150" rx="10" class="lane-bg-es"/>
+  <rect x="30" y="574" width="1040" height="120" rx="10" class="lane-bg-es"/>
+
+  <text x="46" y="103" class="lane-label-es">1 · Vendedor (creador)</text>
+  <text x="46" y="267" class="lane-label-es">2 · Sistema · IA + plantillas</text>
+  <text x="46" y="431" class="lane-label-es">3 · Comprador (visitante)</text>
+  <text x="46" y="595" class="lane-label-es">4 · Ciclo de optimización</text>
+
+  <g>
+    <rect x="60" y="120" width="170" height="90" rx="10" class="box-es"/>
+    <circle cx="84" cy="146" r="14" class="icon-circle-es"/>
+    <text x="84" y="151" text-anchor="middle" class="icon-glyph-es">1</text>
+    <text x="108" y="151" class="title-es">Iniciar sesión</text>
+    <text x="78" y="176" class="subtitle-es">Autenticación Clerk</text>
+    <text x="78" y="192" class="subtitle-es">→ crea/recupera usuario</text>
+  </g>
+
+  <g>
+    <rect x="260" y="120" width="190" height="90" rx="10" class="box-es"/>
+    <circle cx="284" cy="146" r="14" class="icon-circle-es"/>
+    <text x="284" y="151" text-anchor="middle" class="icon-glyph-es">2</text>
+    <text x="308" y="151" class="title-es">Nueva página</text>
+    <text x="278" y="176" class="subtitle-es">Producto o servicio</text>
+    <text x="278" y="192" class="subtitle-es">Brief + precio + CTA</text>
+  </g>
+
+  <g>
+    <rect x="480" y="120" width="190" height="90" rx="10" class="box-es"/>
+    <circle cx="504" cy="146" r="14" class="icon-circle-es"/>
+    <text x="504" y="151" text-anchor="middle" class="icon-glyph-es">3</text>
+    <text x="528" y="151" class="title-es">Configurar</text>
+    <text x="498" y="176" class="subtitle-es">Plantilla + imágenes</text>
+    <text x="498" y="192" class="subtitle-es">Destino CTA (WhatsApp)</text>
+  </g>
+
+  <g>
+    <rect x="700" y="120" width="190" height="90" rx="10" class="box-accent-es"/>
+    <circle cx="724" cy="146" r="14" class="icon-circle-es"/>
+    <text x="724" y="151" text-anchor="middle" class="icon-glyph-es">4</text>
+    <text x="748" y="151" class="title-es">Revisar y publicar</text>
+    <text x="718" y="176" class="subtitle-es">Crea versión (v1, v2…)</text>
+    <text x="718" y="192" class="subtitle-es">URL pública única</text>
+  </g>
+
+  <g>
+    <rect x="920" y="135" width="130" height="60" rx="8" fill="none" stroke="#22C55E" stroke-width="1" stroke-dasharray="3 3"/>
+    <text x="985" y="158" text-anchor="middle" class="badge-es">PLAN FREE</text>
+    <text x="985" y="178" text-anchor="middle" class="subtitle-es">Máx. 3 páginas</text>
+    <text x="985" y="192" text-anchor="middle" class="subtitle-es">por usuario</text>
+  </g>
+
+  <path d="M 230 165 L 260 165" class="edge-es" marker-end="url(#arrow-es)"/>
+  <path d="M 450 165 L 480 165" class="edge-es" marker-end="url(#arrow-es)"/>
+  <path d="M 670 165 L 700 165" class="edge-es" marker-end="url(#arrow-es)"/>
+
+  <g>
+    <rect x="60" y="284" width="200" height="90" rx="10" class="box-accent-es"/>
+    <text x="78" y="308" class="title-es">Agente IA (Claude)</text>
+    <text x="78" y="328" class="subtitle-es">Estructura el brief</text>
+    <text x="78" y="343" class="subtitle-es">Genera titular + copy</text>
+    <text x="78" y="358" class="subtitle-es">Modelo: sonnet-4-5</text>
+  </g>
+
+  <g>
+    <rect x="290" y="284" width="200" height="90" rx="10" class="box-es"/>
+    <text x="308" y="308" class="title-es">Render página venta</text>
+    <text x="308" y="328" class="subtitle-es">MinimalistTemplate /</text>
+    <text x="308" y="343" class="subtitle-es">VibrantTemplate</text>
+    <text x="308" y="358" class="subtitle-es">Tema oscuro · Tailwind</text>
+  </g>
+
+  <g>
+    <rect x="520" y="284" width="200" height="90" rx="10" class="box-es"/>
+    <text x="538" y="308" class="title-es">Persistencia</text>
+    <text x="538" y="328" class="subtitle-es">Prisma + PostgreSQL</text>
+    <text x="538" y="343" class="subtitle-es">Página → Versiones[]</text>
+    <text x="538" y="358" class="subtitle-es">Imágenes en Cloudinary</text>
+  </g>
+
+  <g>
+    <rect x="750" y="284" width="200" height="90" rx="10" class="box-accent-es"/>
+    <text x="768" y="308" class="title-es">URL pública</text>
+    <text x="768" y="328" class="subtitle-es">/p/[id] · sin login</text>
+    <text x="768" y="343" class="subtitle-es">Compartible (WhatsApp,</text>
+    <text x="768" y="358" class="subtitle-es">anuncios, email…)</text>
+  </g>
+
+  <path d="M 260 329 L 290 329" class="edge-es" marker-end="url(#arrow-es)"/>
+  <path d="M 490 329 L 520 329" class="edge-es" marker-end="url(#arrow-es)"/>
+  <path d="M 720 329 L 750 329" class="edge-es" marker-end="url(#arrow-es)"/>
+
+  <path d="M 795 210 L 795 240 L 160 240 L 160 284" class="edge-es" marker-end="url(#arrow-es)"/>
+  <text x="430" y="234" class="edge-label-es">publicar → dispara generación IA</text>
+
+  <g>
+    <rect x="60" y="448" width="200" height="90" rx="10" class="box-es"/>
+    <text x="78" y="472" class="title-es">Comprador abre URL</text>
+    <text x="78" y="492" class="subtitle-es">Visita /p/[id]</text>
+    <text x="78" y="507" class="subtitle-es">No requiere registro</text>
+    <text x="78" y="522" class="subtitle-es">Móvil primero</text>
+  </g>
+
+  <g>
+    <rect x="290" y="448" width="200" height="90" rx="10" class="box-accent-es"/>
+    <text x="308" y="472" class="title-es">Tracking automático</text>
+    <text x="308" y="492" class="subtitle-es">vista · click · tiempo</text>
+    <text x="308" y="507" class="subtitle-es">POST /api/track</text>
+    <text x="308" y="522" class="subtitle-es">→ Evento (por versión)</text>
+  </g>
+
+  <g>
+    <rect x="520" y="448" width="200" height="90" rx="10" class="box-es"/>
+    <text x="538" y="472" class="title-es">Click en CTA</text>
+    <text x="538" y="492" class="subtitle-es">Abre WhatsApp o enlace</text>
+    <text x="538" y="507" class="subtitle-es">externo configurado</text>
+    <text x="538" y="522" class="subtitle-es">→ conversión / venta</text>
+  </g>
+
+  <g>
+    <rect x="750" y="448" width="200" height="90" rx="10" class="box-es"/>
+    <text x="768" y="472" class="title-es">Panel analítico</text>
+    <text x="768" y="492" class="subtitle-es">Vistas, clicks, tiempo</text>
+    <text x="768" y="507" class="subtitle-es">Visible para el vendedor</text>
+    <text x="768" y="522" class="subtitle-es">/analytics</text>
+  </g>
+
+  <path d="M 260 493 L 290 493" class="edge-es" marker-end="url(#arrow-es)"/>
+  <path d="M 490 493 L 520 493" class="edge-es" marker-end="url(#arrow-es)"/>
+  <path d="M 720 493 L 750 493" class="edge-es" marker-end="url(#arrow-es)"/>
+
+  <path d="M 850 374 L 850 405 L 160 405 L 160 448" class="edge-es" marker-end="url(#arrow-es)"/>
+  <text x="430" y="400" class="edge-label-es">URL distribuida → tráfico real</text>
+
+  <g>
+    <rect x="60" y="608" width="220" height="74" rx="10" class="box-accent-es"/>
+    <text x="78" y="632" class="title-es">Recomendaciones IA</text>
+    <text x="78" y="652" class="subtitle-es">Detecta abandonos, CTAs débiles,</text>
+    <text x="78" y="667" class="subtitle-es">copy con bajo engagement</text>
+  </g>
+
+  <g>
+    <rect x="320" y="608" width="220" height="74" rx="10" class="box-es"/>
+    <text x="338" y="632" class="title-es">Vendedor revisa</text>
+    <text x="338" y="652" class="subtitle-es">Acepta / rechaza sugerencias</text>
+    <text x="338" y="667" class="subtitle-es">Decisión rápida, sin diseñar</text>
+  </g>
+
+  <g>
+    <rect x="580" y="608" width="220" height="74" rx="10" class="box-accent-es"/>
+    <text x="598" y="632" class="title-es">Nueva versión</text>
+    <text x="598" y="652" class="subtitle-es">IA regenera contenido</text>
+    <text x="598" y="667" class="subtitle-es">Versiones inmutables (v+1)</text>
+  </g>
+
+  <g>
+    <rect x="840" y="608" width="220" height="74" rx="10" class="box-es"/>
+    <text x="858" y="632" class="title-es">Re-publicar</text>
+    <text x="858" y="652" class="subtitle-es">Nueva URL + tracking</text>
+    <text x="858" y="667" class="subtitle-es">vuelve al ciclo</text>
+  </g>
+
+  <path d="M 280 645 L 320 645" class="edge-es" marker-end="url(#arrow-es)"/>
+  <path d="M 540 645 L 580 645" class="edge-es" marker-end="url(#arrow-es)"/>
+  <path d="M 800 645 L 840 645" class="edge-es" marker-end="url(#arrow-es)"/>
+
+  <path d="M 850 538 L 850 575 L 170 575 L 170 608" class="edge-green-es" marker-end="url(#arrow-green-es)"/>
+  <text x="430" y="569" class="edge-label-es" fill="#22C55E">datos de comportamiento → input para IA</text>
+
+  <path d="M 950 608 Q 1075 500 1075 380 Q 1075 250 950 250 L 850 250 L 850 284" class="edge-green-es" marker-end="url(#arrow-green-es)"/>
+  <text x="1015" y="430" class="edge-label-es" fill="#22C55E" transform="rotate(-90 1015 430)">iteración continua</text>
+</svg>
